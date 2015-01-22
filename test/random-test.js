@@ -255,3 +255,32 @@ describe( "Mersenne-Twister" , function() {
 } ) ;
 
 
+
+describe( "Misc" , function() {
+	
+	it( "randomRound()" , function() {
+		
+		var i , n , min , max , r = [] , rng ;
+		
+		rng = new random.Native() ;
+		rng.seed() ;
+		
+		n = 3.9 ;
+		
+		min = Math.floor( n ) ;
+		max = Math.ceil( n ) ;
+		
+		r[ min ] = 0 ;
+		r[ max ] = 0 ;
+		
+		for ( i = 0 ; i < 100 ; i ++ )
+		{
+			r[ rng.randomRound( n ) ] ++ ;
+		}
+		
+		console.log( '' + r[ min ] + '% - ' + r[ max ] + '%' ) ;
+	} ) ;
+} ) ;
+
+
+
