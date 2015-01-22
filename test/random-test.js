@@ -263,9 +263,10 @@ describe( "Misc" , function() {
 		var i , n , min , max , r = [] , rng ;
 		
 		rng = new random.Native() ;
+		rng = new random.MersenneTwister() ;
 		rng.seed() ;
 		
-		n = 3.9 ;
+		n = 3.05 ;
 		
 		min = Math.floor( n ) ;
 		max = Math.ceil( n ) ;
