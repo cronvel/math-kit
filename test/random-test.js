@@ -262,7 +262,6 @@ describe( "Misc" , function() {
 		
 		var i , n , min , max , r = [] , rng ;
 		
-		rng = new random.Native() ;
 		rng = new random.MersenneTwister() ;
 		rng.seed() ;
 		
@@ -280,6 +279,22 @@ describe( "Misc" , function() {
 		}
 		
 		console.log( '' + r[ min ] + '% - ' + r[ max ] + '%' ) ;
+	} ) ;
+	
+	it( "sharedRandomRound()" , function() {
+		
+		var rng , array ;
+		
+		rng = new random.MersenneTwister() ;
+		rng.seed() ;
+		
+		array = [ 1.5 , 1.6 , 1.4 , 1.5 ] ;
+		
+		console.log( rng.sharedRandomRound( array ) ) ;
+		console.log( rng.sharedRandomRound( array ) ) ;
+		console.log( rng.sharedRandomRound( array ) ) ;
+		console.log( rng.sharedRandomRound( array ) ) ;
+		console.log( rng.sharedRandomRound( array ) ) ;
 	} ) ;
 } ) ;
 
