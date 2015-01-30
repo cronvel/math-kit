@@ -45,6 +45,7 @@ describe( "math.isOrdered()" , function() {
 		expect( math.isOrdered( 2.7 , 2.5 ) ).not.to.be.ok() ;
 		expect( math.isOrdered( 2.1 , 2.5 , 3.3 ) ).to.be.ok() ;
 		expect( math.isOrdered( 2.1 , 2.5 , 3.3 , 4.8 ) ).to.be.ok() ;
+		expect( math.isOrdered( 2.1 , 2.5 , 2.5 , 4.8 ) ).to.be.ok() ;
 		expect( math.isOrdered( 2.1 , 2.5 , 3.3 , 4.8 , -1 ) ).not.to.be.ok() ;
 		expect( math.isOrdered( 2.1 , 2.05 , 3.3 ) ).not.to.be.ok() ;
 		expect( math.isOrdered( 2.1 , 3.35 , 3.3 ) ).not.to.be.ok() ;
@@ -60,10 +61,46 @@ describe( "math.isOrdered()" , function() {
 	} ) ;
 	
 	it( "test with arrays of different length" , function() {
+		expect( math.isOrdered( [ 2 , 0 ] , [ 2 ] , [ 3 , 3 ] ) ).to.be.ok() ;
+		expect( math.isOrdered( [ 2 ] , [ 2 , 0 ] , [ 3 , 3 ] ) ).to.be.ok() ;
 		expect( math.isOrdered( [ 2 , 1 ] , [ 2 ] , [ 3 , 3 ] ) ).not.to.be.ok() ;
 		expect( math.isOrdered( [ 1 , 9 ] , [ 2 ] , [ 3 , 3 ] ) ).to.be.ok() ;
 		expect( math.isOrdered( [ 2 , 1 ] , [ 4 ] , [ 4 , 3 ] ) ).to.be.ok() ;
 		expect( math.isOrdered( [ 1 , 9 ] , [ 4 ] , [ 3 , 9 ] ) ).not.to.be.ok() ;
+	} ) ;
+} ) ;
+
+
+
+describe( "math.isGreater()" , function() {
+	
+	expect( math.isGreaterOrEquals( [ 2 , 5 ] , [ 2 , 5 , 0 ] ) ).to.be.ok() ;
+	
+	it( "test with values" , function() {
+		expect( math.isGreater( 2.1 , 2.5 ) ).not.to.be.ok() ;
+		expect( math.isGreater( 2.7 , 2.5 ) ).to.be.ok() ;
+		expect( math.isGreater( 2.7 , 2.7 ) ).not.to.be.ok() ;
+		expect( math.isGreaterOrEquals( 2.7 , 2.7 ) ).to.be.ok() ;
+	} ) ;
+	
+	it( "test with arrays" , function() {
+		expect( math.isGreater( [ 2.1 ] , [ 3.3 ] ) ).not.to.be.ok() ;
+		expect( math.isGreater( [ 4.1 ] , [ 3.3 ] ) ).to.be.ok() ;
+		expect( math.isGreater( [ 2 , 1 ] , [ 2 , 5 ] ) ).not.to.be.ok() ;
+		expect( math.isGreater( [ 2 , 5 ] , [ 2 , 1 ] ) ).to.be.ok() ;
+		expect( math.isGreater( [ 2 , 5 ] , [ 2 , 5 ] ) ).not.to.be.ok() ;
+		expect( math.isGreaterOrEquals( [ 2 , 5 ] , [ 2 , 5 ] ) ).to.be.ok() ;
+	} ) ;
+	
+	it( "test with arrays of different length" , function() {
+		expect( math.isGreater( [ 2 , 1 ] , [ 2 , 5 , 7 , 8 ] ) ).not.to.be.ok() ;
+		expect( math.isGreater( [ 2 , 5 , 8 ] , [ 2 , 1 ] ) ).to.be.ok() ;
+		expect( math.isGreater( [ 2 , 5 , 1 ] , [ 2 , 5 ] ) ).to.be.ok() ;
+		expect( math.isGreater( [ 2 , 5 ] , [ 2 , 5 , 1 ] ) ).not.to.be.ok() ;
+		expect( math.isGreater( [ 2 , 5 ] , [ 2 , 5 ] ) ).not.to.be.ok() ;
+		expect( math.isGreaterOrEquals( [ 2 , 5 ] , [ 2 , 5 ] ) ).to.be.ok() ;
+		expect( math.isGreaterOrEquals( [ 2 , 5 , 0 ] , [ 2 , 5 ] ) ).to.be.ok() ;
+		expect( math.isGreaterOrEquals( [ 2 , 5 ] , [ 2 , 5 , 0 ] ) ).to.be.ok() ;
 	} ) ;
 } ) ;
 
