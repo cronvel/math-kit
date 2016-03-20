@@ -1,20 +1,20 @@
 {
   "name": "math-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Work in progress...",
   "main": "lib/math.js",
   "directories": {
     "test": "test"
   },
   "dependencies": {
-    "async-kit": "^0.6.7",
-    "tree-kit": "^0.5.6"
+    "async-kit": "^0.6.9",
+    "tree-kit": "^0.5.18"
   },
   "devDependencies": {
-    "gm": "^1.17.0",
+    "gm": "^1.21.1",
     "expect.js": "^0.3.1",
-    "jshint": "^2.5.6",
-    "mocha": "^1.21.4"
+    "jshint": "^2.9.1",
+    "mocha": "^2.4.5"
   },
   "scripts": {
     "test": "mocha -R dot"
