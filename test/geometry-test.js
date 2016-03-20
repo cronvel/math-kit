@@ -41,18 +41,41 @@ var expect = require( 'expect.js' ) ;
 describe( "Vector2D" , function() {
 	
 	it( "duplicate" , function() {
-		var v1 = new geo.Vector2D( 3 , 4 ) ;
+		var v1 = geo.Vector2D( 3 , 4 ) ;
 		expect( v1.dup() ).to.eql( { vx: 3 , vy: 4 } ) ;
 	} ) ;
 	
 	it( "addition" , function() {
-		var v1 = new geo.Vector2D( 3 , 4 ) ;
-		var v2 = new geo.Vector2D( 5 , 7 ) ;
+		var v1 = geo.Vector2D( 3 , 4 ) ;
+		var v2 = geo.Vector2D( 5 , 7 ) ;
+		var v3 = geo.Vector2D( 2 , 1 ) ;
 		expect( v1.dup().add( v2 ) ).to.eql( { vx: 8 , vy: 11 } ) ;
+		expect( v1.dup().add( v2 , v3 ) ).to.eql( { vx: 10 , vy: 12 } ) ;
+	} ) ;
+	
+	it( "substract" , function() {
+		var v1 = geo.Vector2D( 3 , 4 ) ;
+		var v2 = geo.Vector2D( 2 , 1 ) ;
+		expect( v1.dup().sub( v2 ) ).to.eql( { vx: 1 , vy: 3 } ) ;
+	} ) ;
+	
+	it( "multiply" , function() {
+		var v1 = geo.Vector2D( 3 , 4 ) ;
+		expect( v1.dup().mul( 3 ) ).to.eql( { vx: 9 , vy: 12 } ) ;
+	} ) ;
+	
+	it( "divide" , function() {
+		var v1 = geo.Vector2D( 3 , 4 ) ;
+		expect( v1.dup().div( 4 ) ).to.eql( { vx: 0.75 , vy: 1 } ) ;
+	} ) ;
+	
+	it( "inverse" , function() {
+		var v1 = geo.Vector2D( 3 , 4 ) ;
+		expect( v1.dup().inverse() ).to.eql( { vx: -3 , vy: -4 } ) ;
 	} ) ;
 	
 	it( "length" , function() {
-		var v1 = new geo.Vector2D( 3 , 4 ) ;
+		var v1 = geo.Vector2D( 3 , 4 ) ;
 		expect( v1.length() ).to.be( 5 ) ;
 	} ) ;
 } ) ;
