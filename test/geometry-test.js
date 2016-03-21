@@ -99,7 +99,7 @@ describe( "Vector2D" , function() {
 		expect( v1 ).to.eql( { vx: 6 , vy: 8 } ) ;
 	} ) ;
 	
-	it( "get/set angle" , function() {
+	it( "get/set/rotate angle" , function() {
 		var v1 = geo.Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 		expectCirca( v1.angle , Math.PI / 3 ) ;
 		expectCirca( v1.inv().angle , - Math.PI + Math.PI / 3 ) ;
@@ -112,11 +112,16 @@ describe( "Vector2D" , function() {
 		
 		v1 = geo.Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 		v1.angle = Math.PI / 6 ;
-		expectCirca( v1.vx ,  10 * Math.sqrt( 3 ) / 2 ) ;
-		expectCirca( v1.vy ,  5 ) ;
+		expectCirca( v1.vx , 10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.vy , 5 ) ;
+		
+		v1.rotate( Math.PI / 6 ) ;
+		expectCirca( v1.angle , Math.PI / 3 ) ;
+		expectCirca( v1.vx , 5 ) ;
+		expectCirca( v1.vy , 10 * Math.sqrt( 3 ) / 2 ) ;
 	} ) ;
 	
-	it( "get/set angle in degree" , function() {
+	it( "get/set/rotate angle in degree" , function() {
 		var v1 = geo.Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 		expectCirca( v1.angleDeg , 60 ) ;
 		expectCirca( v1.inv().angleDeg , -120 ) ;
@@ -131,8 +136,18 @@ describe( "Vector2D" , function() {
 		v1.angleDeg = 30 ;
 		expectCirca( v1.vx , 10 * Math.sqrt( 3 ) / 2 ) ;
 		expectCirca( v1.vy , 5 ) ;
+		
+		v1.rotateDeg( 30 ) ;
+		expectCirca( v1.angleDeg , 60 ) ;
+		expectCirca( v1.vx , 5 ) ;
+		expectCirca( v1.vy , 10 * Math.sqrt( 3 ) / 2 ) ;
 	} ) ;
 	
+	it( "projections" ) ;
+	it( "unit" ) ;
+	it( "orthogonal" ) ;
+	it( "dot product" ) ;
+	it( "cross product" ) ;
 } ) ;
 
 
