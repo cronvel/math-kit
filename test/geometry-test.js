@@ -99,6 +99,13 @@ describe( "Vector2D" , function() {
 		expect( v1 ).to.eql( { vx: 6 , vy: 8 } ) ;
 	} ) ;
 	
+	it( "normalize/unit" , function() {
+		var v1 = geo.Vector2D( 3 , 4 ) ;
+		v1.normalize() ;
+		expectCirca( v1.vx , 0.6 ) ;
+		expectCirca( v1.vy , 0.8 ) ;
+	} ) ;
+	
 	it( "get/set/rotate angle" , function() {
 		var v1 = geo.Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 		expectCirca( v1.angle , Math.PI / 3 ) ;
@@ -143,11 +150,31 @@ describe( "Vector2D" , function() {
 		expectCirca( v1.vy , 10 * Math.sqrt( 3 ) / 2 ) ;
 	} ) ;
 	
-	it( "projections" ) ;
-	it( "unit" ) ;
+	it( "dot product" , function() {
+		expect( geo.Vector2D( 3 , 4 ).dot( geo.Vector2D( 5 , 2 ) ) ).to.be( 23 ) ;
+		expect( geo.Vector2D( 3 , 4 ).dot( geo.Vector2D( -5 , 2 ) ) ).to.be( -7 ) ;
+	} ) ;
+	
+	it( "cross product" , function() {
+		expect( geo.Vector2D( 3 , 4 ).cross( geo.Vector2D( 5 , 2 ) ) ).to.be( -14 ) ;
+		expect( geo.Vector2D( 3 , 4 ).cross( geo.Vector2D( -5 , 2 ) ) ).to.be( 26 ) ;
+	} ) ;
+	
+	it( "projections" , function() {
+		var v1 = geo.Vector2D( 3 , 4 ) ;
+		var v2 = geo.Vector2D( 4 , 3 ) ;
+		expect( v1.projectionLength( v2 ) ).to.be( 4.8 ) ;
+		expect( v1.relativeProjectionLength( v2 ) ).to.be( 4.8 ) ;
+		expect( v1.dup().projection( v2 ) ).to.eql( { vx: 3.84 , vy: 2.88 } ) ;
+		
+		v1.inv() ;
+		expect( v1.projectionLength( v2 ) ).to.be( 4.8 ) ;
+		expect( v1.relativeProjectionLength( v2 ) ).to.be( -4.8 ) ;
+		expect( v1.dup().projection( v2 ) ).to.eql( { vx: -3.84 , vy: -2.88 } ) ;
+	} ) ;
+	
 	it( "orthogonal" ) ;
-	it( "dot product" ) ;
-	it( "cross product" ) ;
+	it( "input errors" ) ;
 } ) ;
 
 
