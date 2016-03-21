@@ -34,6 +34,20 @@ var expect = require( 'expect.js' ) ;
 
 
 
+			/* Helper */
+
+
+
+function expectCirca( value , circa )
+{
+	var precision = 0.000000000001 ;
+	expect( value ).to.be.within( circa - precision , circa + precision ) ;
+}
+
+
+
+
+
 			/* Tests */
 
 
@@ -71,13 +85,54 @@ describe( "Vector2D" , function() {
 	
 	it( "inverse" , function() {
 		var v1 = geo.Vector2D( 3 , 4 ) ;
-		expect( v1.dup().inverse() ).to.eql( { vx: -3 , vy: -4 } ) ;
+		expect( v1.dup().inv() ).to.eql( { vx: -3 , vy: -4 } ) ;
 	} ) ;
 	
-	it( "length" , function() {
+	it( "get/set length" , function() {
 		var v1 = geo.Vector2D( 3 , 4 ) ;
-		expect( v1.length() ).to.be( 5 ) ;
+		expect( v1.length ).to.be( 5 ) ;
+		
+		v1.length = 10 ;
+		expect( v1 ).to.eql( { vx: 6 , vy: 8 } ) ;
+		
+		v1.length = -10 ;
+		expect( v1 ).to.eql( { vx: 6 , vy: 8 } ) ;
 	} ) ;
+	
+	it( "get/set angle" , function() {
+		var v1 = geo.Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.angle , Math.PI / 3 ) ;
+		expectCirca( v1.inv().angle , - Math.PI + Math.PI / 3 ) ;
+		
+		v1 = geo.Vector2D( -5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.angle , 2 * Math.PI / 3 ) ;
+		
+		v1 = geo.Vector2D( 5 , -10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.angle , - Math.PI / 3 ) ;
+		
+		v1 = geo.Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+		v1.angle = Math.PI / 6 ;
+		expectCirca( v1.vx ,  10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.vy ,  5 ) ;
+	} ) ;
+	
+	it( "get/set angle in degree" , function() {
+		var v1 = geo.Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.angleDeg , 60 ) ;
+		expectCirca( v1.inv().angleDeg , -120 ) ;
+		
+		v1 = geo.Vector2D( -5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.angleDeg , 120 ) ;
+		
+		v1 = geo.Vector2D( 5 , -10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.angleDeg , -60 ) ;
+		
+		v1 = geo.Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+		v1.angleDeg = 30 ;
+		expectCirca( v1.vx , 10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.vy , 5 ) ;
+	} ) ;
+	
 } ) ;
 
 
