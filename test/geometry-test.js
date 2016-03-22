@@ -232,6 +232,14 @@ describe( "BoundVector2D" , function() {
 		expect( vi ).to.be.an( Vector2D ) ;
 		expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
 	} ) ;
+	
+	it( "orthographic projection" , function() {
+		bv1 = BoundVector2D( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
+		v2 = Vector2D( 3 , 9 ) ;
+		vi = bv1.orthographicProjectionOf( v2 ) ;
+		expect( vi ).to.be.an( Vector2D ) ;
+		expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
+	} ) ;
 } ) ;
 
 
