@@ -56,36 +56,36 @@ describe( "Vector2D" , function() {
 	
 	it( "duplicate" , function() {
 		var v1 = geo.Vector2D( 3 , 4 ) ;
-		expect( v1.dup() ).to.eql( { vx: 3 , vy: 4 } ) ;
+		expect( v1.dup() ).to.eql( { x: 3 , y: 4 } ) ;
 	} ) ;
 	
 	it( "addition" , function() {
 		var v1 = geo.Vector2D( 3 , 4 ) ;
 		var v2 = geo.Vector2D( 5 , 7 ) ;
 		var v3 = geo.Vector2D( 2 , 1 ) ;
-		expect( v1.dup().add( v2 ) ).to.eql( { vx: 8 , vy: 11 } ) ;
-		expect( v1.dup().add( v2 , v3 ) ).to.eql( { vx: 10 , vy: 12 } ) ;
+		expect( v1.dup().add( v2 ) ).to.eql( { x: 8 , y: 11 } ) ;
+		expect( v1.dup().add( v2 , v3 ) ).to.eql( { x: 10 , y: 12 } ) ;
 	} ) ;
 	
 	it( "substract" , function() {
 		var v1 = geo.Vector2D( 3 , 4 ) ;
 		var v2 = geo.Vector2D( 2 , 1 ) ;
-		expect( v1.dup().sub( v2 ) ).to.eql( { vx: 1 , vy: 3 } ) ;
+		expect( v1.dup().sub( v2 ) ).to.eql( { x: 1 , y: 3 } ) ;
 	} ) ;
 	
 	it( "multiply" , function() {
 		var v1 = geo.Vector2D( 3 , 4 ) ;
-		expect( v1.dup().mul( 3 ) ).to.eql( { vx: 9 , vy: 12 } ) ;
+		expect( v1.dup().mul( 3 ) ).to.eql( { x: 9 , y: 12 } ) ;
 	} ) ;
 	
 	it( "divide" , function() {
 		var v1 = geo.Vector2D( 3 , 4 ) ;
-		expect( v1.dup().div( 4 ) ).to.eql( { vx: 0.75 , vy: 1 } ) ;
+		expect( v1.dup().div( 4 ) ).to.eql( { x: 0.75 , y: 1 } ) ;
 	} ) ;
 	
 	it( "inverse" , function() {
 		var v1 = geo.Vector2D( 3 , 4 ) ;
-		expect( v1.dup().inv() ).to.eql( { vx: -3 , vy: -4 } ) ;
+		expect( v1.dup().inv() ).to.eql( { x: -3 , y: -4 } ) ;
 	} ) ;
 	
 	it( "get/set length" , function() {
@@ -93,17 +93,17 @@ describe( "Vector2D" , function() {
 		expect( v1.length ).to.be( 5 ) ;
 		
 		v1.length = 10 ;
-		expect( v1 ).to.eql( { vx: 6 , vy: 8 } ) ;
+		expect( v1 ).to.eql( { x: 6 , y: 8 } ) ;
 		
 		v1.length = -10 ;
-		expect( v1 ).to.eql( { vx: 6 , vy: 8 } ) ;
+		expect( v1 ).to.eql( { x: 6 , y: 8 } ) ;
 	} ) ;
 	
 	it( "normalize/unit" , function() {
 		var v1 = geo.Vector2D( 3 , 4 ) ;
 		v1.normalize() ;
-		expectCirca( v1.vx , 0.6 ) ;
-		expectCirca( v1.vy , 0.8 ) ;
+		expectCirca( v1.x , 0.6 ) ;
+		expectCirca( v1.y , 0.8 ) ;
 	} ) ;
 	
 	it( "get/set/rotate angle" , function() {
@@ -119,13 +119,13 @@ describe( "Vector2D" , function() {
 		
 		v1 = geo.Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 		v1.angle = Math.PI / 6 ;
-		expectCirca( v1.vx , 10 * Math.sqrt( 3 ) / 2 ) ;
-		expectCirca( v1.vy , 5 ) ;
+		expectCirca( v1.x , 10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.y , 5 ) ;
 		
 		v1.rotate( Math.PI / 6 ) ;
 		expectCirca( v1.angle , Math.PI / 3 ) ;
-		expectCirca( v1.vx , 5 ) ;
-		expectCirca( v1.vy , 10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.x , 5 ) ;
+		expectCirca( v1.y , 10 * Math.sqrt( 3 ) / 2 ) ;
 	} ) ;
 	
 	it( "get/set/rotate angle in degree" , function() {
@@ -141,13 +141,13 @@ describe( "Vector2D" , function() {
 		
 		v1 = geo.Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 		v1.angleDeg = 30 ;
-		expectCirca( v1.vx , 10 * Math.sqrt( 3 ) / 2 ) ;
-		expectCirca( v1.vy , 5 ) ;
+		expectCirca( v1.x , 10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.y , 5 ) ;
 		
 		v1.rotateDeg( 30 ) ;
 		expectCirca( v1.angleDeg , 60 ) ;
-		expectCirca( v1.vx , 5 ) ;
-		expectCirca( v1.vy , 10 * Math.sqrt( 3 ) / 2 ) ;
+		expectCirca( v1.x , 5 ) ;
+		expectCirca( v1.y , 10 * Math.sqrt( 3 ) / 2 ) ;
 	} ) ;
 	
 	it( "dot product" , function() {
@@ -165,12 +165,12 @@ describe( "Vector2D" , function() {
 		var v2 = geo.Vector2D( 4 , 3 ) ;
 		expect( v1.projectionLength( v2 ) ).to.be( 4.8 ) ;
 		expect( v1.relativeProjectionLength( v2 ) ).to.be( 4.8 ) ;
-		expect( v1.dup().projection( v2 ) ).to.eql( { vx: 3.84 , vy: 2.88 } ) ;
+		expect( v1.dup().projection( v2 ) ).to.eql( { x: 3.84 , y: 2.88 } ) ;
 		
 		v1.inv() ;
 		expect( v1.projectionLength( v2 ) ).to.be( 4.8 ) ;
 		expect( v1.relativeProjectionLength( v2 ) ).to.be( -4.8 ) ;
-		expect( v1.dup().projection( v2 ) ).to.eql( { vx: -3.84 , vy: -2.88 } ) ;
+		expect( v1.dup().projection( v2 ) ).to.eql( { x: -3.84 , y: -2.88 } ) ;
 	} ) ;
 	
 	it( "orthogonal" ) ;
