@@ -121,7 +121,7 @@ describe( "Vector2D" , function() {
 		expect( v1.dup().inv() ).to.eql( { x: -3 , y: -4 } ) ;
 	} ) ;
 	
-	it( "get/set length" , function() {
+	it( "get/set length, value" , function() {
 		var v1 = Vector2D( 3 , 4 ) ;
 		expect( v1.length ).to.be( 5 ) ;
 		
@@ -130,6 +130,9 @@ describe( "Vector2D" , function() {
 		
 		v1.length = -10 ;
 		expect( v1 ).to.eql( { x: 6 , y: 8 } ) ;
+		
+		v1.setValue( -10 ) ;
+		expect( v1 ).to.eql( { x: -6 , y: -8 } ) ;
 	} ) ;
 	
 	it( "normalize/unit" , function() {
@@ -330,7 +333,7 @@ describe( "Vector3D" , function() {
 		expect( v1.dup().inv() ).to.eql( { x: -3 , y: -4 , z: 5 } ) ;
 	} ) ;
 	
-	it( "get/set length" , function() {
+	it( "get/set length, value" , function() {
 		var v1 = Vector3D( 3 , 4 , 5 ) ;
 		expect( v1.length ).to.be( 7.0710678118654755 ) ;
 		
@@ -339,6 +342,9 @@ describe( "Vector3D" , function() {
 		
 		v1.length = -10 ;
 		expect( v1 ).to.eql( { x: 4.242640687119285 , y: 5.65685424949238 , z: 7.071067811865475 } ) ;
+		
+		v1.setValue( -10 ) ;
+		expect( v1 ).to.eql( { x: -4.242640687119285 , y: -5.65685424949238 , z: -7.071067811865475 } ) ;
 	} ) ;
 	
 	it( "normalize/unit" , function() {
