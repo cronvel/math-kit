@@ -31,6 +31,7 @@ var geo = math.geometry ;
 var Vector2D = geo.Vector2D ;
 var Vector3D = geo.Vector3D ;
 var BoundVector2D = geo.BoundVector2D ;
+var BoundVector3D = geo.BoundVector3D ;
 var expect = require( 'expect.js' ) ;
 
 
@@ -230,6 +231,18 @@ describe( "BoundVector2D" , function() {
 		expect( BoundVector2D( { x: 3 , y: 4 } , { x: 5 , y: 2 } ) ).to.eql( { point: { x: 3 , y: 4 } , vector: { x: 5 , y: 2 } } ) ;
 	} ) ;
 	
+	it( "from/to constructor" , function() {
+		expect( BoundVector2D.fromTo( Vector2D( 3 , 4 ) , Vector2D( 8 , 2 ) ) ).to.eql( { point: { x: 3 , y: 4 } , vector: { x: 5 , y: -2 } } ) ;
+	} ) ;
+	
+	it( "get/set endPoint" , function() {
+		v = BoundVector2D.fromTo( Vector2D( 3 , 4 ) , Vector2D( 8 , 2 ) ) ;
+		expect( v ).to.eql( { point: { x: 3 , y: 4 } , vector: { x: 5 , y: -2 } } ) ;
+		expect( v.endPoint ).to.eql( { x: 8 , y: 2 } ) ;
+		expect( v.setEndPoint( Vector2D( -4 , 1 ) ) ).to.eql( { point: { x: 3 , y: 4 } , vector: { x: -7 , y: -3 } } ) ;
+		expect( v.endPoint ).to.eql( { x: -4 , y: 1 } ) ;
+	} ) ;
+	
 	it( "intersection" , function() {
 		bv1 = BoundVector2D( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
 		bv2 = BoundVector2D( { x: 4 , y: 6 } , { x: 2 , y: -3 } ) ;
@@ -238,7 +251,7 @@ describe( "BoundVector2D" , function() {
 		expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
 	} ) ;
 	
-	it( "projection (orthographic)" , function() {
+	it( "projection of a point" , function() {
 		bv1 = BoundVector2D( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
 		v2 = Vector2D( 3 , 9 ) ;
 		vi = bv1.projectionOfPoint( v2 ) ;
@@ -418,6 +431,47 @@ describe( "Vector3D" , function() {
 		expect( v1.projectionValueOf( v2 ) ).to.be( -1.979898987322333 ) ;
 		expect( v1.projectionOf( v2 ) ).to.eql( { x: -0.8399999999999999 , y: -1.1199999999999999 , z: -1.4 } ) ;
 	} ) ;
+} ) ;
+
+
+
+describe( "BoundVector3D" , function() {
+	
+	it( "constructor" , function() {
+		expect( BoundVector3D( { x: 3 , y: 4 , z: 5 } , { x: 5 , y: 2 , z: -1 } ) )
+			.to.eql( { point: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: 2 , z: -1 } } ) ;
+	} ) ;
+	
+	it( "from/to constructor" , function() {
+		expect( BoundVector3D.fromTo( Vector3D( 3 , 4 , 5 ) , Vector3D( 8 , 2 , 7 ) ) )
+			.to.eql( { point: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: -2 , z: 2 } } ) ;
+	} ) ;
+	
+	it( "get/set endPoint" , function() {
+		v = BoundVector3D.fromTo( Vector3D( 3 , 4 , 5 ) , Vector3D( 8 , 2 , 7 ) ) ;
+		expect( v ).to.eql( { point: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: -2 , z: 2 } } ) ;
+		expect( v.endPoint ).to.eql( { x: 8 , y: 2 , z: 7 } ) ;
+		expect( v.setEndPoint( Vector3D( -4 , 1 , 11 ) ) ).to.eql( { point: { x: 3 , y: 4 , z: 5 } , vector: { x: -7 , y: -3 , z: 6 } } ) ;
+		expect( v.endPoint ).to.eql( { x: -4 , y: 1 , z: 11 } ) ;
+	} ) ;
+	
+	/*
+	it( "intersection" , function() {
+		bv1 = BoundVector3D( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
+		bv2 = BoundVector3D( { x: 4 , y: 6 } , { x: 2 , y: -3 } ) ;
+		vi = bv1.intersection( bv2 ) ;
+		expect( vi ).to.be.an( Vector3D ) ;
+		expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
+	} ) ;
+	
+	it( "projection of a point" , function() {
+		bv1 = BoundVector3D( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
+		v2 = Vector3D( 3 , 9 ) ;
+		vi = bv1.projectionOfPoint( v2 ) ;
+		expect( vi ).to.be.an( Vector3D ) ;
+		expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
+	} ) ;
+	*/
 } ) ;
 
 
