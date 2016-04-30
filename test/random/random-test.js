@@ -26,7 +26,7 @@
 
 
 
-var math = require( '../lib/math.js' ) ;
+var math = require( '../../lib/math.js' ) ;
 var random = math.random ;
 var expect = require( 'expect.js' ) ;
 var gm = require( 'gm' ) ;
@@ -257,6 +257,21 @@ describe( "Mersenne-Twister" , function() {
 
 
 describe( "Misc" , function() {
+	
+	it( "randomElement()" , function() {
+		
+		var i , array , rng ;
+		
+		rng = new random.MersenneTwister() ;
+		rng.seed() ;
+		
+		array = [ 'a' , 'b' , 'c' , 'd' , 'e' , 'f' ] ;
+		
+		for ( i = 0 ; i < 10 ; i ++ )
+		{
+			console.log( rng.randomElement( array ) ) ;
+		}
+	} ) ;
 	
 	it( "randomRound()" , function() {
 		
