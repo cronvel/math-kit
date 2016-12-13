@@ -39,18 +39,23 @@ var expect = require( 'expect.js' ) ;
 
 describe( "Basic function" , function() {
 	
-	it( "math.round()" , function() {
-		expect( math.round( 2.15 ) ).to.be( 2 ) ;
-		expect( math.round( 2.15 , 0.1 ) ).to.be( 2.2 ) ;
-		expect( math.round( 2.15 , 0.2 ) ).to.be( 2.2 ) ;
-		expect( math.round( 2.15 , 0.05 ) ).to.be( 2.15 ) ;
-	} ) ;
-	
 	it( "math.avg()" , function() {
 		expect( math.avg( 2 ) ).to.be( 2 ) ;
 		expect( math.avg( 2 , 3 ) ).to.be( 2.5 ) ;
 		expect( math.avg( 2 , 3 , 4 , 5 ) ).to.be( 3.5 ) ;
 		expect( math.avg( 10 , 14 , 19 , 21 ) ).to.be( 16 ) ;
+	} ) ;
+	
+	it( "math.eround()" , function() {
+		expect( math.eround( 2.0001 ) ).to.be( 2.0001 ) ;
+		expect( math.eround( 2.0000000000001 ) ).to.be( 2 ) ;
+	} ) ;
+	
+	it( "math.round()" , function() {
+		expect( math.round( 2.15 ) ).to.be( 2 ) ;
+		expect( math.round( 2.15 , 0.1 ) ).to.be( 2.2 ) ;
+		expect( math.round( 2.15 , 0.2 ) ).to.be( 2.2 ) ;
+		expect( math.round( 2.15 , 0.05 ) ).to.be( 2.15 ) ;
 	} ) ;
 } ) ;
 
