@@ -32,6 +32,13 @@
   "bugs": {
     "url": "https://github.com/cronvel/math-kit/issues"
   },
+  "config": {
+    "tea-time": {
+      "coverDir": [
+        "lib"
+      ]
+    }
+  },
   "copyright": {
     "title": "Math Kit",
     "years": [
