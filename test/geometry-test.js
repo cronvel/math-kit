@@ -95,6 +95,8 @@ describe( "Vector2D" , function() {
 		expect( v1.dup().add( v2 , v3 ) ).to.eql( { x: 10 , y: 12 } ) ;
 	} ) ;
 	
+	it( "apply" ) ;
+	
 	it( "substract" , function() {
 		var v1 = Vector2D( 3 , 4 ) ;
 		var v2 = Vector2D( 2 , 1 ) ;
@@ -231,20 +233,24 @@ describe( "Vector2D" , function() {
 describe( "BoundVector2D" , function() {
 	
 	it( "constructor" , function() {
-		expect( BoundVector2D( { x: 3 , y: 4 } , { x: 5 , y: 2 } ) ).to.eql( { point: { x: 3 , y: 4 } , vector: { x: 5 , y: 2 } } ) ;
+		expect( BoundVector2D( { x: 3 , y: 4 } , { x: 5 , y: 2 } ) ).to.eql( { position: { x: 3 , y: 4 } , vector: { x: 5 , y: 2 } } ) ;
 	} ) ;
 	
 	it( "from/to constructor" , function() {
-		expect( BoundVector2D.fromTo( Vector2D( 3 , 4 ) , Vector2D( 8 , 2 ) ) ).to.eql( { point: { x: 3 , y: 4 } , vector: { x: 5 , y: -2 } } ) ;
+		expect( BoundVector2D.fromTo( Vector2D( 3 , 4 ) , Vector2D( 8 , 2 ) ) ).to.eql( { position: { x: 3 , y: 4 } , vector: { x: 5 , y: -2 } } ) ;
 	} ) ;
 	
 	it( "get/set endPoint" , function() {
 		v = BoundVector2D.fromTo( Vector2D( 3 , 4 ) , Vector2D( 8 , 2 ) ) ;
-		expect( v ).to.eql( { point: { x: 3 , y: 4 } , vector: { x: 5 , y: -2 } } ) ;
+		expect( v ).to.eql( { position: { x: 3 , y: 4 } , vector: { x: 5 , y: -2 } } ) ;
 		expect( v.endPoint ).to.eql( { x: 8 , y: 2 } ) ;
-		expect( v.setEndPoint( Vector2D( -4 , 1 ) ) ).to.eql( { point: { x: 3 , y: 4 } , vector: { x: -7 , y: -3 } } ) ;
+		expect( v.setEndPoint( Vector2D( -4 , 1 ) ) ).to.eql( { position: { x: 3 , y: 4 } , vector: { x: -7 , y: -3 } } ) ;
 		expect( v.endPoint ).to.eql( { x: -4 , y: 1 } ) ;
 	} ) ;
+	
+	it( "apply" ) ;
+	
+	it( "apply acceleration" ) ;
 	
 	it( "intersection" , function() {
 		bv1 = BoundVector2D( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
@@ -306,6 +312,8 @@ describe( "Vector3D" , function() {
 		expect( v1.dup().add( v2 ) ).to.eql( { x: 8 , y: 11 , z: 4 } ) ;
 		expect( v1.dup().add( v2 , v3 ) ).to.eql( { x: 10 , y: 12 , z: 7 } ) ;
 	} ) ;
+	
+	it( "apply" ) ;
 	
 	it( "substract" , function() {
 		var v1 = Vector3D( 3 , 4 , 5 ) ;
@@ -445,21 +453,25 @@ describe( "BoundVector3D" , function() {
 	
 	it( "constructor" , function() {
 		expect( BoundVector3D( { x: 3 , y: 4 , z: 5 } , { x: 5 , y: 2 , z: -1 } ) )
-			.to.eql( { point: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: 2 , z: -1 } } ) ;
+			.to.eql( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: 2 , z: -1 } } ) ;
 	} ) ;
 	
 	it( "from/to constructor" , function() {
 		expect( BoundVector3D.fromTo( Vector3D( 3 , 4 , 5 ) , Vector3D( 8 , 2 , 7 ) ) )
-			.to.eql( { point: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: -2 , z: 2 } } ) ;
+			.to.eql( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: -2 , z: 2 } } ) ;
 	} ) ;
 	
 	it( "get/set endPoint" , function() {
 		v = BoundVector3D.fromTo( Vector3D( 3 , 4 , 5 ) , Vector3D( 8 , 2 , 7 ) ) ;
-		expect( v ).to.eql( { point: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: -2 , z: 2 } } ) ;
+		expect( v ).to.eql( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: -2 , z: 2 } } ) ;
 		expect( v.endPoint ).to.eql( { x: 8 , y: 2 , z: 7 } ) ;
-		expect( v.setEndPoint( Vector3D( -4 , 1 , 11 ) ) ).to.eql( { point: { x: 3 , y: 4 , z: 5 } , vector: { x: -7 , y: -3 , z: 6 } } ) ;
+		expect( v.setEndPoint( Vector3D( -4 , 1 , 11 ) ) ).to.eql( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: -7 , y: -3 , z: 6 } } ) ;
 		expect( v.endPoint ).to.eql( { x: -4 , y: 1 , z: 11 } ) ;
 	} ) ;
+	
+	it( "apply" ) ;
+	
+	it( "apply acceleration" ) ;
 	
 	/*
 	it( "intersection" , function() {
