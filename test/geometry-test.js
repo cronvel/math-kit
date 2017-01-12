@@ -473,23 +473,99 @@ describe( "BoundVector3D" , function() {
 	
 	it( "apply acceleration" ) ;
 	
-	/*
-	it( "intersection" , function() {
-		bv1 = BoundVector3D( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
-		bv2 = BoundVector3D( { x: 4 , y: 6 } , { x: 2 , y: -3 } ) ;
-		vi = bv1.intersection( bv2 ) ;
-		expect( vi ).to.be.an( Vector3D ) ;
-		expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
+	it( "intersection of plane and line" , function() {
+		var plane , line , point ;
+		
+		plane = BoundVector3D( { x: 0 , y: 0 , z: 0 } , { x: 0 , y: 0 , z: 4 } ) ;
+		line = BoundVector3D( { x: 0 , y: 0 , z: 5 } , { x: 0 , y: 0 , z: 3 } ) ;
+		point = plane.asPlaneIntersectionOfLine( line ) ;
+		expect( point ).to.be.an( Vector3D ) ;
+		expect( point ).to.eql( { x: 0 , y: 0 , z: 0 } ) ;
+		
+		plane = BoundVector3D( { x: 0 , y: 0 , z: 0 } , { x: 0 , y: 0 , z: 4 } ) ;
+		line = BoundVector3D( { x: 0 , y: 0 , z: 2 } , { x: 1 , y: 0 , z: 2 } ) ;
+		point = plane.asPlaneIntersectionOfLine( line ) ;
+		expect( point ).to.be.an( Vector3D ) ;
+		expect( point ).to.eql( { x: -1 , y: 0 , z: 0 } ) ;
+		
+		plane = BoundVector3D( { x: 0 , y: 0 , z: 0 } , { x: 0 , y: 0 , z: 4 } ) ;
+		line = BoundVector3D( { x: 0 , y: 0 , z: 2 } , { x: 1 , y: 4 , z: 2 } ) ;
+		point = plane.asPlaneIntersectionOfLine( line ) ;
+		expect( point ).to.be.an( Vector3D ) ;
+		expect( point ).to.eql( { x: -1 , y: -4 , z: 0 } ) ;
+		
+		plane = BoundVector3D( { x: 0 , y: 0 , z: 0 } , { x: 0 , y: 0 , z: 4 } ) ;
+		line = BoundVector3D( { x: 0 , y: 0 , z: 1 } , { x: 1 , y: 4 , z: 2 } ) ;
+		point = plane.asPlaneIntersectionOfLine( line ) ;
+		expect( point ).to.be.an( Vector3D ) ;
+		expect( point ).to.eql( { x: -0.5 , y: -2 , z: 0 } ) ;
+		
+		plane = BoundVector3D( { x: 5 , y: -18 , z: 0 } , { x: 0 , y: 0 , z: 4 } ) ;
+		line = BoundVector3D( { x: 0 , y: 0 , z: 1 } , { x: 1 , y: 4 , z: 2 } ) ;
+		point = plane.asPlaneIntersectionOfLine( line ) ;
+		expect( point ).to.be.an( Vector3D ) ;
+		expect( point ).to.eql( { x: -0.5 , y: -2 , z: 0 } ) ;
+		
+		plane = BoundVector3D( { x: 0 , y: 0 , z: 0 } , { x: 1 , y: 0 , z: 2 } ) ;
+		line = BoundVector3D( { x: 0 , y: 0 , z: 2 } , { x: 1 , y: 0 , z: 0 } ) ;
+		point = plane.asPlaneIntersectionOfLine( line ) ;
+		expect( point ).to.be.an( Vector3D ) ;
+		expect( point ).to.eql( { x: -4 , y: 0 , z: 2 } ) ;
+		
+		plane = BoundVector3D( { x: -3 , y: 5 , z: 0 } , { x: 1 , y: 0 , z: 2 } ) ;
+		line = BoundVector3D( { x: 0 , y: 0 , z: 2 } , { x: 1 , y: 0 , z: 0 } ) ;
+		point = plane.asPlaneIntersectionOfLine( line ) ;
+		expect( point ).to.be.an( Vector3D ) ;
+		expect( point ).to.eql( { x: -7 , y: 0 , z: 2 } ) ;
 	} ) ;
 	
-	it( "projection of a point" , function() {
-		bv1 = BoundVector3D( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
-		v2 = Vector3D( 3 , 9 ) ;
-		vi = bv1.projectionOfPoint( v2 ) ;
-		expect( vi ).to.be.an( Vector3D ) ;
-		expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
+	it( "projection of a point on a plane" , function() {
+		var plane , point , projected ;
+		
+		plane = BoundVector3D( { x: 0 , y: 0 , z: 0 } , { x: 0 , y: 0 , z: 4 } ) ;
+		point = Vector3D( { x: 0 , y: 0 , z: 5 } ) ;
+		projected = plane.asPlaneProjectionOfPoint( point ) ;
+		expect( projected ).to.be.an( Vector3D ) ;
+		expect( projected ).to.eql( { x: 0 , y: 0 , z: 0 } ) ;
+		
+		plane = BoundVector3D( { x: 777 , y: 111 , z: 0 } , { x: 0 , y: 0 , z: 4 } ) ;
+		point = Vector3D( { x: 0 , y: 0 , z: 5 } ) ;
+		projected = plane.asPlaneProjectionOfPoint( point ) ;
+		expect( projected ).to.be.an( Vector3D ) ;
+		expect( projected ).to.eql( { x: 0 , y: 0 , z: 0 } ) ;
+		
+		plane = BoundVector3D( { x: 0 , y: 0 , z: -4 } , { x: 0 , y: 0 , z: 4 } ) ;
+		point = Vector3D( { x: 0 , y: 0 , z: 5 } ) ;
+		projected = plane.asPlaneProjectionOfPoint( point ) ;
+		expect( projected ).to.be.an( Vector3D ) ;
+		expect( projected ).to.eql( { x: 0 , y: 0 , z: -4 } ) ;
+		
+		plane = BoundVector3D( { x: 0 , y: 0 , z: 0 } , { x: 1 , y: 0 , z: 1 } ) ;
+		point = Vector3D( { x: 0 , y: 0 , z: 5 } ) ;
+		projected = plane.asPlaneProjectionOfPoint( point ) ;
+		expect( projected ).to.be.an( Vector3D ) ;
+		expect( projected ).to.eql( { x: -2.5 , y: 0 , z: 2.5 } ) ;
 	} ) ;
-	*/
+	
+	it( "distance of a point to a plane" , function() {
+		var plane , point ;
+		
+		plane = BoundVector3D( { x: 0 , y: 0 , z: 0 } , { x: 0 , y: 0 , z: 4 } ) ;
+		point = Vector3D( { x: 0 , y: 0 , z: 5 } ) ;
+		expect( plane.asPlaneDistanceOfPoint( point ) ).to.be( 5 ) ;
+		
+		plane = BoundVector3D( { x: 777 , y: 111 , z: 0 } , { x: 0 , y: 0 , z: 4 } ) ;
+		point = Vector3D( { x: 0 , y: 0 , z: 5 } ) ;
+		expect( plane.asPlaneDistanceOfPoint( point ) ).to.be( 5 ) ;
+		
+		plane = BoundVector3D( { x: 0 , y: 0 , z: -4 } , { x: 0 , y: 0 , z: 4 } ) ;
+		point = Vector3D( { x: 0 , y: 0 , z: 5 } ) ;
+		expect( plane.asPlaneDistanceOfPoint( point ) ).to.be( 9 ) ;
+		
+		plane = BoundVector3D( { x: 0 , y: 0 , z: 0 } , { x: 1 , y: 0 , z: 1 } ) ;
+		point = Vector3D( { x: 0 , y: 0 , z: 5 } ) ;
+		expectCirca( plane.asPlaneDistanceOfPoint( point ) , Math.hypot( 2.5 , 2.5 ) ) ;
+	} ) ;
 } ) ;
 
 
