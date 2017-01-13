@@ -255,6 +255,47 @@ describe( "Geometry" , function() {
 		
 		it( "apply acceleration" ) ;
 		
+		it( "test side of a coordinate/position relative to the line of a bound vector" , function() {
+			var line ;
+			
+			line = BoundVector2D( 0 , 0 , 0 , 1 ) ;
+			expect( line.test( 0 , 0 ) ).to.be( 0 ) ;
+			expect( line.test( 0 , 3 ) ).to.be( 0 ) ;
+			expect( line.test( 3 , 0 ) ).to.be( -3 ) ;
+			expect( line.test( 3 , 54 ) ).to.be( -3 ) ;
+			expect( line.test( 3 , -17 ) ).to.be( -3 ) ;
+			expect( line.test( -7 , 0 ) ).to.be( 7 ) ;
+			expect( line.test( -7 , 99 ) ).to.be( 7 ) ;
+			
+			line = BoundVector2D( 0 , 0 , 1 , 0 ) ;
+			expect( line.test( 0 , 0 ) ).to.be( 0 ) ;
+			expect( line.test( 3 , 0 ) ).to.be( 0 ) ;
+			expect( line.test( 0 , 3 ) ).to.be( 3 ) ;
+			expect( line.test( 0 , -3 ) ).to.be( -3 ) ;
+			
+			line = BoundVector2D( 0 , 5 , 1 , 0 ) ;
+			expect( line.test( 0 , 0 ) ).to.be( -5 ) ;
+			expect( line.test( 3 , 0 ) ).to.be( -5 ) ;
+			expect( line.test( 0 , 3 ) ).to.be( -2 ) ;
+			expect( line.test( 0 , -3 ) ).to.be( -8 ) ;
+			expect( line.test( 0 , 8 ) ).to.be( 3 ) ;
+			
+			line = BoundVector2D( 4 , 2 , 1 , 2 ) ;
+			expect( line.test( 4 , 2 ) ).to.be( 0 ) ;
+			expect( line.test( 0 , 0 ) ).to.be( 6 ) ;
+			expect( line.test( 3 , 0 ) ).to.be( 0 ) ;
+			expect( line.test( 4 , 4 ) ).to.be( 2 ) ;
+			expect( line.test( 6 , 4 ) ).to.be( -2 ) ;
+			
+			line = BoundVector2D( 4 , 2 , -1 , -2 ) ;
+			expect( line.test( 4 , 2 ) ).to.be( 0 ) ;
+			expect( line.test( 0 , 0 ) ).to.be( -6 ) ;
+			expect( line.test( 3 , 0 ) ).to.be( 0 ) ;
+			expect( line.test( 4 , 4 ) ).to.be( -2 ) ;
+			expect( line.test( 6 , 4 ) ).to.be( 2 ) ;
+			expect( line.testVector( Vector2D( 6 , 4 ) ) ).to.be( 2 ) ;
+		} ) ;
+		
 		it( "intersection" , function() {
 			bv1 = BoundVector2D.fromObject( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
 			bv2 = BoundVector2D.fromObject( { x: 4 , y: 6 } , { x: 2 , y: -3 } ) ;
