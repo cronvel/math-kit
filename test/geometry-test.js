@@ -296,6 +296,16 @@ describe( "Geometry" , function() {
 			expect( line.testVector( Vector2D( 6 , 4 ) ) ).to.be( 2 ) ;
 		} ) ;
 		
+		it( "point distance to the line of a bound vector" , function() {
+			var line ;
+			
+			line = BoundVector2D( 4 , 2 , -1 , -2 ) ;
+			expectCirca( line.pointDistance( Vector2D( 4 , 2 ) ) , 0 ) ;
+			expectCirca( line.pointDistance( Vector2D( 0 , -1 ) ) , Math.sqrt( 5 ) ) ;
+			expectCirca( line.pointDistance( Vector2D( -2 , 0 ) ) , 2 * Math.sqrt( 5 ) ) ;
+			expectCirca( line.pointDistance( Vector2D( 6 , 1 ) ) , Math.sqrt( 5 ) ) ;
+		} ) ;
+		
 		it( "intersection" , function() {
 			bv1 = BoundVector2D.fromObject( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
 			bv2 = BoundVector2D.fromObject( { x: 4 , y: 6 } , { x: 2 , y: -3 } ) ;
