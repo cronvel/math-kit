@@ -229,6 +229,29 @@ describe( "Geometry" , function() {
 			expect( v1.projectionValueOf( v2 ) ).to.be( -4.8 ) ;
 			expect( v1.projectionOf( v2 ) ).to.eql( { x: -3.84 , y: -2.88 } ) ;
 		} ) ;
+		
+		it( "decompose" , function() {
+			var v , decomp ;
+			
+			v = Vector2D( 4 , 3 ) ;
+			
+			expect( v.decompose( Vector2D( 1 , 0 ) ) ).to.eql( [ { x: 4 , y: 0 } , { x: 0 , y: 3 } ] ) ;
+			expect( v.decompose( Vector2D( 5 , 0 ) ) ).to.eql( [ { x: 4 , y: 0 } , { x: 0 , y: 3 } ] ) ;
+			expect( v.decompose( Vector2D( 0 , 1 ) ) ).to.eql( [ { x: 0 , y: 3 } , { x: 4 , y: 0 } ] ) ;
+			expect( v.decompose( Vector2D( -5 , 0 ) ) ).to.eql( [ { x: 4 , y: 0 } , { x: 0 , y: 3 } ] ) ;
+			
+			decomp = v.decompose( Vector2D( 1 , 1 ) ) ;
+			expectCirca( decomp[0].x , 3.5 ) ;
+			expectCirca( decomp[0].y , 3.5 ) ;
+			expectCirca( decomp[1].x , 0.5 ) ;
+			expectCirca( decomp[1].y , -0.5 ) ;
+			
+			decomp = v.decompose( Vector2D( 1 , 2 ) ) ;
+			expectCirca( decomp[0].x , 2 ) ;
+			expectCirca( decomp[0].y , 4 ) ;
+			expectCirca( decomp[1].x , 2 ) ;
+			expectCirca( decomp[1].y , -1 ) ;
+		} ) ;
 	} ) ;
 
 
@@ -498,6 +521,41 @@ describe( "Geometry" , function() {
 			expect( v1.projectionLengthOf( v2 ) ).to.be( 1.979898987322333 ) ;
 			expect( v1.projectionValueOf( v2 ) ).to.be( -1.979898987322333 ) ;
 			expect( v1.projectionOf( v2 ) ).to.eql( { x: -0.8399999999999999 , y: -1.1199999999999999 , z: -1.4 } ) ;
+		} ) ;
+		
+		it( "zzz decompose" , function() {
+			var v , decomp ;
+			
+			v = Vector3D( 4 , 3 , 5 ) ;
+			
+			expect( v.decompose( Vector3D( 1 , 0 , 0 ) ) ).to.eql( [ { x: 4 , y: 0 , z: 0 } , { x: 0 , y: 3 , z: 5 } ] ) ;
+			expect( v.decompose( Vector3D( 5 , 0 , 0 ) ) ).to.eql( [ { x: 4 , y: 0 , z: 0 } , { x: 0 , y: 3 , z: 5 } ] ) ;
+			expect( v.decompose( Vector3D( 0 , 1 , 0 ) ) ).to.eql( [ { x: 0 , y: 3 , z: 0 } , { x: 4 , y: 0 , z: 5 } ] ) ;
+			expect( v.decompose( Vector3D( -5 , 0 , 0 ) ) ).to.eql( [ { x: 4 , y: 0 , z: 0 } , { x: 0 , y: 3 , z: 5 } ] ) ;
+			
+			decomp = v.decompose( Vector3D( 1 , 1 , 1 ) ) ;
+			expectCirca( decomp[0].x , 4 ) ;
+			expectCirca( decomp[0].y , 4 ) ;
+			expectCirca( decomp[0].z , 4 ) ;
+			expectCirca( decomp[1].x , 0 ) ;
+			expectCirca( decomp[1].y , -1 ) ;
+			expectCirca( decomp[1].z , 1 ) ;
+			
+			decomp = v.decompose( Vector3D( 1 , 2 , 0 ) ) ;
+			expectCirca( decomp[0].x , 2 ) ;
+			expectCirca( decomp[0].y , 4 ) ;
+			expectCirca( decomp[0].z , 0 ) ;
+			expectCirca( decomp[1].x , 2 ) ;
+			expectCirca( decomp[1].y , -1 ) ;
+			expectCirca( decomp[1].z , 5 ) ;
+			
+			decomp = v.decompose( Vector3D( 1 , 2 , 3 ) ) ;
+			expectCirca( decomp[0].x , 1.785714285714286 ) ;
+			expectCirca( decomp[0].y , 3.571428571428572 ) ;
+			expectCirca( decomp[0].z , 5.357142857142858 ) ;
+			expectCirca( decomp[1].x , 2.214285714285714 ) ;
+			expectCirca( decomp[1].y , -0.5714285714285721 ) ;
+			expectCirca( decomp[1].z , -0.35714285714285765 ) ;
 		} ) ;
 	} ) ;
 
