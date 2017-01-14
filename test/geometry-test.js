@@ -259,7 +259,7 @@ describe( "Geometry" , function() {
 	describe( "BoundVector2D" , function() {
 		
 		it( "constructor" , function() {
-			expect( BoundVector2D.fromObject( { x: 3 , y: 4 } , { x: 5 , y: 2 } ) ).to.eql( { position: { x: 3 , y: 4 } , vector: { x: 5 , y: 2 } } ) ;
+			expect( BoundVector2D( 3 , 4 , 5 , 2 ) ).to.eql( { position: { x: 3 , y: 4 } , vector: { x: 5 , y: 2 } } ) ;
 		} ) ;
 		
 		it( "from/to constructor" , function() {
@@ -330,15 +330,15 @@ describe( "Geometry" , function() {
 		} ) ;
 		
 		it( "intersection" , function() {
-			bv1 = BoundVector2D.fromObject( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
-			bv2 = BoundVector2D.fromObject( { x: 4 , y: 6 } , { x: 2 , y: -3 } ) ;
+			bv1 = BoundVector2D( 2 , 1 , 2 , 1 ) ;
+			bv2 = BoundVector2D( 4 , 6 , 2 , -3 ) ;
 			vi = bv1.intersection( bv2 ) ;
 			expect( vi ).to.be.an( Vector2D ) ;
 			expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
 		} ) ;
 		
 		it( "projection of a point" , function() {
-			bv1 = BoundVector2D.fromObject( { x: 2 , y: 1 } , { x: 2 , y: 1 } ) ;
+			bv1 = BoundVector2D( 2 , 1 , 2 , 1 ) ;
 			v2 = Vector2D( 3 , 9 ) ;
 			vi = bv1.pointProjection( v2 ) ;
 			expect( vi ).to.be.an( Vector2D ) ;
@@ -523,7 +523,7 @@ describe( "Geometry" , function() {
 			expect( v1.projectionOf( v2 ) ).to.eql( { x: -0.8399999999999999 , y: -1.1199999999999999 , z: -1.4 } ) ;
 		} ) ;
 		
-		it( "zzz decompose" , function() {
+		it( "decompose" , function() {
 			var v , decomp ;
 			
 			v = Vector3D( 4 , 3 , 5 ) ;
@@ -564,7 +564,7 @@ describe( "Geometry" , function() {
 	describe( "BoundVector3D" , function() {
 		
 		it( "constructor" , function() {
-			expect( BoundVector3D.fromObject( { x: 3 , y: 4 , z: 5 } , { x: 5 , y: 2 , z: -1 } ) )
+			expect( BoundVector3D( 3 , 4 , 5 , 5 , 2 , -1 ) )
 				.to.eql( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: 2 , z: -1 } } ) ;
 		} ) ;
 		
