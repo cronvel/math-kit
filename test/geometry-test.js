@@ -1,7 +1,7 @@
 /*
 	Math Kit
 	
-	Copyright (c) 2014 - 2016 Cédric Ronvel
+	Copyright (c) 2014 - 2017 Cédric Ronvel
 	
 	The MIT License (MIT)
 	
@@ -24,6 +24,13 @@
 	SOFTWARE.
 */
 
+"use strict" ;
+
+
+
+/* jshint -W064 */
+/* global describe, it */
+
 
 
 var math = require( '../lib/math.js' ) ;
@@ -32,6 +39,8 @@ var Vector2D = geo.Vector2D ;
 var Vector3D = geo.Vector3D ;
 var BoundVector2D = geo.BoundVector2D ;
 var BoundVector3D = geo.BoundVector3D ;
+var Circle2D = geo.Circle2D ;
+var Sphere3D = geo.Sphere3D ;
 var Plane3D = geo.Plane3D ;
 var expect = require( 'expect.js' ) ;
 
@@ -267,7 +276,7 @@ describe( "Geometry" , function() {
 		} ) ;
 		
 		it( "get/set endPoint" , function() {
-			v = BoundVector2D.fromTo( Vector2D( 3 , 4 ) , Vector2D( 8 , 2 ) ) ;
+			var v = BoundVector2D.fromTo( Vector2D( 3 , 4 ) , Vector2D( 8 , 2 ) ) ;
 			expect( v ).to.eql( { position: { x: 3 , y: 4 } , vector: { x: 5 , y: -2 } } ) ;
 			expect( v.endPoint ).to.eql( { x: 8 , y: 2 } ) ;
 			expect( v.setEndPoint( Vector2D( -4 , 1 ) ) ).to.eql( { position: { x: 3 , y: 4 } , vector: { x: -7 , y: -3 } } ) ;
@@ -330,17 +339,17 @@ describe( "Geometry" , function() {
 		} ) ;
 		
 		it( "intersection" , function() {
-			bv1 = BoundVector2D( 2 , 1 , 2 , 1 ) ;
-			bv2 = BoundVector2D( 4 , 6 , 2 , -3 ) ;
-			vi = bv1.intersection( bv2 ) ;
+			var bv1 = BoundVector2D( 2 , 1 , 2 , 1 ) ;
+			var bv2 = BoundVector2D( 4 , 6 , 2 , -3 ) ;
+			var vi = bv1.intersection( bv2 ) ;
 			expect( vi ).to.be.an( Vector2D ) ;
 			expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
 		} ) ;
 		
 		it( "projection of a point" , function() {
-			bv1 = BoundVector2D( 2 , 1 , 2 , 1 ) ;
-			v2 = Vector2D( 3 , 9 ) ;
-			vi = bv1.pointProjection( v2 ) ;
+			var bv1 = BoundVector2D( 2 , 1 , 2 , 1 ) ;
+			var v2 = Vector2D( 3 , 9 ) ;
+			var vi = bv1.pointProjection( v2 ) ;
 			expect( vi ).to.be.an( Vector2D ) ;
 			expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
 		} ) ;
@@ -574,7 +583,7 @@ describe( "Geometry" , function() {
 		} ) ;
 		
 		it( "get/set endPoint" , function() {
-			v = BoundVector3D.fromTo( Vector3D( 3 , 4 , 5 ) , Vector3D( 8 , 2 , 7 ) ) ;
+			var v = BoundVector3D.fromTo( Vector3D( 3 , 4 , 5 ) , Vector3D( 8 , 2 , 7 ) ) ;
 			expect( v ).to.eql( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: -2 , z: 2 } } ) ;
 			expect( v.endPoint ).to.eql( { x: 8 , y: 2 , z: 7 } ) ;
 			expect( v.setEndPoint( Vector3D( -4 , 1 , 11 ) ) ).to.eql( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: -7 , y: -3 , z: 6 } } ) ;
@@ -682,6 +691,137 @@ describe( "Geometry" , function() {
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 1 , 0 , 1 ) ;
 			point = Vector3D( 0 , 0 , 5 ) ;
 			expectCirca( plane.pointDistance( point ) , Math.hypot( 2.5 , 2.5 ) ) ;
+		} ) ;
+	} ) ;
+	
+	
+	
+	describe( "Circle2D" , function() {
+		
+		it( "projection of a point on a circle" , function() {
+			var circle , point , projected ;
+			
+			circle = Circle2D( 0 , 0 , 2 ) ;
+			point = Vector2D( 0 , 1 ) ;
+			projected = circle.pointProjection( point ) ;
+			expect( projected ).to.be.a( Vector2D ) ;
+			expect( projected ).to.eql( { x: 0 , y: 2 } ) ;
+			
+			circle = Circle2D( 0 , 0 , 2 ) ;
+			point = Vector2D( 1 , 1 ) ;
+			projected = circle.pointProjection( point ) ;
+			expect( projected ).to.be.a( Vector2D ) ;
+			expectCirca( projected.x , Math.sqrt( 2 ) ) ;
+			expectCirca( projected.y , Math.sqrt( 2 ) ) ;
+			
+			circle = Circle2D( 0 , 0 , 2 ) ;
+			point = Vector2D( 10 , 10 ) ;
+			projected = circle.pointProjection( point ) ;
+			expect( projected ).to.be.a( Vector2D ) ;
+			expectCirca( projected.x , Math.sqrt( 2 ) ) ;
+			expectCirca( projected.y , Math.sqrt( 2 ) ) ;
+		} ) ;
+		
+		it( "intersection of circle and a line" , function() {
+			var circle , line , points ;
+			
+			circle = Circle2D( 0 , 0 , 2 ) ;
+			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
+			points = circle.intersection( line ) ;
+			expect( points ).to.be.an( Array ) ;
+			expect( points ).to.eql( [ { x: Math.sqrt( 3 ) , y: 1 } , { x: - Math.sqrt( 3 ) , y: 1 } ] ) ;
+			
+			circle = Circle2D( 0 , 1 , 2 ) ;
+			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
+			points = circle.intersection( line ) ;
+			expect( points ).to.be.an( Array ) ;
+			expect( points ).to.eql( [ { x: 2 , y: 1 } , { x: -2 , y: 1 } ] ) ;
+			
+			circle = Circle2D( 0 , -1 , 2 ) ;
+			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
+			points = circle.intersection( line ) ;
+			expect( points ).to.be.an( Array ) ;
+			expect( points ).to.eql( [ { x: 0 , y: 1 } ] ) ;
+			
+			circle = Circle2D( 0 , -1.1 , 2 ) ;
+			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
+			points = circle.intersection( line ) ;
+			expect( points ).to.be( null ) ;
+			
+			circle = Circle2D( 1 , 1 , 2 ) ;
+			line = BoundVector2D( 2 , 2 , 1 , -1 ) ;
+			points = circle.intersection( line ) ;
+			expect( points ).to.be.an( Array ) ;
+			expect( points ).to.eql( [ { x: 1 , y: 1 } , { x: 3 , y: 3 } ] ) ;
+		} ) ;
+	} ) ;
+
+	
+	
+	describe( "Sphere3D" , function() {
+		
+		it( "projection of a point on a sphere" , function() {
+			var sphere , point , projected ;
+			
+			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
+			point = Vector3D( 0 , 1 , 0 ) ;
+			projected = sphere.pointProjection( point ) ;
+			expect( projected ).to.be.a( Vector3D ) ;
+			expect( projected ).to.eql( { x: 0 , y: 2 , z: 0 } ) ;
+			
+			sphere = Sphere3D( 0 , 0 , 0 , 3 ) ;
+			point = Vector3D( 1 , 1 , 1 ) ;
+			projected = sphere.pointProjection( point ) ;
+			expect( projected ).to.be.a( Vector3D ) ;
+			expectCirca( projected.x , Math.sqrt( 3 ) ) ;
+			expectCirca( projected.y , Math.sqrt( 3 ) ) ;
+			expectCirca( projected.z , Math.sqrt( 3 ) ) ;
+			
+			sphere = Sphere3D( 0 , 0 , 0 , 3 ) ;
+			point = Vector3D( 10 , 10 , 10 ) ;
+			projected = sphere.pointProjection( point ) ;
+			expect( projected ).to.be.a( Vector3D ) ;
+			expectCirca( projected.x , Math.sqrt( 3 ) ) ;
+			expectCirca( projected.y , Math.sqrt( 3 ) ) ;
+			expectCirca( projected.z , Math.sqrt( 3 ) ) ;
+		} ) ;
+		
+		it( "intersection of sphere and a line" , function() {
+			var sphere , line , points ;
+			
+			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
+			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
+			points = sphere.intersection( line ) ;
+			expect( points ).to.be.an( Array ) ;
+			expect( points ).to.eql( [ { x: Math.sqrt( 3 ) , y: 1 , z: 0 } , { x: - Math.sqrt( 3 ) , y: 1 , z: 0 } ] ) ;
+			
+			sphere = Sphere3D( 0 , 1 , 0 , 2 ) ;
+			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
+			points = sphere.intersection( line ) ;
+			expect( points ).to.be.an( Array ) ;
+			expect( points ).to.eql( [ { x: 2 , y: 1 , z: 0 } , { x: -2 , y: 1 , z: 0 } ] ) ;
+			
+			sphere = Sphere3D( 0 , -1 , 0 , 2 ) ;
+			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
+			points = sphere.intersection( line ) ;
+			expect( points ).to.be.an( Array ) ;
+			expect( points ).to.eql( [ { x: 0 , y: 1 , z: 0 } ] ) ;
+			
+			sphere = Sphere3D( 0 , -1.1 , 0 , 2 ) ;
+			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
+			points = sphere.intersection( line ) ;
+			expect( points ).to.be( null ) ;
+			
+			sphere = Sphere3D( 0 , 0 , 0 , 3 ) ;
+			line = BoundVector3D( 1 , 1 , 1 , 1 , 1 , 1 ) ;
+			points = sphere.intersection( line ) ;
+			expect( points ).to.be.an( Array ) ;
+			expectCirca( points[0].x , Math.sqrt( 3 ) ) ;
+			expectCirca( points[0].y , Math.sqrt( 3 ) ) ;
+			expectCirca( points[0].z , Math.sqrt( 3 ) ) ;
+			expectCirca( points[1].x , -Math.sqrt( 3 ) ) ;
+			expectCirca( points[1].y , -Math.sqrt( 3 ) ) ;
+			expectCirca( points[1].z , -Math.sqrt( 3 ) ) ;
 		} ) ;
 	} ) ;
 
