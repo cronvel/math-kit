@@ -553,41 +553,6 @@ describe( "Geometry" , function() {
 			expect( Vector3D( 3 , 4 , 2 ).isOrthogonalTo( Vector3D( 4 , -4 , 2 ) ) ).to.be( true ) ;
 		} ) ;
 		
-		it( "test if a point is on the line" , function() {
-			var line ;
-			
-			line = BoundVector3D( 2 , 3 , 5 , 2 , 1 , -1 ) ;
-			expect( line.isOnLine( Vector3D( 2 , 3 , 5 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( 2 , 2 , 2 ) ) ).to.be( false ) ;
-			expect( line.isOnLine( Vector3D( 4 , 4 , 4 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( 3 , 3.5 , 4.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( 2.5 , 3.25 , 4.75 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( 2.25 , 3.25 , 4.75 ) ) ).to.be( false ) ;
-			expect( line.isOnLine( Vector3D( 5 , 4.5 , 3.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( 0 , 2 , 6 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( -1 , 1.5 , 6.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( -1.5 , 1.25 , 6.75 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( -1.5 , 1.25 , 6.5 ) ) ).to.be( false ) ;
-			expect( line.isOnLine( Vector3D( -1.4 , 1.25 , 6.75 ) ) ).to.be( false ) ;
-		} ) ;
-		
-		it( "test if a point is on the line segment" , function() {
-			var line ;
-			
-			line = BoundVector3D( 2 , 3 , 5 , 2 , 1 , -1 ) ;
-			expect( line.isOnLineSegment( Vector3D( 2 , 3 , 5 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector3D( 2 , 2 , 2 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( 4 , 4 , 4 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector3D( 3 , 3.5 , 4.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector3D( 2.5 , 3.25 , 4.75 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector3D( 2.25 , 3.25 , 4.75 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( 5 , 4.5 , 3.5 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( 0 , 2 , 6 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( -1 , 1.5 , 6.5 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( -1.5 , 1.25 , 6.75 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( -1.5 , 1.25 , 6.5 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( -1.4 , 1.25 , 6.75 ) ) ).to.be( false ) ;
-		} ) ;
 		
 		it( "projections" , function() {
 			var v1 = Vector3D( 3 , 4 , 5 ) ;
@@ -663,6 +628,42 @@ describe( "Geometry" , function() {
 		it( "apply" ) ;
 		
 		it( "apply acceleration" ) ;
+		
+		it( "test if a point is on the line" , function() {
+			var line ;
+			
+			line = BoundVector3D( 2 , 3 , 5 , 2 , 1 , -1 ) ;
+			expect( line.isOnLine( Vector3D( 2 , 3 , 5 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( Vector3D( 2 , 2 , 2 ) ) ).to.be( false ) ;
+			expect( line.isOnLine( Vector3D( 4 , 4 , 4 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( Vector3D( 3 , 3.5 , 4.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( Vector3D( 2.5 , 3.25 , 4.75 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( Vector3D( 2.25 , 3.25 , 4.75 ) ) ).to.be( false ) ;
+			expect( line.isOnLine( Vector3D( 5 , 4.5 , 3.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( Vector3D( 0 , 2 , 6 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( Vector3D( -1 , 1.5 , 6.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( Vector3D( -1.5 , 1.25 , 6.75 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( Vector3D( -1.5 , 1.25 , 6.5 ) ) ).to.be( false ) ;
+			expect( line.isOnLine( Vector3D( -1.4 , 1.25 , 6.75 ) ) ).to.be( false ) ;
+		} ) ;
+		
+		it( "test if a point is on the line segment" , function() {
+			var line ;
+			
+			line = BoundVector3D( 2 , 3 , 5 , 2 , 1 , -1 ) ;
+			expect( line.isOnLineSegment( Vector3D( 2 , 3 , 5 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( Vector3D( 2 , 2 , 2 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( Vector3D( 4 , 4 , 4 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( Vector3D( 3 , 3.5 , 4.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( Vector3D( 2.5 , 3.25 , 4.75 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( Vector3D( 2.25 , 3.25 , 4.75 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( Vector3D( 5 , 4.5 , 3.5 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( Vector3D( 0 , 2 , 6 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( Vector3D( -1 , 1.5 , 6.5 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( Vector3D( -1.5 , 1.25 , 6.75 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( Vector3D( -1.5 , 1.25 , 6.5 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( Vector3D( -1.4 , 1.25 , 6.75 ) ) ).to.be( false ) ;
+		} ) ;
 	} ) ;
 
 
@@ -894,7 +895,26 @@ describe( "Geometry" , function() {
 			expectCirca( points[1].z , -Math.sqrt( 3 ) ) ;
 		} ) ;
 	} ) ;
-
+	
+	
+	
+	describe( "Epsilon" , function() {
+		
+		it( "Vector2D collinearity epsilon" , function() {
+			expect( Vector2D( 0.3 , 0.4 ).isCollinearTo( Vector2D( 0.3 , 0.4 ) ) ).to.be( true ) ;
+			expect( Vector2D( 0.3 , 0.4 ).isCollinearTo( Vector2D( 0.3 + Number.EPSILON , 0.4 ) ) ).to.be( true ) ;
+			expect( Vector2D( 0.3 , 0.4 ).isCollinearTo( Vector2D( 0.3 + Number.EPSILON , 0.4 + Number.EPSILON ) ) ).to.be( true ) ;
+			expect( Vector2D( 0.3 , 0.4 ).isCollinearTo( Vector2D( 0.3 + Number.EPSILON , 0.4 - Number.EPSILON ) ) ).to.be( true ) ;
+		} ) ;
+		
+		it( "Vector3D collinearity epsilon" , function() {
+			expect( Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( Vector3D( 0.3 , 0.4 , 0.5 ) ) ).to.be( true ) ;
+			expect( Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( Vector3D( 0.3 + Number.EPSILON , 0.4 , 0.5 ) ) ).to.be( true ) ;
+			expect( Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( Vector3D( 0.3 + Number.EPSILON , 0.4 + Number.EPSILON , 0.5 + Number.EPSILON ) ) ).to.be( true ) ;
+			expect( Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( Vector3D( 0.3 + Number.EPSILON , 0.4 - Number.EPSILON , 0.5 ) ) ).to.be( true ) ;
+		} ) ;
+	} ) ;
+		
 } ) ;
 
 
