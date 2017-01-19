@@ -763,6 +763,52 @@ describe( "Geometry" , function() {
 			point = Vector3D( 0 , 0 , 5 ) ;
 			expectCirca( plane.pointDistance( point ) , Math.hypot( 2.5 , 2.5 ) ) ;
 		} ) ;
+		
+		it( "intersection of 2 planes" , function() {
+			var plane1 , plane2 ;
+			
+			// x
+			plane1 = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
+			plane2 = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 4 , 0 ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: -16, y: 0, z: 0 } } ) ;
+			
+			plane1 = Plane3D.fromNormal( -10 , 2 , 0 , 0 , 0 , 4 ) ;
+			plane2 = Plane3D.fromNormal( 14 , 0 , -4 , 0 , 4 , 0 ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: -16, y: 0, z: 0 } } ) ;
+			
+			plane1 = Plane3D.fromNormal( 0 , 0 , 3 , 0 , 0 , 4 ) ;
+			plane2 = Plane3D.fromNormal( 0 , -1 , 0 , 0 , 4 , 0 ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: -1, z: 3 }, vector: { x: -16, y: 0, z: 0 } } ) ;
+			
+			// y
+			plane1 = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
+			plane2 = Plane3D.fromNormal( 0 , 0 , 0 , 4 , 0 , 0 ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: 0, y: 16, z: 0 } } ) ;
+			
+			plane1 = Plane3D.fromNormal( 0 , 0 , 18 , 0 , 0 , 4 ) ;
+			plane2 = Plane3D.fromNormal( -21 , 0 , 0 , 4 , 0 , 0 ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: -21, y: 0, z: 18 }, vector: { x: 0, y: 16, z: 0 } } ) ;
+			
+			// z
+			plane1 = Plane3D.fromNormal( 0 , 0 , 0 , 4 , 0 , 0 ) ;
+			plane2 = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 4 , 0 ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: 0, y: 0, z: 16 } } ) ;
+			
+			plane1 = Plane3D.fromNormal( 2 , 0 , 0 , 4 , 0 , 0 ) ;
+			plane2 = Plane3D.fromNormal( 0 , -1 , 0 , 0 , 4 , 0 ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 2, y: -1, z: 0 }, vector: { x: 0, y: 0, z: 16 } } ) ;
+			
+			// non-axial
+			plane1 = Plane3D.fromNormal( 0 , 0 , 0 , 1 , 1 , 0 ) ;
+			plane2 = Plane3D.fromNormal( 0 , 0 , 0 , 1 , 1 , 1 ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: 1, y: -1, z: 0 } } ) ;
+			
+			plane1 = Plane3D.fromNormal( 2 , 0 , 0 , 1 , 1 , 0 ) ;
+			plane2 = Plane3D.fromNormal( 0 , 4 , 0 , 1 , 1 , 1 ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 2, y: 0, z: 2 }, vector: { x: 1, y: -1, z: 0 } } ) ;
+			expect( plane1.test( 2 , 0 , 2 ) ).to.be( 0 ) ; 
+			expect( plane2.test( 2 , 0 , 2 ) ).to.be( 0 ) ; 
+		} ) ;
 	} ) ;
 	
 	
