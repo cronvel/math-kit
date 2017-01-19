@@ -664,6 +664,34 @@ describe( "Geometry" , function() {
 			expect( line.isOnLineSegment( Vector3D( -1.5 , 1.25 , 6.5 ) ) ).to.be( false ) ;
 			expect( line.isOnLineSegment( Vector3D( -1.4 , 1.25 , 6.75 ) ) ).to.be( false ) ;
 		} ) ;
+		
+		it( "shortest segment between two 3D lines" , function() {
+			var line1 , line2 ;
+			
+			line1 = BoundVector3D( -1 , 0 , 0 , 0 , 1 , 1 ) ;
+			line2 = BoundVector3D( 1 , 0 , 0 , 0 , -1 , 1 ) ;
+			expect( line1.shortestSegmentToLine( line2 ) ).to.eql( { position: { x: -1, y: 0, z: 0 } , vector: { x: 2, y: 0, z: 0 } } ) ;
+			line1.apply( 7 ) ;
+			expect( line1.shortestSegmentToLine( line2 ) ).to.eql( { position: { x: -1, y: 0, z: 0 } , vector: { x: 2, y: 0, z: 0 } } ) ;
+			line2.apply( -2.5 ) ;
+			expect( line1.shortestSegmentToLine( line2 ) ).to.eql( { position: { x: -1, y: 0, z: 0 } , vector: { x: 2, y: 0, z: 0 } } ) ;
+			
+			line1 = BoundVector3D( -1 , 0 , 0 , 0 , 1 , 12 ) ;
+			line2 = BoundVector3D( 1 , 0 , 0 , 0 , -3 , 1 ) ;
+			expect( line1.shortestSegmentToLine( line2 ) ).to.eql( { position: { x: -1, y: 0, z: 0 } , vector: { x: 2, y: 0, z: 0 } } ) ;
+			
+			line1 = BoundVector3D( -1 , 0 , 0 , 0 , 1 , 1 ) ;
+			line2 = BoundVector3D( 2 , 0 , 0 , 1 , -1 , 1 ) ;
+			expect( line1.shortestSegmentToLine( line2 ) ).to.eql( { position: { x: -1, y: 0, z: 0 } , vector: { x: 2, y: 1, z: -1 } } ) ;
+			
+			line1 = BoundVector3D( -1 , 0 , 0 , 0 , 1 , 1 ) ;
+			line2 = BoundVector3D( 2 , 0 , 0 , 1 , -1 , 3 ) ;
+			expect( line1.shortestSegmentToLine( line2 ) ).to.eql( { position: { x: -1, y: -1/3, z: -1/3 } , vector: { x: 2+2/3+Number.EPSILON, y: 2/3, z: -2/3-Number.EPSILON/2 } } ) ;
+			
+			line1 = BoundVector3D( -2 , 0 , 0 , 1 , 1 , 1 ) ;
+			line2 = BoundVector3D( 1 , 0 , 0 , 0 , -1 , 1 ) ;
+			expect( line1.shortestSegmentToLine( line2 ) ).to.eql( { position: { x: -1, y: 1, z: 1 } , vector: { x: 2, y: -1, z: -1 } } ) ;
+		} ) ;
 	} ) ;
 
 
