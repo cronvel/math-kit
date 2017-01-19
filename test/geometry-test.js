@@ -765,7 +765,7 @@ describe( "Geometry" , function() {
 		} ) ;
 		
 		it( "intersection of 2 planes" , function() {
-			var plane1 , plane2 ;
+			var plane1 , plane2 , line ;
 			
 			// x
 			plane1 = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
@@ -805,9 +805,35 @@ describe( "Geometry" , function() {
 			
 			plane1 = Plane3D.fromNormal( 2 , 0 , 0 , 1 , 1 , 0 ) ;
 			plane2 = Plane3D.fromNormal( 0 , 4 , 0 , 1 , 1 , 1 ) ;
-			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 2, y: 0, z: 2 }, vector: { x: 1, y: -1, z: 0 } } ) ;
-			expect( plane1.test( 2 , 0 , 2 ) ).to.be( 0 ) ; 
-			expect( plane2.test( 2 , 0 , 2 ) ).to.be( 0 ) ; 
+			/*
+			var time = Date.now() ;
+			for ( var i = 0 ; i < 10000000 ; i ++ ) { line = plane1.planeIntersection( plane2 ) ; }
+			time = Date.now() - time ;
+			console.log( 'Time:' , time , 'ms' ) ;
+			//*/
+			line = plane1.planeIntersection( plane2 ) ;
+			//console.log( line , plane1.testVector( line.position ) , plane2.testVector( line.position ) ) ;
+			//expect( line ).to.eql( { position: { x: 2, y: 0, z: 2 }, vector: { x: 1, y: -1, z: 0 } } ) ;
+			expect( line.vector ).to.eql( { x: 1, y: -1, z: 0 } ) ;
+			expect( plane1.testVector( line.position ) ).to.be( 0 ) ; 
+			expect( plane2.testVector( line.position ) ).to.be( 0 ) ; 
+		} ) ;
+		
+		it( "intersection of 3 planes" , function() {
+			var plane1 , plane2 , plane3 , point ;
+			
+			plane1 = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
+			plane2 = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 4 , 0 ) ;
+			plane3 = Plane3D.fromNormal( 0 , 0 , 0 , -1 , 4 , 0 ) ;
+			expect( plane1.threePlanesIntersection( plane2 , plane3 ) ).to.eql( { x: 0, y: 0, z: 0 } ) ;
+			
+			// It's easier to test with the same position for all 3 bound vectors.
+			// It may looks like cheating but since those points does not exist inside a Plane3D instance (converted into .d),
+			// it's perfectly legit.
+			plane1 = Plane3D.fromNormal( 3 , 4 , 5 , 5 , 2 , 1 ) ;
+			plane2 = Plane3D.fromNormal( 3 , 4 , 5 , 0 , 2 , -4 ) ;
+			plane3 = Plane3D.fromNormal( 3 , 4 , 5 , 18 , -3 , 8 ) ;
+			expect( plane1.threePlanesIntersection( plane2 , plane3 ) ).to.eql( { x: 3, y: 4, z: 5 } ) ;
 		} ) ;
 	} ) ;
 	
