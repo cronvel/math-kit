@@ -1,6 +1,6 @@
 {
   "name": "math-kit",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "Work in progress...",
   "main": "lib/math.js",
   "directories": {
