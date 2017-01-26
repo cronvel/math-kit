@@ -104,7 +104,7 @@ describe( "Geometry" , function() {
 			var v2 = Vector2D( 5 , 7 ) ;
 			var v3 = Vector2D( 2 , 1 ) ;
 			expect( v1.dup().add( v2 ) ).to.eql( { x: 8 , y: 11 } ) ;
-			expect( v1.dup().add( v2 , v3 ) ).to.eql( { x: 10 , y: 12 } ) ;
+			expect( v1.dup().addMulti( v2 , v3 ) ).to.eql( { x: 10 , y: 12 } ) ;
 		} ) ;
 		
 		it( "apply" ) ;
@@ -430,7 +430,7 @@ describe( "Geometry" , function() {
 			var v2 = Vector3D( 5 , 7 , -1 ) ;
 			var v3 = Vector3D( 2 , 1 , 3 ) ;
 			expect( v1.dup().add( v2 ) ).to.eql( { x: 8 , y: 11 , z: 4 } ) ;
-			expect( v1.dup().add( v2 , v3 ) ).to.eql( { x: 10 , y: 12 , z: 7 } ) ;
+			expect( v1.dup().addMulti( v2 , v3 ) ).to.eql( { x: 10 , y: 12 , z: 7 } ) ;
 		} ) ;
 		
 		it( "apply" ) ;
