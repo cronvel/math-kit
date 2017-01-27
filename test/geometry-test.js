@@ -42,6 +42,7 @@ var BoundVector3D = geo.BoundVector3D ;
 var Circle2D = geo.Circle2D ;
 var Sphere3D = geo.Sphere3D ;
 var Plane3D = geo.Plane3D ;
+var Circle3D = geo.Circle3D ;
 var expect = require( 'expect.js' ) ;
 
 
@@ -1065,6 +1066,26 @@ describe( "Geometry" , function() {
 			expectCirca( points[1].x , -Math.sqrt( 3 ) ) ;
 			expectCirca( points[1].y , -Math.sqrt( 3 ) ) ;
 			expectCirca( points[1].z , -Math.sqrt( 3 ) ) ;
+		} ) ;
+		
+		it( "intersection of sphere and a plane" , function() {
+			var sphere , plane , circle ;
+			
+			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
+			plane = Plane3D.fromNormal( 0 , 0 , 1 , 0 , 0 , 1 ) ;
+			circle = sphere.planeIntersection( plane ) ;
+			expect( circle ).to.be.a( Circle3D ) ;
+			expect( circle ).to.eql( { x: 0, y: 0, z: 1, r: 1.7320508075688772, normal: { x: 0, y: 0, z: 1 } } ) ;
+			
+			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
+			plane = Plane3D.fromNormal( 0 , 0 , 1 , 1 , 0 , 1 ) ;
+			circle = sphere.planeIntersection( plane ) ;
+			expect( circle ).to.eql( { x: 0.5, y: 0, z: 0.5, r: 1.8708286933869707, normal: { x: 1, y: 0, z: 1 } } ) ;
+			
+			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
+			plane = Plane3D.fromNormal( 0 , 5 , 5 , 1 , 0 , 1 ) ;
+			circle = sphere.planeIntersection( plane ) ;
+			expect( circle ).to.be( null ) ;
 		} ) ;
 	} ) ;
 	
