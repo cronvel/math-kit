@@ -665,6 +665,42 @@ describe( "Geometry" , function() {
 			expect( line.isOnLineSegment( Vector3D( -1.4 , 1.25 , 6.75 ) ) ).to.be( false ) ;
 		} ) ;
 		
+		it( "projection of a point on a 3D line" , function() {
+			var bv1 = BoundVector3D( 2 , 1 , 0 , 2 , 1 , 0 ) ;
+			var v2 = Vector3D( 3 , 9 , 0 ) ;
+			var vi = bv1.pointProjection( v2 ) ;
+			expect( vi ).to.be.an( Vector3D ) ;
+			expect( vi ).to.eql( { x: 6 , y: 3 , z: 0 } ) ;
+		} ) ;
+		
+		it( "distance of a point to a 3D line" , function() {
+			var line , point ;
+			
+			line = BoundVector3D( 0 , 0 , 0 , 1 , 0 , 0 ) ;
+			point = Vector3D( 0 , 2 , 0 ) ;
+			expect( line.pointDistance( point ) ).to.be( 2 ) ;
+			
+			line = BoundVector3D( 0 , 0 , 0 , 10 , 0 , 0 ) ;
+			point = Vector3D( 0 , 2 , 0 ) ;
+			expect( line.pointDistance( point ) ).to.be( 2 ) ;
+			
+			line = BoundVector3D( 0 , 0 , 0 , -10 , 0 , 0 ) ;
+			point = Vector3D( 0 , 2 , 0 ) ;
+			expect( line.pointDistance( point ) ).to.be( 2 ) ;
+			
+			line = BoundVector3D( -7 , 0 , 0 , -10 , 0 , 0 ) ;
+			point = Vector3D( 0 , 2 , 0 ) ;
+			expect( line.pointDistance( point ) ).to.be( 2 ) ;
+			
+			line = BoundVector3D( 0 , 0 , 0 , 1 , 1 , 1 ) ;
+			point = Vector3D( 0 , 2 , 1 ) ;
+			expectCirca( line.pointDistance( point ) , Math.sqrt( 2 ) ) ;
+			
+			line = BoundVector3D( 0 , 0 , 0 , 10 , 10 , 10 ) ;
+			point = Vector3D( 0 , 2 , 1 ) ;
+			expectCirca( line.pointDistance( point ) , Math.sqrt( 2 ) ) ;
+		} ) ;
+		
 		it( "shortest segment between two 3D lines" , function() {
 			var line1 , line2 ;
 			
