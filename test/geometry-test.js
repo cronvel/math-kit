@@ -1091,6 +1091,35 @@ describe( "Geometry" , function() {
 	
 	
 	
+	describe( "Circle3D" , function() {
+		
+		it( "projection of a point on a 3D circle" , function() {
+			var circle , point ;
+			
+			circle = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			point = Vector3D( 0 , 0 , 0 ) ;
+			expect( circle.pointProjection( point ).isUndefined() ).to.be( true ) ;
+			
+			circle = Circle3D( 0 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			point = Vector3D( 5 , 0 , 0 ) ;
+			expect( circle.pointProjection( point ) ).to.eql( { x: 1 , y: 0 , z: 0 } ) ;
+			
+			circle = Circle3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			point = Vector3D( 5 , 0 , 0 ) ;
+			expect( circle.pointProjection( point ) ).to.eql( { x: 4 , y: 0 , z: 0 } ) ;
+			
+			circle = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.sqrt( 2 ) ) ;
+			point = Vector3D( 3 , 0 , 1 ) ;
+			expect( circle.pointProjection( point ) ).to.eql( { x: 2 , y: 0 , z: 0 } ) ;
+			
+			circle = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 1 ) ;
+			point = Vector3D( 3 , 0 , 1 ) ;
+			expect( circle.pointProjection( point ) ).to.eql( { x: 0.7071067811865475 , y: 0 , z: 1.2928932188134525 } ) ;
+		} ) ;
+	} ) ;
+	
+	
+	
 	describe( "Epsilon" , function() {
 		
 		it( "Vector2D collinearity epsilon" , function() {
