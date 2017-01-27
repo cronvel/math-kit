@@ -698,6 +698,42 @@ describe( "Geometry" , function() {
 
 	describe( "Plane3D" , function() {
 		
+		it( "create a plane from 3 points" , function() {
+			var plane ;
+			
+			plane = Plane3D.fromThreePoints(
+				Vector3D( 0 , 0 , 2 ) ,
+				Vector3D( 2 , 1 , 2 ) ,
+				Vector3D( 1 , 2 , 2 )
+			) ;
+			expect( plane ).to.eql( { x: 0 , y: 0 , z: 3 , d: -6 } ) ;
+			expect( plane.normalize() ).to.eql( { x: 0 , y: 0 , z: 1 , d: -2 } ) ;
+			
+			plane = Plane3D.fromThreePoints(
+				Vector3D( 0 , 0 , 2 ) ,
+				Vector3D( 1 , 2 , 2 ) ,
+				Vector3D( 2 , 1 , 2 )
+			) ;
+			expect( plane ).to.eql( { x: 0 , y: 0 , z: -3 , d: 6 } ) ;
+			expect( plane.normalize() ).to.eql( { x: 0 , y: 0 , z: -1 , d: 2 } ) ;
+			
+			plane = Plane3D.fromThreePoints(
+				Vector3D( 1 , 0 , 0 ) ,
+				Vector3D( 0 , 1 , 0 ) ,
+				Vector3D( 0 , 0 , 1 )
+			) ;
+			expect( plane ).to.eql( { x: 1 , y: 1 , z: 1 , d: -1 } ) ;
+			expect( plane.normalize() ).to.eql( { x: 0.5773502691896258, y: 0.5773502691896258, z: 0.5773502691896258, d: -0.5773502691896258 } ) ;
+			
+			plane = Plane3D.fromThreePoints(
+				Vector3D( 1 , 0 , 0 ) ,
+				Vector3D( 0 , 0 , 1 ) ,
+				Vector3D( 0 , 1 , 0 ) 
+			) ;
+			expect( plane ).to.eql( { x: -1 , y: -1 , z: -1 , d: 1 } ) ;
+			expect( plane.normalize() ).to.eql( { x: -0.5773502691896258, y: -0.5773502691896258, z: -0.5773502691896258, d: 0.5773502691896258 } ) ;
+		} ) ;
+		
 		it( "intersection of plane and line" , function() {
 			var plane , line , point ;
 			
