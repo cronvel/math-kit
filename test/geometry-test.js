@@ -262,6 +262,32 @@ describe( "Geometry" , function() {
 			expectCirca( decomp[1].x , 2 ) ;
 			expectCirca( decomp[1].y , -1 ) ;
 		} ) ;
+		
+		it( "fast decompose" , function() {
+			var v , decomp , alongAxis = Vector2D() , perpToAxis = Vector2D() ;
+			
+			v = Vector2D( 4 , 3 ) ;
+			
+			v.fastDecompose( Vector2D( 1 , 0 ) , alongAxis , perpToAxis ) ;
+			expect( alongAxis ).to.eql( { x: 4 , y: 0 } ) ;
+			expect( perpToAxis ).to.eql( { x: 0 , y: 3 } ) ;
+			
+			v.fastDecompose( Vector2D( 0 , 1 ) , alongAxis , perpToAxis ) ;
+			expect( alongAxis ).to.eql( { x: 0 , y: 3 } ) ;
+			expect( perpToAxis ).to.eql( { x: 4 , y: 0 } ) ;
+			
+			v.fastDecompose( Vector2D( 1 , 1 ).normalize() , alongAxis , perpToAxis ) ;
+			expectCirca( alongAxis.x , 3.5 ) ;
+			expectCirca( alongAxis.y , 3.5 ) ;
+			expectCirca( perpToAxis.x , 0.5 ) ;
+			expectCirca( perpToAxis.y , -0.5 ) ;
+			
+			v.fastDecompose( Vector2D( 1 , 2 ).normalize() , alongAxis , perpToAxis ) ;
+			expectCirca( alongAxis.x , 2 ) ;
+			expectCirca( alongAxis.y , 4 ) ;
+			expectCirca( perpToAxis.x , 2 ) ;
+			expectCirca( perpToAxis.y , -1 ) ;
+		} ) ;
 	} ) ;
 
 
@@ -560,12 +586,12 @@ describe( "Geometry" , function() {
 			var v2 = Vector3D( 4 , 3 , -2 ) ;
 			expect( v1.projectionLengthOf( v2 ) ).to.be( 1.979898987322333 ) ;
 			expect( v1.projectionValueOf( v2 ) ).to.be( 1.979898987322333 ) ;
-			expect( v1.projectionOf( v2 ) ).to.eql( { x: 0.8399999999999999 , y: 1.1199999999999999 , z: 1.4 } ) ;
+			expect( v1.projectionOf( v2 ) ).to.eql( { x: 0.8400000000000001 , y: 1.12 , z: 1.4000000000000001 } ) ;
 			
 			v2.inv() ;
 			expect( v1.projectionLengthOf( v2 ) ).to.be( 1.979898987322333 ) ;
 			expect( v1.projectionValueOf( v2 ) ).to.be( -1.979898987322333 ) ;
-			expect( v1.projectionOf( v2 ) ).to.eql( { x: -0.8399999999999999 , y: -1.1199999999999999 , z: -1.4 } ) ;
+			expect( v1.projectionOf( v2 ) ).to.eql( { x: -0.8400000000000001 , y: -1.12 , z: -1.4000000000000001 } ) ;
 		} ) ;
 		
 		it( "decompose" , function() {
@@ -601,6 +627,44 @@ describe( "Geometry" , function() {
 			expectCirca( decomp[1].x , 2.214285714285714 ) ;
 			expectCirca( decomp[1].y , -0.5714285714285721 ) ;
 			expectCirca( decomp[1].z , -0.35714285714285765 ) ;
+		} ) ;
+		
+		it( "fast decompose" , function() {
+			var v , decomp , alongAxis = Vector3D() , perpToAxis = Vector3D() ;
+			
+			v = Vector3D( 4 , 3 , 5 ) ;
+			
+			v.fastDecompose( Vector3D( 1 , 0 , 0 ) , alongAxis , perpToAxis ) ;
+			expect( alongAxis ).to.eql( { x: 4 , y: 0 , z: 0 } ) ;
+			expect( perpToAxis ).to.eql( { x: 0 , y: 3 , z: 5 } ) ;
+			
+			v.fastDecompose( Vector3D( 0 , 1 , 0 ) , alongAxis , perpToAxis ) ;
+			expect( alongAxis ).to.eql( { x: 0 , y: 3 , z: 0 } ) ;
+			expect( perpToAxis ).to.eql( { x: 4 , y: 0 , z: 5 } ) ;
+			
+			v.fastDecompose( Vector3D( 1 , 1 , 1 ).normalize() , alongAxis , perpToAxis ) ;
+			expectCirca( alongAxis.x , 4 ) ;
+			expectCirca( alongAxis.y , 4 ) ;
+			expectCirca( alongAxis.z , 4 ) ;
+			expectCirca( perpToAxis.x , 0 ) ;
+			expectCirca( perpToAxis.y , -1 ) ;
+			expectCirca( perpToAxis.z , 1 ) ;
+			
+			v.fastDecompose( Vector3D( 1 , 2 , 0 ).normalize() , alongAxis , perpToAxis ) ;
+			expectCirca( alongAxis.x , 2 ) ;
+			expectCirca( alongAxis.y , 4 ) ;
+			expectCirca( alongAxis.z , 0 ) ;
+			expectCirca( perpToAxis.x , 2 ) ;
+			expectCirca( perpToAxis.y , -1 ) ;
+			expectCirca( perpToAxis.z , 5 ) ;
+			
+			v.fastDecompose( Vector3D( 1 , 2 , 3 ).normalize() , alongAxis , perpToAxis ) ;
+			expectCirca( alongAxis.x , 1.785714285714286 ) ;
+			expectCirca( alongAxis.y , 3.571428571428572 ) ;
+			expectCirca( alongAxis.z , 5.357142857142858 ) ;
+			expectCirca( perpToAxis.x , 2.214285714285714 ) ;
+			expectCirca( perpToAxis.y , -0.5714285714285721 ) ;
+			expectCirca( perpToAxis.z , -0.35714285714285765 ) ;
 		} ) ;
 	} ) ;
 
