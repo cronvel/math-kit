@@ -40,6 +40,7 @@ var Vector3D = geo.Vector3D ;
 var BoundVector2D = geo.BoundVector2D ;
 var BoundVector3D = geo.BoundVector3D ;
 var Circle2D = geo.Circle2D ;
+var Ellipse2D = geo.Ellipse2D ;
 var Sphere3D = geo.Sphere3D ;
 var Plane3D = geo.Plane3D ;
 var Circle3D = geo.Circle3D ;
@@ -287,6 +288,67 @@ describe( "Geometry" , function() {
 			expectCirca( alongAxis.y , 4 ) ;
 			expectCirca( perpToAxis.x , 2 ) ;
 			expectCirca( perpToAxis.y , -1 ) ;
+		} ) ;
+		
+		it( "fast scale axis" , function() {
+			var scale , scaleAxis , vector , transposed ;
+			
+			scaleAxis = Vector2D( 0 , 1 ) ;
+			scale = 2 ;
+			vector = Vector2D( 3 , 4 ) ;
+			transposed = vector.fastScaleAxis( scaleAxis , scale ) ;
+			expect( transposed ).to.eql( { x: 3 , y: 8 } ) ;
+			transposed = transposed.fastScaleAxis( scaleAxis , 1 / scale ) ;
+			expect( transposed ).to.eql( { x: 3 , y: 4 } ) ;
+			
+			scaleAxis = Vector2D( 1 , 1 ).normalize() ;
+			scale = 2 ;
+			vector = Vector2D( 3 , 4 ) ;
+			transposed = vector.fastScaleAxis( scaleAxis , scale ) ;
+			expect( transposed ).to.eql( { x: 6.499999999999999 , y: 7.499999999999999 } ) ;
+			transposed = transposed.fastScaleAxis( scaleAxis , 1 / scale ) ;
+			expect( transposed ).to.eql( { x: 3 , y: 4 } ) ;
+		} ) ;
+		
+		it( "fast scale axis from origin" , function() {
+			var scale , scaleAxis , origin , vector , transposed ;
+			
+			origin = Vector2D( 0 , 0 ) ;
+			scaleAxis = Vector2D( 0 , 1 ) ;
+			scale = 2 ;
+			vector = Vector2D( 3 , 4 ) ;
+			transposed = vector.fastScaleAxisFrom( origin , scaleAxis , scale ) ;
+			expect( transposed ).to.eql( { x: 3 , y: 8 } ) ;
+			transposed = transposed.fastScaleAxisFrom( origin , scaleAxis , 1 / scale ) ;
+			expect( transposed ).to.eql( { x: 3 , y: 4 } ) ;
+			
+			origin = Vector2D( 0 , 0 ) ;
+			scaleAxis = Vector2D( 1 , 1 ).normalize() ;
+			scale = 2 ;
+			vector = Vector2D( 3 , 4 ) ;
+			transposed = vector.fastScaleAxisFrom( origin , scaleAxis , scale ) ;
+			expect( transposed ).to.eql( { x: 6.499999999999999 , y: 7.499999999999999 } ) ;
+			transposed = transposed.fastScaleAxisFrom( origin , scaleAxis , 1 / scale ) ;
+			expect( transposed ).to.eql( { x: 3 , y: 4 } ) ;
+			
+			origin = Vector2D( 0 , 2 ) ;
+			scaleAxis = Vector2D( 0 , 1 ) ;
+			scale = 2 ;
+			vector = Vector2D( 3 , 4 ) ;
+			transposed = vector.fastScaleAxisFrom( origin , scaleAxis , scale ) ;
+			expect( transposed ).to.eql( { x: 3 , y: 6 } ) ;
+			transposed = transposed.fastScaleAxisFrom( origin , scaleAxis , 1 / scale ) ;
+			expect( transposed ).to.eql( { x: 3 , y: 4 } ) ;
+			
+			origin = Vector2D( -1 , 0 ) ;
+			scaleAxis = Vector2D( 1 , 1 ).normalize() ;
+			scale = 2 ;
+			vector = Vector2D( 3 , 4 ) ;
+			transposed = vector.fastScaleAxisFrom( origin , scaleAxis , scale ) ;
+			expectCirca( transposed.x , 7 ) ;
+			expectCirca( transposed.y , 8 ) ;
+			transposed = transposed.fastScaleAxisFrom( origin , scaleAxis , 1 / scale ) ;
+			expect( transposed ).to.eql( { x: 3 , y: 4 } ) ;
 		} ) ;
 	} ) ;
 
@@ -1182,6 +1244,40 @@ describe( "Geometry" , function() {
 		} ) ;
 	} ) ;
 	
+	
+	
+	describe( "Ellipse2D" , function() {
+		
+		it( "Focal points, eccentricity" , function() {
+			var ellipse , focalPoints ;
+			
+			ellipse = Ellipse2D( 0 , 0 , 1 , 0 , 1 , 0.5 ) ;
+			//expect( ellipse.getFocalPoints() ).to.eql( [ { x: 0.8660254037844386 , y: 0 } , { x: -0.8660254037844386 , y: 0 } ] ) ;
+			expect( ellipse.e ).to.be( Math.sqrt(0.75) ) ;
+			expect( ellipse.focus1 ).to.eql( { x: Math.sqrt(0.75) , y: 0 } ) ;
+			expect( ellipse.focus2 ).to.eql( { x: -Math.sqrt(0.75) , y: 0 } ) ;
+			
+			ellipse = Ellipse2D( 2 , 2 , 1 , 0 , 1 , 0.5 ) ;
+			expect( ellipse.e ).to.be( Math.sqrt(0.75) ) ;
+			expect( ellipse.focus1 ).to.eql( { x: 2+Math.sqrt(0.75) , y: 2 } ) ;
+			expect( ellipse.focus2 ).to.eql( { x: 2-Math.sqrt(0.75) , y: 2 } ) ;
+			
+			ellipse = Ellipse2D( 2 , 2 , 1 , 1 , 1 , 0.5 ) ;
+			expect( ellipse.e ).to.be( Math.sqrt(0.75) ) ;
+			expect( ellipse.focus1 ).to.eql( { x: 2+Math.sqrt(0.75)*Math.SQRT1_2 , y: 2+Math.sqrt(0.75)*Math.SQRT1_2 } ) ;
+			expectCirca( ellipse.focus2.x , 2-Math.sqrt(0.75)*Math.SQRT1_2 ) ;
+			expectCirca( ellipse.focus2.y , 2-Math.sqrt(0.75)*Math.SQRT1_2 ) ;
+		} ) ;
+		
+		it( "test if a point is on/inside the ellipse" , function() {
+			var ellipse ;
+			
+			ellipse = Ellipse2D( 0 , 0 , 1 , 0 , 1 , 0.5 ) ;
+			expectCirca( ellipse.test( 0 , 0 ) , -0.2679491924311228 ) ;
+			expectCirca( ellipse.test( 1 , 0 ) , 0 ) ;
+		} ) ;
+	} ) ;
+		
 	
 	
 	describe( "Epsilon" , function() {
