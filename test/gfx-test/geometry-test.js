@@ -123,7 +123,7 @@ describe( "Circle" , function() {
 describe( "Ellipse" , function() {
 
 	it( "Ellipse random shortest point" , function( done ) {
-		var i , tries = 50 , size = 600 ;
+		var i , tries = 200 , size = 600 ;
 		
 		var img = gm( size , size , "#000" ) ;
 		var position = Vector2D() ;
