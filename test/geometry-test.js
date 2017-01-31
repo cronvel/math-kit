@@ -351,6 +351,88 @@ describe( "Geometry" , function() {
 			transposed = transposed.fastScaleAxisFrom( origin , scaleAxis , 1 / scale ) ;
 			expect( transposed ).to.eql( { x: 3 , y: 4 } ) ;
 		} ) ;
+		
+		it( "transpose" , function() {
+			var vector , transposeOrigin , transposeXAxis ;
+			
+			transposeOrigin = Vector2D( 0 , 0 ) ;
+			transposeXAxis = Vector2D( 1 , 0 ).normalize() ;
+			vector = Vector2D( 1 , 2 ) ;
+			vector.transpose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expect( vector ).to.eql( { x: 1 , y: 2 } ) ;
+			vector.untranspose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expect( vector ).to.eql( { x: 1 , y: 2 } ) ;
+			
+			transposeOrigin = Vector2D( 3 , 4 ) ;
+			transposeXAxis = Vector2D( 1 , 0 ).normalize() ;
+			vector = Vector2D( 1 , 2 ) ;
+			vector.transpose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expect( vector ).to.eql( { x: -2 , y: -2 } ) ;
+			vector.untranspose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expect( vector ).to.eql( { x: 1 , y: 2 } ) ;
+			
+			transposeOrigin = Vector2D( -3 , -4 ) ;
+			transposeXAxis = Vector2D( 1 , 0 ).normalize() ;
+			vector = Vector2D( 1 , 2 ) ;
+			vector.transpose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expect( vector ).to.eql( { x: 4 , y: 6 } ) ;
+			vector.untranspose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expect( vector ).to.eql( { x: 1 , y: 2 } ) ;
+			
+			transposeOrigin = Vector2D( 0 , 0 ) ;
+			transposeXAxis = Vector2D( 1 , 1 ).normalize() ;
+			vector = Vector2D( 1 , 2 ) ;
+			vector.transpose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expectCirca( vector.x , Math.SQRT1_2 * 3 ) ;
+			expectCirca( vector.y , Math.SQRT1_2 ) ;
+			vector.untranspose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expectCirca( vector.x , 1 ) ;
+			expectCirca( vector.y , 2 ) ;
+			
+			transposeOrigin = Vector2D( 0 , 0 ) ;
+			transposeXAxis = Vector2D( -1 , 1 ).normalize() ;
+			vector = Vector2D( 1 , 2 ) ;
+			vector.transpose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expectCirca( vector.x , Math.SQRT1_2 ) ;
+			expectCirca( vector.y , - Math.SQRT1_2 * 3 ) ;
+			vector.untranspose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expectCirca( vector.x , 1 ) ;
+			expectCirca( vector.y , 2 ) ;
+			
+			transposeOrigin = Vector2D( 1 , 2 ) ;
+			transposeXAxis = Vector2D( -1 , 1 ).normalize() ;
+			vector = Vector2D( 1 , 2 ) ;
+			vector.transpose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expectCirca( vector.x , 0 ) ;
+			expectCirca( vector.y , 0 ) ;
+			vector.untranspose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expectCirca( vector.x , 1 ) ;
+			expectCirca( vector.y , 2 ) ;
+			
+			transposeOrigin = Vector2D( 1 , -2 ) ;
+			transposeXAxis = Vector2D( -1 , 1 ).normalize() ;
+			vector = Vector2D( 1 , 2 ) ;
+			vector.transpose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expectCirca( vector.x , Math.SQRT2 * 2 ) ;
+			expectCirca( vector.y , - Math.SQRT2 * 2 ) ;
+			vector.untranspose( transposeOrigin , transposeXAxis ) ;
+			//console.log( vector ) ;
+			expectCirca( vector.x , 1 ) ;
+			expectCirca( vector.y , 2 ) ;
+		} ) ;
 	} ) ;
 
 
