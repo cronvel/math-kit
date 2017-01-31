@@ -45,6 +45,7 @@ var Sphere3D = geo.Sphere3D ;
 var Plane3D = geo.Plane3D ;
 var Circle3D = geo.Circle3D ;
 var expect = require( 'expect.js' ) ;
+//geo.setFastMode( true ) ;
 
 
 
