@@ -1205,7 +1205,7 @@ describe( "Geometry" , function() {
 			line = BoundVector2D( 2 , 2 , 1 , -1 ) ;
 			points = circle.intersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
-			expect( points ).to.eql( [ { x: 1 , y: 1 } , { x: 3 , y: 3 } ] ) ;
+			expect( points ).to.eql( [ { x: 3 , y: 1 } , { x: 1 , y: 3 } ] ) ;
 		} ) ;
 	} ) ;
 
