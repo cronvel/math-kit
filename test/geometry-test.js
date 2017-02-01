@@ -433,6 +433,40 @@ describe( "Geometry" , function() {
 			expectCirca( vector.x , 1 ) ;
 			expectCirca( vector.y , 2 ) ;
 		} ) ;
+		
+		it( "transpose 3D" , function() {
+			var v , transposed , origin , normal , xAxis ;
+			
+			v = Vector2D( 1 , 3 ) ;
+			origin = Vector3D( 0 , 0 , 1 ) ;
+			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			transposed = v.transpose3D( origin , normal , xAxis ) ;
+			//console.log( transposed ) ;
+			expectCirca( transposed.x , Math.SQRT1_2 ) ;
+			expectCirca( transposed.y , 3 ) ;
+			expectCirca( transposed.z , 1 - Math.SQRT1_2 ) ;
+			
+			v = Vector2D( 1 , 3 ) ;
+			origin = Vector3D( 1 , 0 , 0 ) ;
+			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			transposed = v.transpose3D( origin , normal , xAxis ) ;
+			//console.log( transposed ) ;
+			expectCirca( transposed.x , 1 + Math.SQRT1_2 ) ;
+			expectCirca( transposed.y , 3 ) ;
+			expectCirca( transposed.z , - Math.SQRT1_2 ) ;
+			
+			v = Vector2D( -1 , 3 ) ;
+			origin = Vector3D( 0 , 0 , 1 ) ;
+			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			transposed = v.transpose3D( origin , normal , xAxis ) ;
+			//console.log( transposed ) ;
+			expectCirca( transposed.x , - Math.SQRT1_2 ) ;
+			expectCirca( transposed.y , 3 ) ;
+			expectCirca( transposed.z , 1 + Math.SQRT1_2 ) ;
+		} ) ;
 	} ) ;
 
 
@@ -653,52 +687,6 @@ describe( "Geometry" , function() {
 			expect( v1 ).to.eql( { x: 0.4242640687119285 , y: 0.565685424949238 , z: 0.7071067811865475 } ) ;
 		} ) ;
 		
-		/*
-		it( "get/set/rotate angle" , function() {
-			var v1 = Vector3D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
-			expectCirca( v1.angle , Math.PI / 3 ) ;
-			expectCirca( v1.inv().angle , - Math.PI + Math.PI / 3 ) ;
-			
-			v1 = Vector3D( -5 , 10 * Math.sqrt( 3 ) / 2 ) ;
-			expectCirca( v1.angle , 2 * Math.PI / 3 ) ;
-			
-			v1 = Vector3D( 5 , -10 * Math.sqrt( 3 ) / 2 ) ;
-			expectCirca( v1.angle , - Math.PI / 3 ) ;
-			
-			v1 = Vector3D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
-			v1.angle = Math.PI / 6 ;
-			expectCirca( v1.x , 10 * Math.sqrt( 3 ) / 2 ) ;
-			expectCirca( v1.y , 5 ) ;
-			
-			v1.rotate( Math.PI / 6 ) ;
-			expectCirca( v1.angle , Math.PI / 3 ) ;
-			expectCirca( v1.x , 5 ) ;
-			expectCirca( v1.y , 10 * Math.sqrt( 3 ) / 2 ) ;
-		} ) ;
-		
-		it( "get/set/rotate angle in degree" , function() {
-			var v1 = Vector3D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
-			expectCirca( v1.angleDeg , 60 ) ;
-			expectCirca( v1.inv().angleDeg , -120 ) ;
-			
-			v1 = Vector3D( -5 , 10 * Math.sqrt( 3 ) / 2 ) ;
-			expectCirca( v1.angleDeg , 120 ) ;
-			
-			v1 = Vector3D( 5 , -10 * Math.sqrt( 3 ) / 2 ) ;
-			expectCirca( v1.angleDeg , -60 ) ;
-			
-			v1 = Vector3D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
-			v1.angleDeg = 30 ;
-			expectCirca( v1.x , 10 * Math.sqrt( 3 ) / 2 ) ;
-			expectCirca( v1.y , 5 ) ;
-			
-			v1.rotateDeg( 30 ) ;
-			expectCirca( v1.angleDeg , 60 ) ;
-			expectCirca( v1.x , 5 ) ;
-			expectCirca( v1.y , 10 * Math.sqrt( 3 ) / 2 ) ;
-		} ) ;
-		*/
-		
 		it( "dot product" , function() {
 			expect( Vector3D( 3 , 4 , 5 ).dot( Vector3D( 5 , 2 , 1 ) ) ).to.be( 28 ) ;
 			expect( Vector3D( 3 , 4 , 5 ).dot( Vector3D( -5 , 2 , -3 ) ) ).to.be( -22 ) ;
@@ -810,6 +798,46 @@ describe( "Geometry" , function() {
 			expectCirca( perpToAxis.x , 2.214285714285714 ) ;
 			expectCirca( perpToAxis.y , -0.5714285714285721 ) ;
 			expectCirca( perpToAxis.z , -0.35714285714285765 ) ;
+		} ) ;
+		
+		it( "transpose 2D" , function() {
+			var v , transposed , origin , normal , xAxis ;
+			
+			v = Vector3D( 1 , 3 , 0 ) ;
+			origin = Vector3D( 0 , 0 , 1 ) ;
+			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			transposed = v.transpose2D( origin , normal , xAxis ) ;
+			//console.log( transposed ) ;
+			expectCirca( transposed.x , Math.SQRT2 ) ;
+			expectCirca( transposed.y , 3 ) ;
+			
+			v = Vector3D( 1 , 3 , 0 ) ;
+			origin = Vector3D( 1 , 0 , 0 ) ;
+			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			transposed = v.transpose2D( origin , normal , xAxis ) ;
+			//console.log( transposed ) ;
+			expectCirca( transposed.x , 0 ) ;
+			expectCirca( transposed.y , 3 ) ;
+			
+			v = Vector3D( 1 , 3 , 0 ) ;
+			origin = Vector3D( -2 , 0 , 3 ) ;
+			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			transposed = v.transpose2D( origin , normal , xAxis ) ;
+			//console.log( transposed ) ;
+			expectCirca( transposed.x , 3 * Math.SQRT2 ) ;
+			expectCirca( transposed.y , 3 ) ;
+			
+			v = Vector3D( 5 , 3 , 4 ) ;
+			origin = Vector3D( 0 , 0 , 1 ) ;
+			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			transposed = v.transpose2D( origin , normal , xAxis ) ;
+			//console.log( transposed ) ;
+			expectCirca( transposed.x , Math.SQRT2 ) ;
+			expectCirca( transposed.y , 3 ) ;
 		} ) ;
 	} ) ;
 
