@@ -1318,7 +1318,7 @@ describe( "Geometry" , function() {
 			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , 1 , 1 , 0 , 1 ) ;
 			circle = sphere.planeIntersection( plane ) ;
-			expect( circle ).to.eql( { x: 0.5, y: 0, z: 0.5, r: 1.8708286933869707, planeNormal: { x: 1, y: 0, z: 1 } } ) ;
+			expect( circle ).to.eql( { x: 0.5, y: 0, z: 0.5, r: 1.8708286933869707, planeNormal: { x: 0.7071067811865475, y: 0, z: 0.7071067811865475 } } ) ;
 			
 			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
 			plane = Plane3D.fromNormal( 0 , 5 , 5 , 1 , 0 , 1 ) ;
