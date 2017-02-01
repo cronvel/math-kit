@@ -44,6 +44,7 @@ var Ellipse2D = geo.Ellipse2D ;
 var Sphere3D = geo.Sphere3D ;
 var Plane3D = geo.Plane3D ;
 var Circle3D = geo.Circle3D ;
+var Ellipse3D = geo.Ellipse3D ;
 var expect = require( 'expect.js' ) ;
 //geo.setFastMode( true ) ;
 
@@ -1312,12 +1313,12 @@ describe( "Geometry" , function() {
 			plane = Plane3D.fromNormal( 0 , 0 , 1 , 0 , 0 , 1 ) ;
 			circle = sphere.planeIntersection( plane ) ;
 			expect( circle ).to.be.a( Circle3D ) ;
-			expect( circle ).to.eql( { x: 0, y: 0, z: 1, r: 1.7320508075688772, normal: { x: 0, y: 0, z: 1 } } ) ;
+			expect( circle ).to.eql( { x: 0, y: 0, z: 1, r: 1.7320508075688772, planeNormal: { x: 0, y: 0, z: 1 } } ) ;
 			
 			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , 1 , 1 , 0 , 1 ) ;
 			circle = sphere.planeIntersection( plane ) ;
-			expect( circle ).to.eql( { x: 0.5, y: 0, z: 0.5, r: 1.8708286933869707, normal: { x: 1, y: 0, z: 1 } } ) ;
+			expect( circle ).to.eql( { x: 0.5, y: 0, z: 0.5, r: 1.8708286933869707, planeNormal: { x: 1, y: 0, z: 1 } } ) ;
 			
 			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
 			plane = Plane3D.fromNormal( 0 , 5 , 5 , 1 , 0 , 1 ) ;
@@ -1353,6 +1354,42 @@ describe( "Geometry" , function() {
 			point = Vector3D( 3 , 0 , 1 ) ;
 			expect( circle.pointProjection( point ) ).to.eql( { x: 0.7071067811865475 , y: 0 , z: 1.2928932188134525 } ) ;
 		} ) ;
+		
+		it( "projection of a point on an infinite cylinder" , function() {
+			var cylinder , point ;
+			
+			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			point = Vector3D( 0 , 0 , 0 ) ;
+			expect( cylinder.pointProjectionToCylinder( point ).isUndefined() ).to.be( true ) ;
+			
+			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			point = Vector3D( 5 , 0 , 0 ) ;
+			expect( cylinder.pointProjectionToCylinder( point ) ).to.eql( { x: 1 , y: 0 , z: 0 } ) ;
+			
+			cylinder = Circle3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			point = Vector3D( 5 , 0 , 0 ) ;
+			expect( cylinder.pointProjectionToCylinder( point ) ).to.eql( { x: 4 , y: 0 , z: 0 } ) ;
+			
+			cylinder = Circle3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			point = Vector3D( 5 , 0 , -7 ) ;
+			expect( cylinder.pointProjectionToCylinder( point ) ).to.eql( { x: 4 , y: 0 , z: -7 } ) ;
+			
+			cylinder = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , Math.SQRT2 ) ;
+			point = Vector3D( 3 , 0 , 1 ) ;
+			expect( cylinder.pointProjectionToCylinder( point ) ).to.eql( { x: 2 , y: 0 , z: 2 } ) ;
+			
+			cylinder = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.SQRT2 ) ;
+			point = Vector3D( 3 , 0 , 1 ) ;
+			expect( cylinder.pointProjectionToCylinder( point ) ).to.eql( { x: 3 , y: 0 , z: 1 } ) ;
+			
+			cylinder = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 1 ) ;
+			point = Vector3D( 3 , 0 , 1 ) ;
+			expect( cylinder.pointProjectionToCylinder( point ) ).to.eql( { x: 1.7071067811865475 , y: 0 , z: 2.2928932188134525 } ) ;
+			
+			cylinder = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.SQRT2 ) ;
+			point = Vector3D( 3 , 1 , 1 ) ;
+			expect( cylinder.pointProjectionToCylinder( point ) ).to.eql( { x: 2.885618083164127 , y: 0.9428090415820635 , z: 1.114381916835873 } ) ;
+		} ) ;
 	} ) ;
 	
 	
@@ -1386,6 +1423,39 @@ describe( "Geometry" , function() {
 			ellipse = Ellipse2D( 0 , 0 , 1 , 0 , 1 , 0.5 ) ;
 			expectCirca( ellipse.test( 0 , 0 ) , -0.2679491924311228 ) ;
 			expectCirca( ellipse.test( 1 , 0 ) , 0 ) ;
+		} ) ;
+	} ) ;
+		
+	
+	
+	describe( "Ellipse3D" , function() {
+		
+		it( "point projection" , function() {
+			var ellipse , point , projected ;
+			
+			ellipse = Ellipse3D(
+				0 , 0 , 1 ,
+				1 , 0 , 1 ,
+				1 , 0 , -1 ,
+				1 , 0.5
+			) ;
+			point = Vector3D( 1 , 0 , 0 ) ;
+			projected = ellipse.pointProjection( point ) ;
+			expectCirca( projected.x , Math.SQRT1_2 ) ;
+			expectCirca( projected.y , 0 ) ;
+			expectCirca( projected.z , 1 - Math.SQRT1_2 ) ;
+			
+			ellipse = Ellipse3D(
+				0 , 0 , 1 ,
+				1 , 0 , 1 ,
+				1 , 0 , -1 ,
+				1 , 0.5
+			) ;
+			point = Vector3D( 1 , 1 , 0 ) ;
+			projected = ellipse.pointProjection( point ) ;
+			expectCirca( projected.x , 0.5958015781628886 ) ;
+			expectCirca( projected.y , 0.2692772543853373 ) ;
+			expectCirca( projected.z , 0.4041984218371114 ) ;
 		} ) ;
 	} ) ;
 		
