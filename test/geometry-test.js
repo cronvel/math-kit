@@ -582,7 +582,7 @@ describe( "Geometry" , function() {
 		it( "intersection" , function() {
 			var bv1 = BoundVector2D( 2 , 1 , 2 , 1 ) ;
 			var bv2 = BoundVector2D( 4 , 6 , 2 , -3 ) ;
-			var vi = bv1.intersection( bv2 ) ;
+			var vi = bv1.lineIntersection( bv2 ) ;
 			expect( vi ).to.be.an( Vector2D ) ;
 			expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
 		} ) ;
@@ -981,32 +981,28 @@ describe( "Geometry" , function() {
 				Vector3D( 2 , 1 , 2 ) ,
 				Vector3D( 1 , 2 , 2 )
 			) ;
-			expect( plane ).to.eql( { x: 0 , y: 0 , z: 3 , d: -6 } ) ;
-			expect( plane.normalize() ).to.eql( { x: 0 , y: 0 , z: 1 , d: -2 } ) ;
+			expect( plane ).to.eql( { x: 0 , y: 0 , z: 1 , d: -2 } ) ;
 			
 			plane = Plane3D.fromThreePoints(
 				Vector3D( 0 , 0 , 2 ) ,
 				Vector3D( 1 , 2 , 2 ) ,
 				Vector3D( 2 , 1 , 2 )
 			) ;
-			expect( plane ).to.eql( { x: 0 , y: 0 , z: -3 , d: 6 } ) ;
-			expect( plane.normalize() ).to.eql( { x: 0 , y: 0 , z: -1 , d: 2 } ) ;
+			expect( plane ).to.eql( { x: 0 , y: 0 , z: -1 , d: 2 } ) ;
 			
 			plane = Plane3D.fromThreePoints(
 				Vector3D( 1 , 0 , 0 ) ,
 				Vector3D( 0 , 1 , 0 ) ,
 				Vector3D( 0 , 0 , 1 )
 			) ;
-			expect( plane ).to.eql( { x: 1 , y: 1 , z: 1 , d: -1 } ) ;
-			expect( plane.normalize() ).to.eql( { x: 0.5773502691896258, y: 0.5773502691896258, z: 0.5773502691896258, d: -0.5773502691896258 } ) ;
+			expect( plane ).to.eql( { x: 0.5773502691896258, y: 0.5773502691896258, z: 0.5773502691896258, d: -0.5773502691896258 } ) ;
 			
 			plane = Plane3D.fromThreePoints(
 				Vector3D( 1 , 0 , 0 ) ,
 				Vector3D( 0 , 0 , 1 ) ,
 				Vector3D( 0 , 1 , 0 ) 
 			) ;
-			expect( plane ).to.eql( { x: -1 , y: -1 , z: -1 , d: 1 } ) ;
-			expect( plane.normalize() ).to.eql( { x: -0.5773502691896258, y: -0.5773502691896258, z: -0.5773502691896258, d: 0.5773502691896258 } ) ;
+			expect( plane ).to.eql( { x: -0.5773502691896258, y: -0.5773502691896258, z: -0.5773502691896258, d: 0.5773502691896258 } ) ;
 		} ) ;
 		
 		it( "intersection of plane and line" , function() {
@@ -1014,43 +1010,43 @@ describe( "Geometry" , function() {
 			
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
 			line = BoundVector3D( 0 , 0 , 5 , 0 , 0 , 3 ) ;
-			point = plane.intersection( line ) ;
+			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.eql( { x: 0 , y: 0 , z: 0 } ) ;
 			
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
 			line = BoundVector3D( 0 , 0 , 2 , 1 , 0 , 2 ) ;
-			point = plane.intersection( line ) ;
+			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.eql( { x: -1 , y: 0 , z: 0 } ) ;
 			
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
 			line = BoundVector3D( 0 , 0 , 2 , 1 , 4 , 2 ) ;
-			point = plane.intersection( line ) ;
+			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.eql( { x: -1 , y: -4 , z: 0 } ) ;
 			
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
 			line = BoundVector3D( 0 , 0 , 1 , 1 , 4 , 2 ) ;
-			point = plane.intersection( line ) ;
+			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.eql( { x: -0.5 , y: -2 , z: 0 } ) ;
 			
 			plane = Plane3D.fromNormal( 5 , -18 , 0 , 0 , 0 , 4 ) ;
 			line = BoundVector3D( 0 , 0 , 1 , 1 , 4 , 2 ) ;
-			point = plane.intersection( line ) ;
+			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.eql( { x: -0.5 , y: -2 , z: 0 } ) ;
 			
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 1 , 0 , 2 ) ;
 			line = BoundVector3D( 0 , 0 , 2 , 1 , 0 , 0 ) ;
-			point = plane.intersection( line ) ;
+			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.eql( { x: -4 , y: 0 , z: 2 } ) ;
 			
 			plane = Plane3D.fromNormal( -3 , 5 , 0 , 1 , 0 , 2 ) ;
 			line = BoundVector3D( 0 , 0 , 2 , 1 , 0 , 0 ) ;
-			point = plane.intersection( line ) ;
+			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.eql( { x: -7 , y: 0 , z: 2 } ) ;
 		} ) ;
@@ -1109,38 +1105,38 @@ describe( "Geometry" , function() {
 			// x
 			plane1 = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
 			plane2 = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 4 , 0 ) ;
-			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: -16, y: 0, z: 0 } } ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: -1, y: 0, z: 0 } } ) ;
 			
 			plane1 = Plane3D.fromNormal( -10 , 2 , 0 , 0 , 0 , 4 ) ;
 			plane2 = Plane3D.fromNormal( 14 , 0 , -4 , 0 , 4 , 0 ) ;
-			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: -16, y: 0, z: 0 } } ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: -1, y: 0, z: 0 } } ) ;
 			
 			plane1 = Plane3D.fromNormal( 0 , 0 , 3 , 0 , 0 , 4 ) ;
 			plane2 = Plane3D.fromNormal( 0 , -1 , 0 , 0 , 4 , 0 ) ;
-			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: -1, z: 3 }, vector: { x: -16, y: 0, z: 0 } } ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: -1, z: 3 }, vector: { x: -1, y: 0, z: 0 } } ) ;
 			
 			// y
 			plane1 = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
 			plane2 = Plane3D.fromNormal( 0 , 0 , 0 , 4 , 0 , 0 ) ;
-			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: 0, y: 16, z: 0 } } ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: 0, y: 1, z: 0 } } ) ;
 			
 			plane1 = Plane3D.fromNormal( 0 , 0 , 18 , 0 , 0 , 4 ) ;
 			plane2 = Plane3D.fromNormal( -21 , 0 , 0 , 4 , 0 , 0 ) ;
-			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: -21, y: 0, z: 18 }, vector: { x: 0, y: 16, z: 0 } } ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: -21, y: 0, z: 18 }, vector: { x: 0, y: 1, z: 0 } } ) ;
 			
 			// z
 			plane1 = Plane3D.fromNormal( 0 , 0 , 0 , 4 , 0 , 0 ) ;
 			plane2 = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 4 , 0 ) ;
-			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: 0, y: 0, z: 16 } } ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: 0, y: 0, z: 1 } } ) ;
 			
 			plane1 = Plane3D.fromNormal( 2 , 0 , 0 , 4 , 0 , 0 ) ;
 			plane2 = Plane3D.fromNormal( 0 , -1 , 0 , 0 , 4 , 0 ) ;
-			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 2, y: -1, z: 0 }, vector: { x: 0, y: 0, z: 16 } } ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 2, y: -1, z: 0 }, vector: { x: 0, y: 0, z: 1 } } ) ;
 			
 			// non-axial
 			plane1 = Plane3D.fromNormal( 0 , 0 , 0 , 1 , 1 , 0 ) ;
 			plane2 = Plane3D.fromNormal( 0 , 0 , 0 , 1 , 1 , 1 ) ;
-			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: 1, y: -1, z: 0 } } ) ;
+			expect( plane1.planeIntersection( plane2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 }, vector: { x: 0.408248290463863, y: -0.408248290463863, z: 0 } } ) ;
 			
 			plane1 = Plane3D.fromNormal( 2 , 0 , 0 , 1 , 1 , 0 ) ;
 			plane2 = Plane3D.fromNormal( 0 , 4 , 0 , 1 , 1 , 1 ) ;
@@ -1153,7 +1149,7 @@ describe( "Geometry" , function() {
 			line = plane1.planeIntersection( plane2 ) ;
 			//console.log( line , plane1.testVector( line.position ) , plane2.testVector( line.position ) ) ;
 			//expect( line ).to.eql( { position: { x: 2, y: 0, z: 2 }, vector: { x: 1, y: -1, z: 0 } } ) ;
-			expect( line.vector ).to.eql( { x: 1, y: -1, z: 0 } ) ;
+			expect( line.vector ).to.eql( { x: 0.408248290463863, y: -0.408248290463863, z: 0 } ) ;
 			expect( plane1.testVector( line.position ) ).to.be( 0 ) ; 
 			expect( plane2.testVector( line.position ) ).to.be( 0 ) ; 
 		} ) ;
@@ -1172,7 +1168,10 @@ describe( "Geometry" , function() {
 			plane1 = Plane3D.fromNormal( 3 , 4 , 5 , 5 , 2 , 1 ) ;
 			plane2 = Plane3D.fromNormal( 3 , 4 , 5 , 0 , 2 , -4 ) ;
 			plane3 = Plane3D.fromNormal( 3 , 4 , 5 , 18 , -3 , 8 ) ;
-			expect( plane1.threePlanesIntersection( plane2 , plane3 ) ).to.eql( { x: 3, y: 4, z: 5 } ) ;
+			point = plane1.threePlanesIntersection( plane2 , plane3 ) ;
+			expectCirca( point.x , 3 ) ;
+			expectCirca( point.y , 4 ) ;
+			expectCirca( point.z , 5 ) ;
 		} ) ;
 	} ) ;
 	
@@ -1209,30 +1208,30 @@ describe( "Geometry" , function() {
 			
 			circle = Circle2D( 0 , 0 , 2 ) ;
 			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
-			points = circle.intersection( line ) ;
+			points = circle.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.eql( [ { x: Math.sqrt( 3 ) , y: 1 } , { x: - Math.sqrt( 3 ) , y: 1 } ] ) ;
 			
 			circle = Circle2D( 0 , 1 , 2 ) ;
 			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
-			points = circle.intersection( line ) ;
+			points = circle.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.eql( [ { x: 2 , y: 1 } , { x: -2 , y: 1 } ] ) ;
 			
 			circle = Circle2D( 0 , -1 , 2 ) ;
 			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
-			points = circle.intersection( line ) ;
+			points = circle.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.eql( [ { x: 0 , y: 1 } ] ) ;
 			
 			circle = Circle2D( 0 , -1.1 , 2 ) ;
 			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
-			points = circle.intersection( line ) ;
+			points = circle.lineIntersection( line ) ;
 			expect( points ).to.be( null ) ;
 			
 			circle = Circle2D( 1 , 1 , 2 ) ;
 			line = BoundVector2D( 2 , 2 , 1 , -1 ) ;
-			points = circle.intersection( line ) ;
+			points = circle.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.eql( [ { x: 3 , y: 1 } , { x: 1 , y: 3 } ] ) ;
 		} ) ;
@@ -1273,30 +1272,30 @@ describe( "Geometry" , function() {
 			
 			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
 			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
-			points = sphere.intersection( line ) ;
+			points = sphere.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.eql( [ { x: Math.sqrt( 3 ) , y: 1 , z: 0 } , { x: - Math.sqrt( 3 ) , y: 1 , z: 0 } ] ) ;
 			
 			sphere = Sphere3D( 0 , 1 , 0 , 2 ) ;
 			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
-			points = sphere.intersection( line ) ;
+			points = sphere.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.eql( [ { x: 2 , y: 1 , z: 0 } , { x: -2 , y: 1 , z: 0 } ] ) ;
 			
 			sphere = Sphere3D( 0 , -1 , 0 , 2 ) ;
 			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
-			points = sphere.intersection( line ) ;
+			points = sphere.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.eql( [ { x: 0 , y: 1 , z: 0 } ] ) ;
 			
 			sphere = Sphere3D( 0 , -1.1 , 0 , 2 ) ;
 			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
-			points = sphere.intersection( line ) ;
+			points = sphere.lineIntersection( line ) ;
 			expect( points ).to.be( null ) ;
 			
 			sphere = Sphere3D( 0 , 0 , 0 , 3 ) ;
 			line = BoundVector3D( 1 , 1 , 1 , 1 , 1 , 1 ) ;
-			points = sphere.intersection( line ) ;
+			points = sphere.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expectCirca( points[0].x , Math.sqrt( 3 ) ) ;
 			expectCirca( points[0].y , Math.sqrt( 3 ) ) ;
@@ -1390,6 +1389,8 @@ describe( "Geometry" , function() {
 			point = Vector3D( 3 , 1 , 1 ) ;
 			expect( cylinder.pointProjectionToCylinder( point ) ).to.eql( { x: 2.885618083164127 , y: 0.9428090415820635 , z: 1.114381916835873 } ) ;
 		} ) ;
+		
+		//it( "intersection to an infinite cylinder" , function() { expect().to.be( 'TODO' ) ; } ) ;
 	} ) ;
 	
 	

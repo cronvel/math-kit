@@ -143,7 +143,7 @@ describe( "Circle" , function() {
 				rng.random( -50 , 50 )
 			) ;
 			
-			array = circle.intersection( line ) ;
+			array = circle.lineIntersection( line ) ;
 			//console.log( '#' + i , array ) ;
 			
 			if ( ! array )
@@ -254,7 +254,7 @@ describe( "Ellipse" , function() {
 				rng.random( -50 , 50 )
 			) ;
 			
-			array = ellipse.intersection( line ) ;
+			array = ellipse.lineIntersection( line ) ;
 			//console.log( '#' + i , position , projected ) ;
 			
 			if ( ! array )
