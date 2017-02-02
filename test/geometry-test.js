@@ -1390,7 +1390,7 @@ describe( "Geometry" , function() {
 			expect( cylinder.pointProjectionOnCylinder( point ) ).to.eql( { x: 2.885618083164127 , y: 0.9428090415820635 , z: 1.114381916835873 } ) ;
 		} ) ;
 		
-		it( "zzz intersection with an infinite cylinder" , function() {
+		it( "line intersection with an infinite cylinder" , function() {
 			var cylinder , line , projected ;
 			
 			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
@@ -1432,6 +1432,40 @@ describe( "Geometry" , function() {
 				{ x: 0 , y: 0 , z: 1.7247448713915892 } ,
 				{ x: 0 , y: 0 , z: -0.7247448713915893 }
 			] ) ;
+		} ) ;
+		
+		it( "plane intersection with an infinite cylinder" , function() {
+			var cylinder , plane , intersection ;
+			
+			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 1 ) ;
+			intersection = cylinder.planeIntersectionWithCylinder( plane ) ;
+			expect( intersection ).to.be.a( Circle3D ) ;
+			expect( intersection ).to.eql( { x: 0, y: 0, z: 0, r: 1, planeNormal: { x: 0, y: 0, z: 1 } } ) ;
+			
+			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			plane = Plane3D.fromNormal( 0 , 0 , -20 , 0 , 0 , 1 ) ;
+			intersection = cylinder.planeIntersectionWithCylinder( plane ) ;
+			expect( intersection ).to.be.a( Circle3D ) ;
+			expect( intersection ).to.eql( { x: 0, y: 0, z: -20, r: 1, planeNormal: { x: 0, y: 0, z: 1 } } ) ;
+			
+			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			plane = Plane3D.fromNormal( 0 , 0 , 2 , 1 , 0 , 1 ) ;
+			intersection = cylinder.planeIntersectionWithCylinder( plane ) ;
+			//console.log( intersection ) ;
+			expect( intersection ).to.be.a( Ellipse3D ) ;
+			expectCirca( intersection.x , 0 ) ;
+			expectCirca( intersection.y , 0 ) ;
+			expectCirca( intersection.z , 2 ) ;
+			expectCirca( intersection.c , 1 ) ;
+			expectCirca( intersection.e , Math.SQRT1_2 ) ;
+			expectCirca( intersection.semiMajor , Math.SQRT2 ) ;
+			expectCirca( intersection.semiMinor , 1 ) ;
+			expectCirca( intersection.planeNormal.x , Math.SQRT1_2 ) ;
+			expectCirca( intersection.planeNormal.y , 0 ) ;
+			expectCirca( intersection.planeNormal.z , Math.SQRT1_2 ) ;
+			expect( intersection.focus1 ).to.eql( { x: -0.7071067811865476, y: 0, z: 2.7071067811865475 } ) ;
+			expect( intersection.focus2 ).to.eql( { x: 0.7071067811865476, y: 0, z: 1.2928932188134525 } ) ;
 		} ) ;
 	} ) ;
 	
