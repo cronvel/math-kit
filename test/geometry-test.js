@@ -1312,12 +1312,12 @@ describe( "Geometry" , function() {
 			plane = Plane3D.fromNormal( 0 , 0 , 1 , 0 , 0 , 1 ) ;
 			circle = sphere.planeIntersection( plane ) ;
 			expect( circle ).to.be.a( Circle3D ) ;
-			expect( circle ).to.eql( { x: 0, y: 0, z: 1, r: 1.7320508075688772, planeNormal: { x: 0, y: 0, z: 1 } } ) ;
+			expect( circle ).to.eql( { center: { x: 0, y: 0, z: 1 }, r: 1.7320508075688772, planeNormal: { x: 0, y: 0, z: 1 } } ) ;
 			
 			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , 1 , 1 , 0 , 1 ) ;
 			circle = sphere.planeIntersection( plane ) ;
-			expect( circle ).to.eql( { x: 0.5, y: 0, z: 0.5, r: 1.8708286933869707, planeNormal: { x: 0.7071067811865475, y: 0, z: 0.7071067811865475 } } ) ;
+			expect( circle ).to.eql( { center: { x: 0.5, y: 0, z: 0.5 } , r: 1.8708286933869707, planeNormal: { x: 0.7071067811865475, y: 0, z: 0.7071067811865475 } } ) ;
 			
 			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
 			plane = Plane3D.fromNormal( 0 , 5 , 5 , 1 , 0 , 1 ) ;
@@ -1441,22 +1441,22 @@ describe( "Geometry" , function() {
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 1 ) ;
 			intersection = cylinder.planeIntersectionWithCylinder( plane ) ;
 			expect( intersection ).to.be.a( Circle3D ) ;
-			expect( intersection ).to.eql( { x: 0, y: 0, z: 0, r: 1, planeNormal: { x: 0, y: 0, z: 1 } } ) ;
+			expect( intersection ).to.eql( { center: { x: 0, y: 0, z: 0 }, r: 1, planeNormal: { x: 0, y: 0, z: 1 } } ) ;
 			
 			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , -20 , 0 , 0 , 1 ) ;
 			intersection = cylinder.planeIntersectionWithCylinder( plane ) ;
 			expect( intersection ).to.be.a( Circle3D ) ;
-			expect( intersection ).to.eql( { x: 0, y: 0, z: -20, r: 1, planeNormal: { x: 0, y: 0, z: 1 } } ) ;
+			expect( intersection ).to.eql( { center: { x: 0, y: 0, z: -20 }, r: 1, planeNormal: { x: 0, y: 0, z: 1 } } ) ;
 			
 			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , 2 , 1 , 0 , 1 ) ;
 			intersection = cylinder.planeIntersectionWithCylinder( plane ) ;
 			//console.log( intersection ) ;
 			expect( intersection ).to.be.a( Ellipse3D ) ;
-			expectCirca( intersection.x , 0 ) ;
-			expectCirca( intersection.y , 0 ) ;
-			expectCirca( intersection.z , 2 ) ;
+			expectCirca( intersection.center.x , 0 ) ;
+			expectCirca( intersection.center.y , 0 ) ;
+			expectCirca( intersection.center.z , 2 ) ;
 			expectCirca( intersection.c , 1 ) ;
 			expectCirca( intersection.e , Math.SQRT1_2 ) ;
 			expectCirca( intersection.semiMajor , Math.SQRT2 ) ;
