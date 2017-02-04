@@ -720,15 +720,15 @@ describe( "Geometry" , function() {
 			expect( v1.projectionLengthOf( v2 ) ).to.be( 1.979898987322333 ) ;
 			expect( v1.projectionValueOf( v2 ) ).to.be( 1.979898987322333 ) ;
 			expect( v1.projectionOf( v2 ) ).to.eql( { x: 0.8400000000000001 , y: 1.12 , z: 1.4000000000000001 } ) ;
-			expect( v1.projectionOf( v2 ).add( v1.projectionRemainderOf( v2 ) ).isEqualTo( v2 ) ).to.be( true ) ;
-			expect( v1.projectionRemainderOf( v2 ) ).to.eql( { x: 3.16 , y: 1.88 , z: -3.4000000000000004 } ) ;
+			expect( v1.projectionOf( v2 ).add( v1.diffProjectionOf( v2 ) ).isEqualTo( v2 ) ).to.be( true ) ;
+			expect( v1.diffProjectionOf( v2 ) ).to.eql( { x: 3.16 , y: 1.88 , z: -3.4000000000000004 } ) ;
 			
 			v2.inv() ;
 			expect( v1.projectionLengthOf( v2 ) ).to.be( 1.979898987322333 ) ;
 			expect( v1.projectionValueOf( v2 ) ).to.be( -1.979898987322333 ) ;
 			expect( v1.projectionOf( v2 ) ).to.eql( { x: -0.8400000000000001 , y: -1.12 , z: -1.4000000000000001 } ) ;
-			expect( v1.projectionOf( v2 ).add( v1.projectionRemainderOf( v2 ) ).isEqualTo( v2 ) ).to.be( true ) ;
-			expect( v1.projectionRemainderOf( v2 ) ).to.eql( { x: -3.16 , y: -1.88 , z: 3.4000000000000004 } ) ;
+			expect( v1.projectionOf( v2 ).add( v1.diffProjectionOf( v2 ) ).isEqualTo( v2 ) ).to.be( true ) ;
+			expect( v1.diffProjectionOf( v2 ) ).to.eql( { x: -3.16 , y: -1.88 , z: 3.4000000000000004 } ) ;
 		} ) ;
 		
 		it( "decompose" , function() {
