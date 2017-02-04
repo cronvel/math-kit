@@ -579,12 +579,23 @@ describe( "Geometry" , function() {
 			expectCirca( line.pointDistance( Vector2D( 6 , 1 ) ) , Math.sqrt( 5 ) ) ;
 		} ) ;
 		
-		it( "intersection" , function() {
+		it( "zzz intersection" , function() {
 			var bv1 = BoundVector2D( 2 , 1 , 2 , 1 ) ;
 			var bv2 = BoundVector2D( 4 , 6 , 2 , -3 ) ;
 			var vi = bv1.lineIntersection( bv2 ) ;
 			expect( vi ).to.be.an( Vector2D ) ;
 			expect( vi ).to.eql( { x: 6 , y: 3 } ) ;
+			
+			bv1 = BoundVector2D( 2 , 1 , 0 , 2 ) ;
+			bv2 = BoundVector2D( 4 , 6 , 1 , 0 ) ;
+			//vi = bv1.dup().normalize().lineIntersection( bv2 , 1 ) ;
+			vi = bv1.lineIntersection( bv2 ) ;
+			expect( vi ).to.eql( { x: 2 , y: 6 } ) ;
+			
+			bv1 = BoundVector2D( 2 , 1 , 0 , 2 ) ;
+			bv2 = BoundVector2D( 4 , 6 , 1 , 0 ) ;
+			vi = bv1.dup().normalize().lineIntersection( bv2 , 1 ) ;
+			expect( vi ).to.eql( { x: 1 , y: 6 } ) ;
 		} ) ;
 		
 		it( "projection of a point" , function() {
