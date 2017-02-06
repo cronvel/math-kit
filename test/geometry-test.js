@@ -45,6 +45,7 @@ var Sphere3D = geo.Sphere3D ;
 var Plane3D = geo.Plane3D ;
 var Circle3D = geo.Circle3D ;
 var Ellipse3D = geo.Ellipse3D ;
+var InfiniteCylinder3D = geo.InfiniteCylinder3D ;
 var expect = require( 'expect.js' ) ;
 //geo.setFastMode( true ) ;
 
@@ -1367,82 +1368,87 @@ describe( "Geometry" , function() {
 			point = Vector3D( 3 , 0 , 1 ) ;
 			expect( circle.pointProjection( point ) ).to.eql( { x: 0.7071067811865475 , y: 0 , z: 1.2928932188134525 } ) ;
 		} ) ;
-		
+	} ) ;
+	
+	
+	
+	describe( "InfiniteCylinder3D" , function() {
+	
 		it( "projection of a point on an infinite cylinder" , function() {
 			var cylinder , point ;
 			
-			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			point = Vector3D( 0 , 0 , 0 ) ;
-			expect( cylinder.pointProjectionOnCylinder( point ).isUndefined() ).to.be( true ) ;
+			expect( cylinder.pointProjection( point ).isUndefined() ).to.be( true ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
 			point = Vector3D( 5 , 0 , 0 ) ;
-			expect( cylinder.pointProjectionOnCylinder( point ) ).to.eql( { x: 1 , y: 0 , z: 0 } ) ;
+			expect( cylinder.pointProjection( point ) ).to.eql( { x: 1 , y: 0 , z: 0 } ) ;
 			
-			cylinder = Circle3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
 			point = Vector3D( 5 , 0 , 0 ) ;
-			expect( cylinder.pointProjectionOnCylinder( point ) ).to.eql( { x: 4 , y: 0 , z: 0 } ) ;
+			expect( cylinder.pointProjection( point ) ).to.eql( { x: 4 , y: 0 , z: 0 } ) ;
 			
-			cylinder = Circle3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
 			point = Vector3D( 5 , 0 , -7 ) ;
-			expect( cylinder.pointProjectionOnCylinder( point ) ).to.eql( { x: 4 , y: 0 , z: -7 } ) ;
+			expect( cylinder.pointProjection( point ) ).to.eql( { x: 4 , y: 0 , z: -7 } ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , Math.SQRT2 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , Math.SQRT2 ) ;
 			point = Vector3D( 3 , 0 , 1 ) ;
-			expect( cylinder.pointProjectionOnCylinder( point ) ).to.eql( { x: 2 , y: 0 , z: 2 } ) ;
+			expect( cylinder.pointProjection( point ) ).to.eql( { x: 2 , y: 0 , z: 2 } ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.SQRT2 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.SQRT2 ) ;
 			point = Vector3D( 3 , 0 , 1 ) ;
-			expect( cylinder.pointProjectionOnCylinder( point ) ).to.eql( { x: 3 , y: 0 , z: 1 } ) ;
+			expect( cylinder.pointProjection( point ) ).to.eql( { x: 3 , y: 0 , z: 1 } ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , 1 ) ;
 			point = Vector3D( 3 , 0 , 1 ) ;
-			expect( cylinder.pointProjectionOnCylinder( point ) ).to.eql( { x: 1.7071067811865475 , y: 0 , z: 2.2928932188134525 } ) ;
+			expect( cylinder.pointProjection( point ) ).to.eql( { x: 1.7071067811865475 , y: 0 , z: 2.2928932188134525 } ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.SQRT2 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.SQRT2 ) ;
 			point = Vector3D( 3 , 1 , 1 ) ;
-			expect( cylinder.pointProjectionOnCylinder( point ) ).to.eql( { x: 2.885618083164127 , y: 0.9428090415820635 , z: 1.114381916835873 } ) ;
+			expect( cylinder.pointProjection( point ) ).to.eql( { x: 2.885618083164127 , y: 0.9428090415820635 , z: 1.114381916835873 } ) ;
 		} ) ;
 		
 		it( "line intersection with an infinite cylinder" , function() {
 			var cylinder , line , projected ;
 			
-			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			line = BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
-			expect( cylinder.lineIntersectionWithCylinder( line ) ).to.be( null ) ;
+			expect( cylinder.lineIntersection( line ) ).to.be( null ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			line = BoundVector3D( 0 , 0 , 0 , 1 , 0 , 0 ) ;
-			expect( cylinder.lineIntersectionWithCylinder( line ) ).to.eql( [ { x: 1 , y: 0 , z: 0 } , { x: -1 , y: 0 , z: 0 } ] ) ;
+			expect( cylinder.lineIntersection( line ) ).to.eql( [ { x: 1 , y: 0 , z: 0 } , { x: -1 , y: 0 , z: 0 } ] ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			line = BoundVector3D( 0 , 0 , 10 , 1 , 0 , 0 ) ;
-			expect( cylinder.lineIntersectionWithCylinder( line ) ).to.eql( [ { x: 1 , y: 0 , z: 10 } , { x: -1 , y: 0 , z: 10 } ] ) ;
+			expect( cylinder.lineIntersection( line ) ).to.eql( [ { x: 1 , y: 0 , z: 10 } , { x: -1 , y: 0 , z: 10 } ] ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			line = BoundVector3D( 0 , 0 , 0 , 1 , 1 , 1 ) ;
-			expect( cylinder.lineIntersectionWithCylinder( line ) ).to.eql( [
+			expect( cylinder.lineIntersection( line ) ).to.eql( [
 				{ x: Math.SQRT1_2 , y: Math.SQRT1_2 , z: Math.SQRT1_2 } ,
 				{ x: -Math.SQRT1_2 , y: -Math.SQRT1_2 , z: -Math.SQRT1_2 }
 			] ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 0 , -1 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , -1 , 0 , 1 , 1 ) ;
 			line = BoundVector3D( 0 , 0 , 0 , 1 , 1 , 1 ) ;
-			expect( cylinder.lineIntersectionWithCylinder( line ) ).to.eql( [
+			expect( cylinder.lineIntersection( line ) ).to.eql( [
 				{ x: 0.5773502691896258 , y: 0.5773502691896258 , z: 0.5773502691896258 } ,
 				{ x: -0.5773502691896258 , y: -0.5773502691896258 , z: -0.5773502691896258 }
 			] ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 0 , -1 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , -1 , 0 , 1 , 1 ) ;
 			line = BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
-			expect( cylinder.lineIntersectionWithCylinder( line ) ).to.eql( [
+			expect( cylinder.lineIntersection( line ) ).to.eql( [
 				{ x: 0 , y: 0 , z: Math.SQRT2 } ,
 				{ x: 0 , y: 0 , z: -Math.SQRT2 }
 			] ) ;
 			
-			cylinder = Circle3D( 0.5 , 0.5 , 0 , -1 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0.5 , 0.5 , 0 , -1 , 0 , 1 , 1 ) ;
 			line = BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
-			expect( cylinder.lineIntersectionWithCylinder( line ) ).to.eql( [
+			expect( cylinder.lineIntersection( line ) ).to.eql( [
 				{ x: 0 , y: 0 , z: 1.7247448713915892 } ,
 				{ x: 0 , y: 0 , z: -0.7247448713915893 }
 			] ) ;
@@ -1451,21 +1457,21 @@ describe( "Geometry" , function() {
 		it( "plane intersection with an infinite cylinder" , function() {
 			var cylinder , plane , intersection ;
 			
-			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 1 ) ;
-			intersection = cylinder.planeIntersectionWithCylinder( plane ) ;
+			intersection = cylinder.planeIntersection( plane ) ;
 			expect( intersection ).to.be.a( Circle3D ) ;
 			expect( intersection ).to.eql( { center: { x: 0, y: 0, z: 0 }, r: 1, planeNormal: { x: 0, y: 0, z: 1 } } ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , -20 , 0 , 0 , 1 ) ;
-			intersection = cylinder.planeIntersectionWithCylinder( plane ) ;
+			intersection = cylinder.planeIntersection( plane ) ;
 			expect( intersection ).to.be.a( Circle3D ) ;
 			expect( intersection ).to.eql( { center: { x: 0, y: 0, z: -20 }, r: 1, planeNormal: { x: 0, y: 0, z: 1 } } ) ;
 			
-			cylinder = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , 2 , 1 , 0 , 1 ) ;
-			intersection = cylinder.planeIntersectionWithCylinder( plane ) ;
+			intersection = cylinder.planeIntersection( plane ) ;
 			//console.log( intersection ) ;
 			expect( intersection ).to.be.a( Ellipse3D ) ;
 			expectCirca( intersection.center.x , 0 ) ;
