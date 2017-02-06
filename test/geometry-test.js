@@ -580,7 +580,7 @@ describe( "Geometry" , function() {
 			expectCirca( line.pointDistance( Vector2D( 6 , 1 ) ) , Math.sqrt( 5 ) ) ;
 		} ) ;
 		
-		it( "zzz intersection" , function() {
+		it( "intersection" , function() {
 			var bv1 = BoundVector2D( 2 , 1 , 2 , 1 ) ;
 			var bv2 = BoundVector2D( 4 , 6 , 2 , -3 ) ;
 			var vi = bv1.lineIntersection( bv2 ) ;
@@ -981,6 +981,15 @@ describe( "Geometry" , function() {
 			line1 = BoundVector3D( -2 , 0 , 0 , 1 , 1 , 1 ) ;
 			line2 = BoundVector3D( 1 , 0 , 0 , 0 , -1 , 1 ) ;
 			expect( line1.shortestSegmentToLine( line2 ) ).to.eql( { position: { x: -1, y: 1, z: 1 } , vector: { x: 2, y: -1, z: -1 } } ) ;
+			
+			// Collinear lines
+			line1 = BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
+			line2 = BoundVector3D( 3 , 0 , 0 , 0 , 0 , 1 ) ;
+			expect( line1.shortestSegmentToLine( line2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 } , vector: { x: 3, y: 0, z: 0 } } ) ;
+			
+			line1 = BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
+			line2 = BoundVector3D( 3 , 0 , 0 , 0 , 0 , -1 ) ;
+			expect( line1.shortestSegmentToLine( line2 ) ).to.eql( { position: { x: 0, y: 0, z: 0 } , vector: { x: 3, y: 0, z: 0 } } ) ;
 		} ) ;
 	} ) ;
 
