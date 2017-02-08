@@ -179,6 +179,55 @@ describe( "Circle" , function() {
 describe( "Ellipse" , function() {
 
 	it( "Ellipse random shortest point" , function( done ) {
+		var i , test , tries = 200 , size = 600 , v ;
+		
+		var img = gm( size , size , "#000" ) ;
+		var position = Vector2D() ;
+		var projected ;
+		
+		img.fill( "#fff6" ) ;
+		
+		var semiMajor = rng.random( size / 5 , size / 3 ) ;
+		var semiMinor = rng.random( semiMajor ) ;
+		//var majorAxis = Vector2D( v = rng.random( - 100 , 100 ) , v ) ;
+		var majorAxis = Vector2D( rng.random( - 100 , 100 ) , rng.random( - 100 , 100 ) ) ;
+		//var majorAxis = Vector2D( 1 , 0 ) ;
+		
+		console.log( 'Axis size:' , semiMajor , semiMinor ) ;
+		
+		var ellipse = Ellipse2D( size / 2 , size / 2 , majorAxis.x , majorAxis.y , semiMajor , semiMinor ) ;
+		
+		img.stroke( "#0f0" ) ;
+		trace( img , ellipse.tracer( 1 ) ) ;
+		
+		for ( i = 0 ; i < tries ; i ++ )
+		{
+			position.set(
+				rng.random( 1 , size - 1 ) ,
+				rng.random( 1 , size - 1 )
+				//v = rng.random( 1 , size - 1 ) , v
+			) ;
+			//console.log( v ) ;
+			
+			projected = ellipse.pointProjection( position ) ;
+			//console.log( '#' + i , position , projected ) ;
+			
+			if ( ! projected.x || ! projected.y )
+			{
+				console.log( 'Null vector?' , projected ) ;
+				continue ;
+			}
+			
+			test = ellipse.testVector( position ) ;
+			img.stroke( test > 0 ? '#ff8' : '#8ff' ) ;
+			img.drawLine( position.x , position.y , projected.x , projected.y ) ;
+			//img.drawPoint( projected.x , projected.y ) ;
+		}
+		
+		img.write( __dirname + "/ellipse-point-projection.png" , done ) ;
+	} ) ;
+
+	it( "Ellipse projection toward center" , function( done ) {
 		var i , test , tries = 200 , size = 600 ;
 		
 		var img = gm( size , size , "#000" ) ;
@@ -206,7 +255,7 @@ describe( "Ellipse" , function() {
 				rng.random( 1 , size - 1 )
 			) ;
 			
-			projected = ellipse.pointProjection( position ) ;
+			projected = ellipse.pointProjectionTowardCenter( position ) ;
 			//console.log( '#' + i , position , projected ) ;
 			
 			if ( ! projected.x || ! projected.y )
@@ -221,7 +270,7 @@ describe( "Ellipse" , function() {
 			//img.drawPoint( projected.x , projected.y ) ;
 		}
 		
-		img.write( __dirname + "/ellipse-point-projection.png" , done ) ;
+		img.write( __dirname + "/ellipse-point-projection-toward-center.png" , done ) ;
 	} ) ;
 
 	it( "Ellipse intersection" , function( done ) {
