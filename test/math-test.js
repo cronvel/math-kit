@@ -98,8 +98,6 @@ describe( "math.isOrdered()" , function() {
 
 describe( "math.isGreater()" , function() {
 	
-	expect( math.isGreaterOrEquals( [ 2 , 5 ] , [ 2 , 5 , 0 ] ) ).to.be.ok() ;
-	
 	it( "test with values" , function() {
 		expect( math.isGreater( 2.1 , 2.5 ) ).not.to.be.ok() ;
 		expect( math.isGreater( 2.7 , 2.5 ) ).to.be.ok() ;
@@ -125,6 +123,21 @@ describe( "math.isGreater()" , function() {
 		expect( math.isGreaterOrEquals( [ 2 , 5 ] , [ 2 , 5 ] ) ).to.be.ok() ;
 		expect( math.isGreaterOrEquals( [ 2 , 5 , 0 ] , [ 2 , 5 ] ) ).to.be.ok() ;
 		expect( math.isGreaterOrEquals( [ 2 , 5 ] , [ 2 , 5 , 0 ] ) ).to.be.ok() ;
+	} ) ;
+} ) ;
+
+
+
+describe( "math.Fn()" , function() {
+	
+	it( "zzz" , function() {
+		var fn = math.Fn.create( [
+			{ x: 0, fx: 0 } ,
+			{ x: 1, fx: 1 } ,
+			{ x: 2, fx: 0 }
+		] ) ;
+		
+		console.log( fn ) ;
 	} ) ;
 } ) ;
 
