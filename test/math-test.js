@@ -130,14 +130,14 @@ describe( "math.isGreater()" , function() {
 
 describe( "math.Fn()" , function() {
 	
-	it( "xxx simple fn 1" , function() {
+	it( "simple fn 1" , function() {
 		var fn = math.Fn.create( [
 			{ x: 0, fx: 0 } ,
 			{ x: 1, fx: 1 } ,
 			{ x: 2, fx: 0 }
 		] ) ;
 		
-		console.log( fn ) ;
+		//console.log( fn ) ;
 		
 		// Out of bounds
 		expect( Number.isNaN( fn.fx( -1 ) ) ).to.ok() ;
@@ -161,9 +161,9 @@ describe( "math.Fn()" , function() {
 			{ x: 1, fx: 1 } ,
 			{ x: 2, fx: 1 } ,
 			{ x: 3, fx: 2 }
-		] ) ;
+		] , { preserveExtrema: true } ) ;
 		
-		console.log( fn ) ;
+		//console.log( fn ) ;
 		
 		// Out of bounds
 		expect( Number.isNaN( fn.fx( -1 ) ) ).to.ok() ;
@@ -182,7 +182,7 @@ describe( "math.Fn()" , function() {
 		expect( fn.fx( 1.5 ) ).to.be( 1 ) ;
 	} ) ;
 	
-	it( "zzz simple fn 3" , function() {
+	it( "simple fn 3" , function() {
 		var fn = math.Fn.create( [
 			{ x: 0, fx: 0 } ,
 			{ x: 2, fx: 2 } ,
@@ -190,7 +190,7 @@ describe( "math.Fn()" , function() {
 			{ x: 6, fx: 3 }
 		] ) ;
 		
-		console.log( fn ) ;
+		//console.log( fn ) ;
 		
 		// Out of bounds
 		expect( Number.isNaN( fn.fx( -1 ) ) ).to.ok() ;
@@ -198,15 +198,14 @@ describe( "math.Fn()" , function() {
 		
 		// Exact match
 		expect( fn.fx( 0 ) ).to.be( 0 ) ;
-		expect( fn.fx( 1 ) ).to.be( 1 ) ;
-		expect( fn.fx( 2 ) ).to.be( 1 ) ;
-		expect( fn.fx( 3 ) ).to.be( 2 ) ;
+		expect( fn.fx( 2 ) ).to.be( 2 ) ;
+		expect( fn.fx( 4 ) ).to.be( 1 ) ;
+		expect( fn.fx( 6 ) ).to.be( 3 ) ;
 		
 		// Interpoled
-		expect( fn.fx( 0.5 ) ).to.be( 0.75 ) ;
-		expect( fn.fx( 0.75 ) ).to.be( 15/16 ) ;
-		expect( fn.fx( 1.25 ) ).to.be( 1 ) ;
-		expect( fn.fx( 1.5 ) ).to.be( 1 ) ;
+		expect( fn.fx( 1 ) ).to.be( 1.375 ) ;
+		expect( fn.fx( 3 ) ).to.be( 1.5 ) ;
+		expect( fn.fx( 5 ) ).to.be( 1.625 ) ;
 	} ) ;
 } ) ;
 
