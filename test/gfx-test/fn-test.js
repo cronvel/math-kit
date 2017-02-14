@@ -40,11 +40,9 @@ var Vector2D = geo.Vector2D ;
 
 var gm = require( 'gm' ) ;
 
-/*
 var random = math.random ;
 var rng = new math.random.MersenneTwister() ;
 rng.seed() ;
-*/
 
 
 
@@ -65,8 +63,28 @@ function trace( img , gen )
 	while ( ! ( r = gen.next() ).done )
 	{
 		pos = r.value ;
-		img.drawLine( lastPos.x , lastPos.y , pos.x , pos.y ) ;
+		
+		if ( ! lastPos.isUndefined() && ! pos.isUndefined() )
+		{
+			//console.log( pos ) ;
+			img.drawLine( lastPos.x , img.__height__ - lastPos.y , pos.x , img.__height__ - pos.y ) ;
+		}
+		
 		lastPos.setVector( pos ) ;
+	}
+}
+
+
+
+function traceCps( img , cps )
+{
+	//return ;
+	var i , len = cps.length , cp ;
+	
+	for ( i = 0 ; i < len ; i ++ )
+	{
+		cp = cps[ i ] ;
+		img.drawCircle( cp.x , img.__height__ - cp.fx , cp.x + 4 , img.__height__ - cp.fx + 4 ) ;
 	}
 }
 
@@ -81,36 +99,135 @@ function trace( img , gen )
 describe( "Fn" , function() {
 
 	it( "Simple fn" , function( done ) {
-		var i , test , tries = 200 , size = 600 ;
+		var size = 600 ;
 		
 		var img = gm( size , size , "#000" ) ;
-		var position = Vector2D() ;
-		var projected ;
+		
+		img.__width__ = size ;
+		img.__height__ = size ;
 		
 		img.fill( "#fff6" ) ;
 		
-		var circle = Circle2D( size / 2 , size / 2 , size / 3 ) ;
+		var fn = math.Fn.create( [
+			{ x: 100, fx: 100 } ,
+			{ x: 300, fx: 500 } ,
+			{ x: 500, fx: 100 }
+		] ) ;
 		
 		img.stroke( "#0f0" ) ;
-		trace( img , circle.tracer( 1 ) ) ;
+		trace( img , fn.tracer( 1 , 1 , size ) ) ;
+		img.stroke( '#ad0' ) ;
+		traceCps( img , fn.controlePoints ) ;
 		
-		img.stroke( "#fff" ) ;
+		img.write( __dirname + "/simple-fn.png" , done ) ;
+	} ) ;
+
+	it( "Simple fn2" , function( done ) {
+		var size = 600 ;
 		
-		for ( i = 0 ; i < tries ; i ++ )
+		var img = gm( size , size , "#000" ) ;
+		
+		img.__width__ = size ;
+		img.__height__ = size ;
+		
+		img.fill( "#fff6" ) ;
+		
+		var fn = math.Fn.create( [
+			{ x: 100, fx: 100 } ,
+			{ x: 200, fx: 300 } ,
+			{ x: 400, fx: 300 } ,
+			{ x: 500, fx: 500 }
+		] ) ;
+		
+		img.stroke( "#0f0" ) ;
+		trace( img , fn.tracer( 1 , 1 , size ) ) ;
+		img.stroke( '#ad0' ) ;
+		traceCps( img , fn.controlePoints ) ;
+		
+		img.write( __dirname + "/simple-fn2.png" , done ) ;
+	} ) ;
+
+	it( "Simple fn3" , function( done ) {
+		var size = 600 ;
+		
+		var img = gm( size , size , "#000" ) ;
+		
+		img.__width__ = size ;
+		img.__height__ = size ;
+		
+		img.fill( "#fff6" ) ;
+		
+		var fn = math.Fn.create( [
+			{ x: 100, fx: 100 } ,
+			{ x: 200, fx: 350 } ,
+			{ x: 400, fx: 250 } ,
+			{ x: 500, fx: 500 }
+		] ) ;
+		
+		img.stroke( "#0f0" ) ;
+		trace( img , fn.tracer( 1 , 1 , size ) ) ;
+		img.stroke( '#ad0' ) ;
+		traceCps( img , fn.controlePoints ) ;
+		
+		img.write( __dirname + "/simple-fn3.png" , done ) ;
+	} ) ;
+
+	it( "Simple fn4" , function( done ) {
+		var size = 600 ;
+		
+		var img = gm( size , size , "#000" ) ;
+		
+		img.__width__ = size ;
+		img.__height__ = size ;
+		
+		img.fill( "#fff6" ) ;
+		
+		var fn = math.Fn.create( [
+			{ x: 0, fx: 250 } ,
+			{ x: 100, fx: 300 } ,
+			{ x: 200, fx: 400 } ,
+			{ x: 300, fx: 470 } ,
+			{ x: 400, fx: 490 } ,
+			{ x: 500, fx: 400 } ,
+			{ x: 600, fx: 350 } ,
+		] ) ;
+		
+		img.stroke( "#0f0" ) ;
+		trace( img , fn.tracer( 1 , 1 , size ) ) ;
+		img.stroke( '#ad0' ) ;
+		traceCps( img , fn.controlePoints ) ;
+		
+		img.write( __dirname + "/simple-fn4.png" , done ) ;
+	} ) ;
+
+	it( "Random fn" , function( done ) {
+		var size = 600 ;
+		
+		var img = gm( size , size , "#000" ) ;
+		
+		img.__width__ = size ;
+		img.__height__ = size ;
+		
+		img.fill( "#fff6" ) ;
+		
+		var i , array = [] ;
+		
+		for ( i = 0 ; i <= size ; i += rng.random( 10 , 80 ) )
 		{
-			position.set(
-				rng.random( 1 , size - 1 ) ,
-				rng.random( 1 , size - 1 )
-			) ;
-			
-			projected = circle.pointProjection( position ) ;
-			
-			test = circle.testVector( position ) ;
-			img.stroke( test > 0 ? '#ff8' : '#8ff' ) ;
-			img.drawLine( position.x , position.y , projected.x , projected.y ) ;
+			array.push( {
+				x: i ,
+				fx: rng.random( 0 , 600 )
+			} ) ;
 		}
 		
-		img.write( __dirname + "/circle-point-projection.png" , done ) ;
+		var fn = math.Fn.create( array , { preserveExtrema: false , atanMeanSlope: true } ) ;
+		
+		img.stroke( "#0f0" ) ;
+		trace( img , fn.tracer( 1 , 1 , size ) ) ;
+		img.stroke( '#ad0' ) ;
+		traceCps( img , fn.controlePoints ) ;
+		
+		img.write( __dirname + "/random-fn.png" , done ) ;
 	} ) ;
 } ) ;
 
