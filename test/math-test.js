@@ -138,6 +138,18 @@ describe( "math.Fn()" , function() {
 		] ) ;
 		
 		console.log( fn ) ;
+		
+		// Out of bounds
+		expect( Number.isNaN( fn.fx( -1 ) ) ).to.ok() ;
+		expect( Number.isNaN( fn.fx( 3 ) ) ).to.ok() ;
+		
+		// Exact match
+		expect( fn.fx( 0 ) ).to.be( 0 ) ;
+		expect( fn.fx( 1 ) ).to.be( 1 ) ;
+		expect( fn.fx( 2 ) ).to.be( 0 ) ;
+		
+		// Interpoled
+		expect( fn.fx( 0.25 ) ).to.be( 0 ) ;
 	} ) ;
 } ) ;
 
