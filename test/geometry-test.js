@@ -71,38 +71,38 @@ describe( "Geometry" , () => {
 	describe( "Vector2D" , () => {
 
 		it( "constructor" , () => {
-			expect( Vector2D( 3 , 4 ) ).to.be.like( { x: 3 , y: 4 } ) ;
-			expect( Number.isNaN( Vector2D().x ) ).to.be( true ) ;
-			expect( Number.isNaN( Vector2D().y ) ).to.be( true ) ;
+			expect( new Vector2D( 3 , 4 ) ).to.be.like( { x: 3 , y: 4 } ) ;
+			expect( Number.isNaN( new Vector2D().x ) ).to.be( true ) ;
+			expect( Number.isNaN( new Vector2D().y ) ).to.be( true ) ;
 		} ) ;
 
 		it( "from/to constructor" , () => {
-			expect( Vector2D.fromTo( Vector2D( 3 , 4 ) , Vector2D( 8 , 2 ) ) ).to.be.like( { x: 5 , y: -2 } ) ;
+			expect( Vector2D.fromTo( new Vector2D( 3 , 4 ) , new Vector2D( 8 , 2 ) ) ).to.be.like( { x: 5 , y: -2 } ) ;
 		} ) ;
 
 		it( "undefined vector" , () => {
-			expect( Vector2D().undefined ).to.be( true ) ;
-			expect( Vector2D( NaN , NaN ).undefined ).to.be( true ) ;
-			expect( Vector2D( undefined , 4 ).undefined ).to.be( true ) ;
-			expect( Vector2D( 3 , undefined ).undefined ).to.be( true ) ;
-			expect( Vector2D( 3 , 4 ).undefined ).to.be( false ) ;
+			expect( new Vector2D().undefined ).to.be( true ) ;
+			expect( new Vector2D( NaN , NaN ).undefined ).to.be( true ) ;
+			expect( new Vector2D( undefined , 4 ).undefined ).to.be( true ) ;
+			expect( new Vector2D( 3 , undefined ).undefined ).to.be( true ) ;
+			expect( new Vector2D( 3 , 4 ).undefined ).to.be( false ) ;
 
-			var v1 = Vector2D( 3 , 4 ) ;
+			var v1 = new Vector2D( 3 , 4 ) ;
 			v1.undefined = true ;
 			expect( Number.isNaN( v1.x ) ).to.be( true ) ;
 			expect( Number.isNaN( v1.y ) ).to.be( true ) ;
 		} ) ;
 
 		it( "duplicate" , () => {
-			var v1 = Vector2D( 3 , 4 ) ;
+			var v1 = new Vector2D( 3 , 4 ) ;
 			expect( v1.dup() ).not.to.be( v1 ) ;
 			expect( v1.dup() ).to.be.like( { x: 3 , y: 4 } ) ;
 		} ) ;
 
 		it( "addition" , () => {
-			var v1 = Vector2D( 3 , 4 ) ;
-			var v2 = Vector2D( 5 , 7 ) ;
-			var v3 = Vector2D( 2 , 1 ) ;
+			var v1 = new Vector2D( 3 , 4 ) ;
+			var v2 = new Vector2D( 5 , 7 ) ;
+			var v3 = new Vector2D( 2 , 1 ) ;
 			expect( v1.dup().add( v2 ) ).to.be.like( { x: 8 , y: 11 } ) ;
 			expect( v1.dup().addMulti( v2 , v3 ) ).to.be.like( { x: 10 , y: 12 } ) ;
 		} ) ;
@@ -110,20 +110,20 @@ describe( "Geometry" , () => {
 		it( "apply" ) ;
 
 		it( "substract" , () => {
-			var v1 = Vector2D( 3 , 4 ) ;
-			var v2 = Vector2D( 2 , 1 ) ;
+			var v1 = new Vector2D( 3 , 4 ) ;
+			var v2 = new Vector2D( 2 , 1 ) ;
 			expect( v1.dup().sub( v2 ) ).to.be.like( { x: 1 , y: 3 } ) ;
 		} ) ;
 
 		it( "multiply" , () => {
-			var v1 = Vector2D( 3 , 4 ) ;
+			var v1 = new Vector2D( 3 , 4 ) ;
 			expect( v1.dup().mul( 3 ) ).to.be.like( { x: 9 , y: 12 } ) ;
 			expect( v1.dup().mul( -3 ) ).to.be.like( { x: -9 , y: -12 } ) ;
 			expect( v1.dup().mul( 0 ) ).to.be.like( { x: 0 , y: 0 } ) ;
 		} ) ;
 
 		it( "divide" , () => {
-			var v1 = Vector2D( 3 , 4 ) ;
+			var v1 = new Vector2D( 3 , 4 ) ;
 			expect( v1.dup().div( 4 ) ).to.be.like( { x: 0.75 , y: 1 } ) ;
 			expect( v1.dup().div( -4 ) ).to.be.like( { x: -0.75 , y: -1 } ) ;
 			expect( v1.dup().div( 0 ) ).to.be.like( { x: Infinity , y: Infinity } ) ;
@@ -131,12 +131,12 @@ describe( "Geometry" , () => {
 		} ) ;
 
 		it( "inverse" , () => {
-			var v1 = Vector2D( 3 , 4 ) ;
+			var v1 = new Vector2D( 3 , 4 ) ;
 			expect( v1.dup().inv() ).to.be.like( { x: -3 , y: -4 } ) ;
 		} ) ;
 
 		it( "get/set length, value" , () => {
-			var v1 = Vector2D( 3 , 4 ) ;
+			var v1 = new Vector2D( 3 , 4 ) ;
 			expect( v1.length ).to.be( 5 ) ;
 
 			v1.length = 10 ;
@@ -150,24 +150,24 @@ describe( "Geometry" , () => {
 		} ) ;
 
 		it( "normalize/unit" , () => {
-			var v1 = Vector2D( 3 , 4 ) ;
+			var v1 = new Vector2D( 3 , 4 ) ;
 			v1.normalize() ;
 			expectCirca( v1.x , 0.6 ) ;
 			expectCirca( v1.y , 0.8 ) ;
 		} ) ;
 
 		it( "get/set/rotate angle" , () => {
-			var v1 = Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+			var v1 = new Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 			expectCirca( v1.angle , Math.PI / 3 ) ;
 			expectCirca( v1.inv().angle , -Math.PI + Math.PI / 3 ) ;
 
-			v1 = Vector2D( -5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+			v1 = new Vector2D( -5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 			expectCirca( v1.angle , 2 * Math.PI / 3 ) ;
 
-			v1 = Vector2D( 5 , -10 * Math.sqrt( 3 ) / 2 ) ;
+			v1 = new Vector2D( 5 , -10 * Math.sqrt( 3 ) / 2 ) ;
 			expectCirca( v1.angle , -Math.PI / 3 ) ;
 
-			v1 = Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+			v1 = new Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 			v1.angle = Math.PI / 6 ;
 			expectCirca( v1.x , 10 * Math.sqrt( 3 ) / 2 ) ;
 			expectCirca( v1.y , 5 ) ;
@@ -179,17 +179,17 @@ describe( "Geometry" , () => {
 		} ) ;
 
 		it( "get/set/rotate angle in degree" , () => {
-			var v1 = Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+			var v1 = new Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 			expectCirca( v1.angleDeg , 60 ) ;
 			expectCirca( v1.inv().angleDeg , -120 ) ;
 
-			v1 = Vector2D( -5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+			v1 = new Vector2D( -5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 			expectCirca( v1.angleDeg , 120 ) ;
 
-			v1 = Vector2D( 5 , -10 * Math.sqrt( 3 ) / 2 ) ;
+			v1 = new Vector2D( 5 , -10 * Math.sqrt( 3 ) / 2 ) ;
 			expectCirca( v1.angleDeg , -60 ) ;
 
-			v1 = Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
+			v1 = new Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 			v1.angleDeg = 30 ;
 			expectCirca( v1.x , 10 * Math.sqrt( 3 ) / 2 ) ;
 			expectCirca( v1.y , 5 ) ;
@@ -201,34 +201,34 @@ describe( "Geometry" , () => {
 		} ) ;
 
 		it( "dot product" , () => {
-			expect( Vector2D( 3 , 4 ).dot( Vector2D( 5 , 2 ) ) ).to.be( 23 ) ;
-			expect( Vector2D( 3 , 4 ).dot( Vector2D( -5 , 2 ) ) ).to.be( -7 ) ;
+			expect( new Vector2D( 3 , 4 ).dot( new Vector2D( 5 , 2 ) ) ).to.be( 23 ) ;
+			expect( new Vector2D( 3 , 4 ).dot( new Vector2D( -5 , 2 ) ) ).to.be( -7 ) ;
 		} ) ;
 
 		it( "cross product" , () => {
-			expect( Vector2D( 3 , 4 ).cross( Vector2D( 5 , 2 ) ) ).to.be( -14 ) ;
-			expect( Vector2D( 3 , 4 ).cross( Vector2D( -5 , 2 ) ) ).to.be( 26 ) ;
+			expect( new Vector2D( 3 , 4 ).cross( new Vector2D( 5 , 2 ) ) ).to.be( -14 ) ;
+			expect( new Vector2D( 3 , 4 ).cross( new Vector2D( -5 , 2 ) ) ).to.be( 26 ) ;
 		} ) ;
 
 		it( "collinear" , () => {
-			expect( Vector2D( 3 , 4 ).isCollinearTo( Vector2D( 4 , 3 ) ) ).to.be( false ) ;
-			expect( Vector2D( 3 , 4 ).isCollinearTo( Vector2D( 3 , 4 ) ) ).to.be( true ) ;
-			expect( Vector2D( 3 , 4 ).isCollinearTo( Vector2D( 1 , 4 / 3 ) ) ).to.be( true ) ;
-			expect( Vector2D( 3 , 4 ).isCollinearTo( Vector2D( 6 , 8 ) ) ).to.be( true ) ;
-			expect( Vector2D( 3 , 4 ).isCollinearTo( Vector2D( -3 , -4 ) ) ).to.be( true ) ;
+			expect( new Vector2D( 3 , 4 ).isCollinearTo( new Vector2D( 4 , 3 ) ) ).to.be( false ) ;
+			expect( new Vector2D( 3 , 4 ).isCollinearTo( new Vector2D( 3 , 4 ) ) ).to.be( true ) ;
+			expect( new Vector2D( 3 , 4 ).isCollinearTo( new Vector2D( 1 , 4 / 3 ) ) ).to.be( true ) ;
+			expect( new Vector2D( 3 , 4 ).isCollinearTo( new Vector2D( 6 , 8 ) ) ).to.be( true ) ;
+			expect( new Vector2D( 3 , 4 ).isCollinearTo( new Vector2D( -3 , -4 ) ) ).to.be( true ) ;
 		} ) ;
 
 		it( "orthogonal" , () => {
-			expect( Vector2D( 3 , 4 ).isOrthogonalTo( Vector2D( 4 , 3 ) ) ).to.be( false ) ;
-			expect( Vector2D( 3 , 4 ).isOrthogonalTo( Vector2D( 3 , 4 ) ) ).to.be( false ) ;
-			expect( Vector2D( 3 , 4 ).isOrthogonalTo( Vector2D( 4 , -3 ) ) ).to.be( true ) ;
-			expect( Vector2D( 3 , 4 ).isOrthogonalTo( Vector2D( 2 , -1.5 ) ) ).to.be( true ) ;
-			expect( Vector2D( 3 , 4 ).isOrthogonalTo( Vector2D( -4 , 3 ) ) ).to.be( true ) ;
+			expect( new Vector2D( 3 , 4 ).isOrthogonalTo( new Vector2D( 4 , 3 ) ) ).to.be( false ) ;
+			expect( new Vector2D( 3 , 4 ).isOrthogonalTo( new Vector2D( 3 , 4 ) ) ).to.be( false ) ;
+			expect( new Vector2D( 3 , 4 ).isOrthogonalTo( new Vector2D( 4 , -3 ) ) ).to.be( true ) ;
+			expect( new Vector2D( 3 , 4 ).isOrthogonalTo( new Vector2D( 2 , -1.5 ) ) ).to.be( true ) ;
+			expect( new Vector2D( 3 , 4 ).isOrthogonalTo( new Vector2D( -4 , 3 ) ) ).to.be( true ) ;
 		} ) ;
 
 		it( "projections" , () => {
-			var v1 = Vector2D( 4 , 3 ) ;
-			var v2 = Vector2D( 3 , 4 ) ;
+			var v1 = new Vector2D( 4 , 3 ) ;
+			var v2 = new Vector2D( 3 , 4 ) ;
 			expect( v1.projectionLengthOf( v2 ) ).to.be( 4.8 ) ;
 			expect( v1.projectionValueOf( v2 ) ).to.be( 4.8 ) ;
 			expect( v1.projectionOf( v2 ) ).to.be.like( { x: 3.84 , y: 2.88 } ) ;
@@ -242,20 +242,20 @@ describe( "Geometry" , () => {
 		it( "decompose" , () => {
 			var v , decomp ;
 
-			v = Vector2D( 4 , 3 ) ;
+			v = new Vector2D( 4 , 3 ) ;
 
-			expect( v.decompose( Vector2D( 1 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 } , { x: 0 , y: 3 } ] ) ;
-			expect( v.decompose( Vector2D( 5 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 } , { x: 0 , y: 3 } ] ) ;
-			expect( v.decompose( Vector2D( 0 , 1 ) ) ).to.be.like( [ { x: 0 , y: 3 } , { x: 4 , y: 0 } ] ) ;
-			expect( v.decompose( Vector2D( -5 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 } , { x: 0 , y: 3 } ] ) ;
+			expect( v.decompose( new Vector2D( 1 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 } , { x: 0 , y: 3 } ] ) ;
+			expect( v.decompose( new Vector2D( 5 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 } , { x: 0 , y: 3 } ] ) ;
+			expect( v.decompose( new Vector2D( 0 , 1 ) ) ).to.be.like( [ { x: 0 , y: 3 } , { x: 4 , y: 0 } ] ) ;
+			expect( v.decompose( new Vector2D( -5 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 } , { x: 0 , y: 3 } ] ) ;
 
-			decomp = v.decompose( Vector2D( 1 , 1 ) ) ;
+			decomp = v.decompose( new Vector2D( 1 , 1 ) ) ;
 			expectCirca( decomp[0].x , 3.5 ) ;
 			expectCirca( decomp[0].y , 3.5 ) ;
 			expectCirca( decomp[1].x , 0.5 ) ;
 			expectCirca( decomp[1].y , -0.5 ) ;
 
-			decomp = v.decompose( Vector2D( 1 , 2 ) ) ;
+			decomp = v.decompose( new Vector2D( 1 , 2 ) ) ;
 			expectCirca( decomp[0].x , 2 ) ;
 			expectCirca( decomp[0].y , 4 ) ;
 			expectCirca( decomp[1].x , 2 ) ;
@@ -263,25 +263,25 @@ describe( "Geometry" , () => {
 		} ) ;
 
 		it( "fast decompose" , () => {
-			var v , decomp , alongAxis = Vector2D() , perpToAxis = Vector2D() ;
+			var v , decomp , alongAxis = new Vector2D() , perpToAxis = new Vector2D() ;
 
-			v = Vector2D( 4 , 3 ) ;
+			v = new Vector2D( 4 , 3 ) ;
 
-			v.fastDecompose( Vector2D( 1 , 0 ) , alongAxis , perpToAxis ) ;
+			v.fastDecompose( new Vector2D( 1 , 0 ) , alongAxis , perpToAxis ) ;
 			expect( alongAxis ).to.be.like( { x: 4 , y: 0 } ) ;
 			expect( perpToAxis ).to.be.like( { x: 0 , y: 3 } ) ;
 
-			v.fastDecompose( Vector2D( 0 , 1 ) , alongAxis , perpToAxis ) ;
+			v.fastDecompose( new Vector2D( 0 , 1 ) , alongAxis , perpToAxis ) ;
 			expect( alongAxis ).to.be.like( { x: 0 , y: 3 } ) ;
 			expect( perpToAxis ).to.be.like( { x: 4 , y: 0 } ) ;
 
-			v.fastDecompose( Vector2D( 1 , 1 ).normalize() , alongAxis , perpToAxis ) ;
+			v.fastDecompose( new Vector2D( 1 , 1 ).normalize() , alongAxis , perpToAxis ) ;
 			expectCirca( alongAxis.x , 3.5 ) ;
 			expectCirca( alongAxis.y , 3.5 ) ;
 			expectCirca( perpToAxis.x , 0.5 ) ;
 			expectCirca( perpToAxis.y , -0.5 ) ;
 
-			v.fastDecompose( Vector2D( 1 , 2 ).normalize() , alongAxis , perpToAxis ) ;
+			v.fastDecompose( new Vector2D( 1 , 2 ).normalize() , alongAxis , perpToAxis ) ;
 			expectCirca( alongAxis.x , 2 ) ;
 			expectCirca( alongAxis.y , 4 ) ;
 			expectCirca( perpToAxis.x , 2 ) ;
@@ -291,17 +291,17 @@ describe( "Geometry" , () => {
 		it( "fast scale axis" , () => {
 			var scale , scaleAxis , vector , transposed ;
 
-			scaleAxis = Vector2D( 0 , 1 ) ;
+			scaleAxis = new Vector2D( 0 , 1 ) ;
 			scale = 2 ;
-			vector = Vector2D( 3 , 4 ) ;
+			vector = new Vector2D( 3 , 4 ) ;
 			transposed = vector.fastScaleAxis( scaleAxis , scale ) ;
 			expect( transposed ).to.be.like( { x: 3 , y: 8 } ) ;
 			transposed = transposed.fastScaleAxis( scaleAxis , 1 / scale ) ;
 			expect( transposed ).to.be.like( { x: 3 , y: 4 } ) ;
 
-			scaleAxis = Vector2D( 1 , 1 ).normalize() ;
+			scaleAxis = new Vector2D( 1 , 1 ).normalize() ;
 			scale = 2 ;
-			vector = Vector2D( 3 , 4 ) ;
+			vector = new Vector2D( 3 , 4 ) ;
 			transposed = vector.fastScaleAxis( scaleAxis , scale ) ;
 			expect( transposed ).to.be.like( { x: 6.499999999999999 , y: 7.499999999999999 } ) ;
 			transposed = transposed.fastScaleAxis( scaleAxis , 1 / scale ) ;
@@ -311,37 +311,37 @@ describe( "Geometry" , () => {
 		it( "fast scale axis from origin" , () => {
 			var scale , scaleAxis , origin , vector , transposed ;
 
-			origin = Vector2D( 0 , 0 ) ;
-			scaleAxis = Vector2D( 0 , 1 ) ;
+			origin = new Vector2D( 0 , 0 ) ;
+			scaleAxis = new Vector2D( 0 , 1 ) ;
 			scale = 2 ;
-			vector = Vector2D( 3 , 4 ) ;
+			vector = new Vector2D( 3 , 4 ) ;
 			transposed = vector.fastScaleAxisFrom( origin , scaleAxis , scale ) ;
 			expect( transposed ).to.be.like( { x: 3 , y: 8 } ) ;
 			transposed = transposed.fastScaleAxisFrom( origin , scaleAxis , 1 / scale ) ;
 			expect( transposed ).to.be.like( { x: 3 , y: 4 } ) ;
 
-			origin = Vector2D( 0 , 0 ) ;
-			scaleAxis = Vector2D( 1 , 1 ).normalize() ;
+			origin = new Vector2D( 0 , 0 ) ;
+			scaleAxis = new Vector2D( 1 , 1 ).normalize() ;
 			scale = 2 ;
-			vector = Vector2D( 3 , 4 ) ;
+			vector = new Vector2D( 3 , 4 ) ;
 			transposed = vector.fastScaleAxisFrom( origin , scaleAxis , scale ) ;
 			expect( transposed ).to.be.like( { x: 6.499999999999999 , y: 7.499999999999999 } ) ;
 			transposed = transposed.fastScaleAxisFrom( origin , scaleAxis , 1 / scale ) ;
 			expect( transposed ).to.be.like( { x: 3 , y: 4 } ) ;
 
-			origin = Vector2D( 0 , 2 ) ;
-			scaleAxis = Vector2D( 0 , 1 ) ;
+			origin = new Vector2D( 0 , 2 ) ;
+			scaleAxis = new Vector2D( 0 , 1 ) ;
 			scale = 2 ;
-			vector = Vector2D( 3 , 4 ) ;
+			vector = new Vector2D( 3 , 4 ) ;
 			transposed = vector.fastScaleAxisFrom( origin , scaleAxis , scale ) ;
 			expect( transposed ).to.be.like( { x: 3 , y: 6 } ) ;
 			transposed = transposed.fastScaleAxisFrom( origin , scaleAxis , 1 / scale ) ;
 			expect( transposed ).to.be.like( { x: 3 , y: 4 } ) ;
 
-			origin = Vector2D( -1 , 0 ) ;
-			scaleAxis = Vector2D( 1 , 1 ).normalize() ;
+			origin = new Vector2D( -1 , 0 ) ;
+			scaleAxis = new Vector2D( 1 , 1 ).normalize() ;
 			scale = 2 ;
-			vector = Vector2D( 3 , 4 ) ;
+			vector = new Vector2D( 3 , 4 ) ;
 			transposed = vector.fastScaleAxisFrom( origin , scaleAxis , scale ) ;
 			expectCirca( transposed.x , 7 ) ;
 			expectCirca( transposed.y , 8 ) ;
@@ -352,9 +352,9 @@ describe( "Geometry" , () => {
 		it( "transpose" , () => {
 			var vector , transposeOrigin , transposeXAxis ;
 
-			transposeOrigin = Vector2D( 0 , 0 ) ;
-			transposeXAxis = Vector2D( 1 , 0 ).normalize() ;
-			vector = Vector2D( 1 , 2 ) ;
+			transposeOrigin = new Vector2D( 0 , 0 ) ;
+			transposeXAxis = new Vector2D( 1 , 0 ).normalize() ;
+			vector = new Vector2D( 1 , 2 ) ;
 			vector.transpose( transposeOrigin , transposeXAxis ) ;
 			//console.log( vector ) ;
 			expect( vector ).to.be.like( { x: 1 , y: 2 } ) ;
@@ -362,9 +362,9 @@ describe( "Geometry" , () => {
 			//console.log( vector ) ;
 			expect( vector ).to.be.like( { x: 1 , y: 2 } ) ;
 
-			transposeOrigin = Vector2D( 3 , 4 ) ;
-			transposeXAxis = Vector2D( 1 , 0 ).normalize() ;
-			vector = Vector2D( 1 , 2 ) ;
+			transposeOrigin = new Vector2D( 3 , 4 ) ;
+			transposeXAxis = new Vector2D( 1 , 0 ).normalize() ;
+			vector = new Vector2D( 1 , 2 ) ;
 			vector.transpose( transposeOrigin , transposeXAxis ) ;
 			//console.log( vector ) ;
 			expect( vector ).to.be.like( { x: -2 , y: -2 } ) ;
@@ -372,9 +372,9 @@ describe( "Geometry" , () => {
 			//console.log( vector ) ;
 			expect( vector ).to.be.like( { x: 1 , y: 2 } ) ;
 
-			transposeOrigin = Vector2D( -3 , -4 ) ;
-			transposeXAxis = Vector2D( 1 , 0 ).normalize() ;
-			vector = Vector2D( 1 , 2 ) ;
+			transposeOrigin = new Vector2D( -3 , -4 ) ;
+			transposeXAxis = new Vector2D( 1 , 0 ).normalize() ;
+			vector = new Vector2D( 1 , 2 ) ;
 			vector.transpose( transposeOrigin , transposeXAxis ) ;
 			//console.log( vector ) ;
 			expect( vector ).to.be.like( { x: 4 , y: 6 } ) ;
@@ -382,9 +382,9 @@ describe( "Geometry" , () => {
 			//console.log( vector ) ;
 			expect( vector ).to.be.like( { x: 1 , y: 2 } ) ;
 
-			transposeOrigin = Vector2D( 0 , 0 ) ;
-			transposeXAxis = Vector2D( 1 , 1 ).normalize() ;
-			vector = Vector2D( 1 , 2 ) ;
+			transposeOrigin = new Vector2D( 0 , 0 ) ;
+			transposeXAxis = new Vector2D( 1 , 1 ).normalize() ;
+			vector = new Vector2D( 1 , 2 ) ;
 			vector.transpose( transposeOrigin , transposeXAxis ) ;
 			//console.log( vector ) ;
 			expectCirca( vector.x , Math.SQRT1_2 * 3 ) ;
@@ -394,9 +394,9 @@ describe( "Geometry" , () => {
 			expectCirca( vector.x , 1 ) ;
 			expectCirca( vector.y , 2 ) ;
 
-			transposeOrigin = Vector2D( 0 , 0 ) ;
-			transposeXAxis = Vector2D( -1 , 1 ).normalize() ;
-			vector = Vector2D( 1 , 2 ) ;
+			transposeOrigin = new Vector2D( 0 , 0 ) ;
+			transposeXAxis = new Vector2D( -1 , 1 ).normalize() ;
+			vector = new Vector2D( 1 , 2 ) ;
 			vector.transpose( transposeOrigin , transposeXAxis ) ;
 			//console.log( vector ) ;
 			expectCirca( vector.x , Math.SQRT1_2 ) ;
@@ -406,9 +406,9 @@ describe( "Geometry" , () => {
 			expectCirca( vector.x , 1 ) ;
 			expectCirca( vector.y , 2 ) ;
 
-			transposeOrigin = Vector2D( 1 , 2 ) ;
-			transposeXAxis = Vector2D( -1 , 1 ).normalize() ;
-			vector = Vector2D( 1 , 2 ) ;
+			transposeOrigin = new Vector2D( 1 , 2 ) ;
+			transposeXAxis = new Vector2D( -1 , 1 ).normalize() ;
+			vector = new Vector2D( 1 , 2 ) ;
 			vector.transpose( transposeOrigin , transposeXAxis ) ;
 			//console.log( vector ) ;
 			expectCirca( vector.x , 0 ) ;
@@ -418,9 +418,9 @@ describe( "Geometry" , () => {
 			expectCirca( vector.x , 1 ) ;
 			expectCirca( vector.y , 2 ) ;
 
-			transposeOrigin = Vector2D( 1 , -2 ) ;
-			transposeXAxis = Vector2D( -1 , 1 ).normalize() ;
-			vector = Vector2D( 1 , 2 ) ;
+			transposeOrigin = new Vector2D( 1 , -2 ) ;
+			transposeXAxis = new Vector2D( -1 , 1 ).normalize() ;
+			vector = new Vector2D( 1 , 2 ) ;
 			vector.transpose( transposeOrigin , transposeXAxis ) ;
 			//console.log( vector ) ;
 			expectCirca( vector.x , Math.SQRT2 * 2 ) ;
@@ -434,30 +434,30 @@ describe( "Geometry" , () => {
 		it( "transpose 3D" , () => {
 			var v , transposed , origin , normal , xAxis ;
 
-			v = Vector2D( 1 , 3 ) ;
-			origin = Vector3D( 0 , 0 , 1 ) ;
-			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
-			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			v = new Vector2D( 1 , 3 ) ;
+			origin = new Vector3D( 0 , 0 , 1 ) ;
+			normal = new Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = new Vector3D( 1 , 0 , -1 ).normalize() ;
 			transposed = v.transpose3D( origin , normal , xAxis ) ;
 			//console.log( transposed ) ;
 			expectCirca( transposed.x , Math.SQRT1_2 ) ;
 			expectCirca( transposed.y , 3 ) ;
 			expectCirca( transposed.z , 1 - Math.SQRT1_2 ) ;
 
-			v = Vector2D( 1 , 3 ) ;
-			origin = Vector3D( 1 , 0 , 0 ) ;
-			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
-			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			v = new Vector2D( 1 , 3 ) ;
+			origin = new Vector3D( 1 , 0 , 0 ) ;
+			normal = new Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = new Vector3D( 1 , 0 , -1 ).normalize() ;
 			transposed = v.transpose3D( origin , normal , xAxis ) ;
 			//console.log( transposed ) ;
 			expectCirca( transposed.x , 1 + Math.SQRT1_2 ) ;
 			expectCirca( transposed.y , 3 ) ;
 			expectCirca( transposed.z , -Math.SQRT1_2 ) ;
 
-			v = Vector2D( -1 , 3 ) ;
-			origin = Vector3D( 0 , 0 , 1 ) ;
-			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
-			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			v = new Vector2D( -1 , 3 ) ;
+			origin = new Vector3D( 0 , 0 , 1 ) ;
+			normal = new Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = new Vector3D( 1 , 0 , -1 ).normalize() ;
 			transposed = v.transpose3D( origin , normal , xAxis ) ;
 			//console.log( transposed ) ;
 			expectCirca( transposed.x , -Math.SQRT1_2 ) ;
@@ -471,18 +471,18 @@ describe( "Geometry" , () => {
 	describe( "BoundVector2D" , () => {
 
 		it( "constructor" , () => {
-			expect( BoundVector2D( 3 , 4 , 5 , 2 ) ).to.be.like( { position: { x: 3 , y: 4 } , vector: { x: 5 , y: 2 } } ) ;
+			expect( new BoundVector2D( 3 , 4 , 5 , 2 ) ).to.be.like( { position: { x: 3 , y: 4 } , vector: { x: 5 , y: 2 } } ) ;
 		} ) ;
 
 		it( "from/to constructor" , () => {
-			expect( BoundVector2D.fromTo( Vector2D( 3 , 4 ) , Vector2D( 8 , 2 ) ) ).to.be.like( { position: { x: 3 , y: 4 } , vector: { x: 5 , y: -2 } } ) ;
+			expect( BoundVector2D.fromTo( new Vector2D( 3 , 4 ) , new Vector2D( 8 , 2 ) ) ).to.be.like( { position: { x: 3 , y: 4 } , vector: { x: 5 , y: -2 } } ) ;
 		} ) ;
 
 		it( "get/set endPoint" , () => {
-			var v = BoundVector2D.fromTo( Vector2D( 3 , 4 ) , Vector2D( 8 , 2 ) ) ;
+			var v = BoundVector2D.fromTo( new Vector2D( 3 , 4 ) , new Vector2D( 8 , 2 ) ) ;
 			expect( v ).to.be.like( { position: { x: 3 , y: 4 } , vector: { x: 5 , y: -2 } } ) ;
 			expect( v.endPoint ).to.be.like( { x: 8 , y: 2 } ) ;
-			expect( v.setEndPoint( Vector2D( -4 , 1 ) ) ).to.be.like( { position: { x: 3 , y: 4 } , vector: { x: -7 , y: -3 } } ) ;
+			expect( v.setEndPoint( new Vector2D( -4 , 1 ) ) ).to.be.like( { position: { x: 3 , y: 4 } , vector: { x: -7 , y: -3 } } ) ;
 			expect( v.endPoint ).to.be.like( { x: -4 , y: 1 } ) ;
 		} ) ;
 
@@ -493,41 +493,41 @@ describe( "Geometry" , () => {
 		it( "test if a point is on the line" , () => {
 			var line ;
 
-			line = BoundVector2D( 2 , 3 , 2 , 1 ) ;
-			expect( line.isOnLine( Vector2D( 2 , 3 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector2D( 2 , 2 ) ) ).to.be( false ) ;
-			expect( line.isOnLine( Vector2D( 4 , 4 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector2D( 3 , 3.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector2D( 2.5 , 3.25 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector2D( 2.25 , 3.25 ) ) ).to.be( false ) ;
-			expect( line.isOnLine( Vector2D( 5 , 4.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector2D( 0 , 2 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector2D( -1 , 1.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector2D( -1.5 , 1.25 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector2D( -1.4 , 1.25 ) ) ).to.be( false ) ;
+			line = new BoundVector2D( 2 , 3 , 2 , 1 ) ;
+			expect( line.isOnLine( new Vector2D( 2 , 3 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector2D( 2 , 2 ) ) ).to.be( false ) ;
+			expect( line.isOnLine( new Vector2D( 4 , 4 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector2D( 3 , 3.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector2D( 2.5 , 3.25 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector2D( 2.25 , 3.25 ) ) ).to.be( false ) ;
+			expect( line.isOnLine( new Vector2D( 5 , 4.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector2D( 0 , 2 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector2D( -1 , 1.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector2D( -1.5 , 1.25 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector2D( -1.4 , 1.25 ) ) ).to.be( false ) ;
 		} ) ;
 
 		it( "test if a point is on the line segment" , () => {
 			var line ;
 
-			line = BoundVector2D( 2 , 3 , 2 , 1 ) ;
-			expect( line.isOnLineSegment( Vector2D( 2 , 3 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector2D( 2 , 2 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector2D( 4 , 4 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector2D( 3 , 3.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector2D( 2.5 , 3.25 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector2D( 2.25 , 3.25 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector2D( 5 , 4.5 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector2D( 0 , 2 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector2D( -1 , 1.5 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector2D( -1.5 , 1.25 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector2D( -1.4 , 1.25 ) ) ).to.be( false ) ;
+			line = new BoundVector2D( 2 , 3 , 2 , 1 ) ;
+			expect( line.isOnLineSegment( new Vector2D( 2 , 3 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( new Vector2D( 2 , 2 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector2D( 4 , 4 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( new Vector2D( 3 , 3.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( new Vector2D( 2.5 , 3.25 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( new Vector2D( 2.25 , 3.25 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector2D( 5 , 4.5 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector2D( 0 , 2 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector2D( -1 , 1.5 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector2D( -1.5 , 1.25 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector2D( -1.4 , 1.25 ) ) ).to.be( false ) ;
 		} ) ;
 
 		it( "test side of a coordinate/position relative to the line of a bound vector" , () => {
 			var line ;
 
-			line = BoundVector2D( 0 , 0 , 0 , 1 ) ;
+			line = new BoundVector2D( 0 , 0 , 0 , 1 ) ;
 			expect( line.test( 0 , 0 ) ).to.be( 0 ) ;
 			expect( line.test( 0 , 3 ) ).to.be( 0 ) ;
 			expect( line.test( 3 , 0 ) ).to.be( -3 ) ;
@@ -536,68 +536,68 @@ describe( "Geometry" , () => {
 			expect( line.test( -7 , 0 ) ).to.be( 7 ) ;
 			expect( line.test( -7 , 99 ) ).to.be( 7 ) ;
 
-			line = BoundVector2D( 0 , 0 , 1 , 0 ) ;
+			line = new BoundVector2D( 0 , 0 , 1 , 0 ) ;
 			expect( line.test( 0 , 0 ) ).to.be( 0 ) ;
 			expect( line.test( 3 , 0 ) ).to.be( 0 ) ;
 			expect( line.test( 0 , 3 ) ).to.be( 3 ) ;
 			expect( line.test( 0 , -3 ) ).to.be( -3 ) ;
 
-			line = BoundVector2D( 0 , 5 , 1 , 0 ) ;
+			line = new BoundVector2D( 0 , 5 , 1 , 0 ) ;
 			expect( line.test( 0 , 0 ) ).to.be( -5 ) ;
 			expect( line.test( 3 , 0 ) ).to.be( -5 ) ;
 			expect( line.test( 0 , 3 ) ).to.be( -2 ) ;
 			expect( line.test( 0 , -3 ) ).to.be( -8 ) ;
 			expect( line.test( 0 , 8 ) ).to.be( 3 ) ;
 
-			line = BoundVector2D( 4 , 2 , 1 , 2 ) ;
+			line = new BoundVector2D( 4 , 2 , 1 , 2 ) ;
 			expect( line.test( 4 , 2 ) ).to.be( 0 ) ;
 			expect( line.test( 0 , 0 ) ).to.be( 6 ) ;
 			expect( line.test( 3 , 0 ) ).to.be( 0 ) ;
 			expect( line.test( 4 , 4 ) ).to.be( 2 ) ;
 			expect( line.test( 6 , 4 ) ).to.be( -2 ) ;
 
-			line = BoundVector2D( 4 , 2 , -1 , -2 ) ;
+			line = new BoundVector2D( 4 , 2 , -1 , -2 ) ;
 			expect( line.test( 4 , 2 ) ).to.be( 0 ) ;
 			expect( line.test( 0 , 0 ) ).to.be( -6 ) ;
 			expect( line.test( 3 , 0 ) ).to.be( 0 ) ;
 			expect( line.test( 4 , 4 ) ).to.be( -2 ) ;
 			expect( line.test( 6 , 4 ) ).to.be( 2 ) ;
-			expect( line.testVector( Vector2D( 6 , 4 ) ) ).to.be( 2 ) ;
+			expect( line.testVector( new Vector2D( 6 , 4 ) ) ).to.be( 2 ) ;
 		} ) ;
 
 		it( "point distance to the line of a bound vector" , () => {
 			var line ;
 
-			line = BoundVector2D( 4 , 2 , -1 , -2 ) ;
-			expectCirca( line.pointDistance( Vector2D( 4 , 2 ) ) , 0 ) ;
-			expectCirca( line.pointDistance( Vector2D( 0 , -1 ) ) , Math.sqrt( 5 ) ) ;
-			expectCirca( line.pointDistance( Vector2D( -2 , 0 ) ) , 2 * Math.sqrt( 5 ) ) ;
-			expectCirca( line.pointDistance( Vector2D( 6 , 1 ) ) , Math.sqrt( 5 ) ) ;
+			line = new BoundVector2D( 4 , 2 , -1 , -2 ) ;
+			expectCirca( line.pointDistance( new Vector2D( 4 , 2 ) ) , 0 ) ;
+			expectCirca( line.pointDistance( new Vector2D( 0 , -1 ) ) , Math.sqrt( 5 ) ) ;
+			expectCirca( line.pointDistance( new Vector2D( -2 , 0 ) ) , 2 * Math.sqrt( 5 ) ) ;
+			expectCirca( line.pointDistance( new Vector2D( 6 , 1 ) ) , Math.sqrt( 5 ) ) ;
 		} ) ;
 
 		it( "intersection" , () => {
-			var bv1 = BoundVector2D( 2 , 1 , 2 , 1 ) ;
-			var bv2 = BoundVector2D( 4 , 6 , 2 , -3 ) ;
+			var bv1 = new BoundVector2D( 2 , 1 , 2 , 1 ) ;
+			var bv2 = new BoundVector2D( 4 , 6 , 2 , -3 ) ;
 			var vi = bv1.lineIntersection( bv2 ) ;
 			expect( vi ).to.be.an( Vector2D ) ;
 			expect( vi ).to.be.like( { x: 6 , y: 3 } ) ;
 
-			bv1 = BoundVector2D( 2 , 1 , 0 , 2 ) ;
-			bv2 = BoundVector2D( 4 , 6 , 1 , 0 ) ;
+			bv1 = new BoundVector2D( 2 , 1 , 0 , 2 ) ;
+			bv2 = new BoundVector2D( 4 , 6 , 1 , 0 ) ;
 			//vi = bv1.dup().normalize().lineIntersection( bv2 , 1 ) ;
 			vi = bv1.lineIntersection( bv2 ) ;
 			expect( vi ).to.be.like( { x: 2 , y: 6 } ) ;
 
-			bv1 = BoundVector2D( 2 , 1 , 0 , 2 ) ;
-			bv2 = BoundVector2D( 4 , 6 , 1 , 0 ) ;
+			bv1 = new BoundVector2D( 2 , 1 , 0 , 2 ) ;
+			bv2 = new BoundVector2D( 4 , 6 , 1 , 0 ) ;
 			vi = bv1.dup().normalize()
 				.lineIntersection( bv2 , 1 ) ;
 			expect( vi ).to.be.like( { x: 1 , y: 6 } ) ;
 		} ) ;
 
 		it( "projection of a point" , () => {
-			var bv1 = BoundVector2D( 2 , 1 , 2 , 1 ) ;
-			var v2 = Vector2D( 3 , 9 ) ;
+			var bv1 = new BoundVector2D( 2 , 1 , 2 , 1 ) ;
+			var v2 = new Vector2D( 3 , 9 ) ;
 			var vi = bv1.pointProjection( v2 ) ;
 			expect( vi ).to.be.an( Vector2D ) ;
 			expect( vi ).to.be.like( { x: 6 , y: 3 } ) ;
@@ -609,25 +609,25 @@ describe( "Geometry" , () => {
 	describe( "Vector3D" , () => {
 
 		it( "constructor" , () => {
-			expect( Vector3D( 3 , 4 , 5 ) ).to.be.like( { x: 3 , y: 4 , z: 5 } ) ;
-			expect( Number.isNaN( Vector3D().x ) ).to.be( true ) ;
-			expect( Number.isNaN( Vector3D().y ) ).to.be( true ) ;
-			expect( Number.isNaN( Vector3D().z ) ).to.be( true ) ;
+			expect( new Vector3D( 3 , 4 , 5 ) ).to.be.like( { x: 3 , y: 4 , z: 5 } ) ;
+			expect( Number.isNaN( new Vector3D().x ) ).to.be( true ) ;
+			expect( Number.isNaN( new Vector3D().y ) ).to.be( true ) ;
+			expect( Number.isNaN( new Vector3D().z ) ).to.be( true ) ;
 		} ) ;
 
 		it( "from/to constructor" , () => {
-			expect( Vector3D.fromTo( Vector3D( 3 , 4 , 5 ) , Vector3D( 8 , 2 , -4 ) ) ).to.be.like( { x: 5 , y: -2 , z: -9 } ) ;
+			expect( Vector3D.fromTo( new Vector3D( 3 , 4 , 5 ) , new Vector3D( 8 , 2 , -4 ) ) ).to.be.like( { x: 5 , y: -2 , z: -9 } ) ;
 		} ) ;
 
 		it( "undefined vector" , () => {
-			expect( Vector3D().undefined ).to.be( true ) ;
-			expect( Vector3D( NaN , NaN , NaN ).undefined ).to.be( true ) ;
-			expect( Vector3D( undefined , 4 , 5 ).undefined ).to.be( true ) ;
-			expect( Vector3D( 3 , undefined , 5 ).undefined ).to.be( true ) ;
-			expect( Vector3D( 3 , 4 , undefined ).undefined ).to.be( true ) ;
-			expect( Vector3D( 3 , 4 , 5 ).undefined ).to.be( false ) ;
+			expect( new Vector3D().undefined ).to.be( true ) ;
+			expect( new Vector3D( NaN , NaN , NaN ).undefined ).to.be( true ) ;
+			expect( new Vector3D( undefined , 4 , 5 ).undefined ).to.be( true ) ;
+			expect( new Vector3D( 3 , undefined , 5 ).undefined ).to.be( true ) ;
+			expect( new Vector3D( 3 , 4 , undefined ).undefined ).to.be( true ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).undefined ).to.be( false ) ;
 
-			var v1 = Vector3D( 3 , 4 , 5 ) ;
+			var v1 = new Vector3D( 3 , 4 , 5 ) ;
 			v1.undefined = true ;
 			expect( Number.isNaN( v1.x ) ).to.be( true ) ;
 			expect( Number.isNaN( v1.y ) ).to.be( true ) ;
@@ -635,15 +635,15 @@ describe( "Geometry" , () => {
 		} ) ;
 
 		it( "duplicate" , () => {
-			var v1 = Vector3D( 3 , 4 , 5 ) ;
+			var v1 = new Vector3D( 3 , 4 , 5 ) ;
 			expect( v1.dup() ).not.to.be( v1 ) ;
 			expect( v1.dup() ).to.be.like( { x: 3 , y: 4 , z: 5 } ) ;
 		} ) ;
 
 		it( "addition" , () => {
-			var v1 = Vector3D( 3 , 4 , 5 ) ;
-			var v2 = Vector3D( 5 , 7 , -1 ) ;
-			var v3 = Vector3D( 2 , 1 , 3 ) ;
+			var v1 = new Vector3D( 3 , 4 , 5 ) ;
+			var v2 = new Vector3D( 5 , 7 , -1 ) ;
+			var v3 = new Vector3D( 2 , 1 , 3 ) ;
 			expect( v1.dup().add( v2 ) ).to.be.like( { x: 8 , y: 11 , z: 4 } ) ;
 			expect( v1.dup().addMulti( v2 , v3 ) ).to.be.like( { x: 10 , y: 12 , z: 7 } ) ;
 		} ) ;
@@ -651,20 +651,20 @@ describe( "Geometry" , () => {
 		it( "apply" ) ;
 
 		it( "substract" , () => {
-			var v1 = Vector3D( 3 , 4 , 5 ) ;
-			var v2 = Vector3D( 2 , 1 , 8 ) ;
+			var v1 = new Vector3D( 3 , 4 , 5 ) ;
+			var v2 = new Vector3D( 2 , 1 , 8 ) ;
 			expect( v1.dup().sub( v2 ) ).to.be.like( { x: 1 , y: 3 , z: -3 } ) ;
 		} ) ;
 
 		it( "multiply" , () => {
-			var v1 = Vector3D( 3 , 4 , 5 ) ;
+			var v1 = new Vector3D( 3 , 4 , 5 ) ;
 			expect( v1.dup().mul( 3 ) ).to.be.like( { x: 9 , y: 12 , z: 15 } ) ;
 			expect( v1.dup().mul( -3 ) ).to.be.like( { x: -9 , y: -12 , z: -15 } ) ;
 			expect( v1.dup().mul( 0 ) ).to.be.like( { x: 0 , y: 0 , z: 0 } ) ;
 		} ) ;
 
 		it( "divide" , () => {
-			var v1 = Vector3D( 3 , 4 , 5 ) ;
+			var v1 = new Vector3D( 3 , 4 , 5 ) ;
 			expect( v1.dup().div( 4 ) ).to.be.like( { x: 0.75 , y: 1 , z: 1.25 } ) ;
 			expect( v1.dup().div( -4 ) ).to.be.like( { x: -0.75 , y: -1 , z: -1.25 } ) ;
 			expect( v1.dup().div( 0 ) ).to.be.like( { x: Infinity , y: Infinity , z: Infinity } ) ;
@@ -672,12 +672,12 @@ describe( "Geometry" , () => {
 		} ) ;
 
 		it( "inverse" , () => {
-			var v1 = Vector3D( 3 , 4 , -5 ) ;
+			var v1 = new Vector3D( 3 , 4 , -5 ) ;
 			expect( v1.dup().inv() ).to.be.like( { x: -3 , y: -4 , z: 5 } ) ;
 		} ) ;
 
 		it( "get/set length, value" , () => {
-			var v1 = Vector3D( 3 , 4 , 5 ) ;
+			var v1 = new Vector3D( 3 , 4 , 5 ) ;
 			expect( v1.length ).to.be( 7.0710678118654755 ) ;
 
 			v1.length = 10 ;
@@ -691,40 +691,40 @@ describe( "Geometry" , () => {
 		} ) ;
 
 		it( "normalize/unit" , () => {
-			var v1 = Vector3D( 3 , 4 , 5 ) ;
+			var v1 = new Vector3D( 3 , 4 , 5 ) ;
 			v1.normalize() ;
 			expect( v1 ).to.be.like( { x: 0.4242640687119285 , y: 0.565685424949238 , z: 0.7071067811865475 } ) ;
 		} ) ;
 
 		it( "dot product" , () => {
-			expect( Vector3D( 3 , 4 , 5 ).dot( Vector3D( 5 , 2 , 1 ) ) ).to.be( 28 ) ;
-			expect( Vector3D( 3 , 4 , 5 ).dot( Vector3D( -5 , 2 , -3 ) ) ).to.be( -22 ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).dot( new Vector3D( 5 , 2 , 1 ) ) ).to.be( 28 ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).dot( new Vector3D( -5 , 2 , -3 ) ) ).to.be( -22 ) ;
 		} ) ;
 
 		it( "cross product" , () => {
-			expect( Vector3D( 3 , 4 , 5 ).cross( Vector3D( 5 , 2 , 1 ) ) ).to.be.like( { x: -6 , y: 22 , z: -14 } ) ;
-			expect( Vector3D( 3 , 4 , 5 ).cross( Vector3D( -5 , 2 , -3 ) ) ).to.be.like( { x: -22 , y: -16 , z: 26 } ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).cross( new Vector3D( 5 , 2 , 1 ) ) ).to.be.like( { x: -6 , y: 22 , z: -14 } ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).cross( new Vector3D( -5 , 2 , -3 ) ) ).to.be.like( { x: -22 , y: -16 , z: 26 } ) ;
 		} ) ;
 
 		it( "collinear" , () => {
-			expect( Vector3D( 3 , 4 , 5 ).isCollinearTo( Vector3D( 4 , 3 , 5 ) ) ).to.be( false ) ;
-			expect( Vector3D( 3 , 4 , 5 ).isCollinearTo( Vector3D( 3 , 4 , 5 ) ) ).to.be( true ) ;
-			expect( Vector3D( 3 , 4 , 5 ).isCollinearTo( Vector3D( 1.5 , 2 , 2.5 ) ) ).to.be( true ) ;
-			expect( Vector3D( 3 , 4 , 5 ).isCollinearTo( Vector3D( 6 , 8 , 10 ) ) ).to.be( true ) ;
-			expect( Vector3D( 3 , 4 , 5 ).isCollinearTo( Vector3D( -3 , -4 , -5 ) ) ).to.be( true ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).isCollinearTo( new Vector3D( 4 , 3 , 5 ) ) ).to.be( false ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).isCollinearTo( new Vector3D( 3 , 4 , 5 ) ) ).to.be( true ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).isCollinearTo( new Vector3D( 1.5 , 2 , 2.5 ) ) ).to.be( true ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).isCollinearTo( new Vector3D( 6 , 8 , 10 ) ) ).to.be( true ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).isCollinearTo( new Vector3D( -3 , -4 , -5 ) ) ).to.be( true ) ;
 		} ) ;
 
 		it( "orthogonal" , () => {
-			expect( Vector3D( 3 , 4 , 5 ).isOrthogonalTo( Vector3D( 4 , 3 , 5 ) ) ).to.be( false ) ;
-			expect( Vector3D( 3 , 4 , 5 ).isOrthogonalTo( Vector3D( 3 , 4 , 5 ) ) ).to.be( false ) ;
-			expect( Vector3D( 3 , 4 , 0 ).isOrthogonalTo( Vector3D( 0 , 0 , -1 ) ) ).to.be( true ) ;
-			expect( Vector3D( 3 , 4 , 0 ).isOrthogonalTo( Vector3D( 4 , -3 , 0 ) ) ).to.be( true ) ;
-			expect( Vector3D( 3 , 4 , 2 ).isOrthogonalTo( Vector3D( 4 , -4 , 2 ) ) ).to.be( true ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).isOrthogonalTo( new Vector3D( 4 , 3 , 5 ) ) ).to.be( false ) ;
+			expect( new Vector3D( 3 , 4 , 5 ).isOrthogonalTo( new Vector3D( 3 , 4 , 5 ) ) ).to.be( false ) ;
+			expect( new Vector3D( 3 , 4 , 0 ).isOrthogonalTo( new Vector3D( 0 , 0 , -1 ) ) ).to.be( true ) ;
+			expect( new Vector3D( 3 , 4 , 0 ).isOrthogonalTo( new Vector3D( 4 , -3 , 0 ) ) ).to.be( true ) ;
+			expect( new Vector3D( 3 , 4 , 2 ).isOrthogonalTo( new Vector3D( 4 , -4 , 2 ) ) ).to.be( true ) ;
 		} ) ;
 
 		it( "projections" , () => {
-			var v1 = Vector3D( 3 , 4 , 5 ) ;
-			var v2 = Vector3D( 4 , 3 , -2 ) ;
+			var v1 = new Vector3D( 3 , 4 , 5 ) ;
+			var v2 = new Vector3D( 4 , 3 , -2 ) ;
 			expect( v1.projectionLengthOf( v2 ) ).to.be( 1.979898987322333 ) ;
 			expect( v1.projectionValueOf( v2 ) ).to.be( 1.979898987322333 ) ;
 			expect( v1.projectionOf( v2 ) ).to.be.like( { x: 0.8400000000000001 , y: 1.12 , z: 1.4000000000000001 } ) ;
@@ -744,14 +744,14 @@ describe( "Geometry" , () => {
 		it( "decompose" , () => {
 			var v , decomp ;
 
-			v = Vector3D( 4 , 3 , 5 ) ;
+			v = new Vector3D( 4 , 3 , 5 ) ;
 
-			expect( v.decompose( Vector3D( 1 , 0 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 , z: 0 } , { x: 0 , y: 3 , z: 5 } ] ) ;
-			expect( v.decompose( Vector3D( 5 , 0 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 , z: 0 } , { x: 0 , y: 3 , z: 5 } ] ) ;
-			expect( v.decompose( Vector3D( 0 , 1 , 0 ) ) ).to.be.like( [ { x: 0 , y: 3 , z: 0 } , { x: 4 , y: 0 , z: 5 } ] ) ;
-			expect( v.decompose( Vector3D( -5 , 0 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 , z: 0 } , { x: 0 , y: 3 , z: 5 } ] ) ;
+			expect( v.decompose( new Vector3D( 1 , 0 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 , z: 0 } , { x: 0 , y: 3 , z: 5 } ] ) ;
+			expect( v.decompose( new Vector3D( 5 , 0 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 , z: 0 } , { x: 0 , y: 3 , z: 5 } ] ) ;
+			expect( v.decompose( new Vector3D( 0 , 1 , 0 ) ) ).to.be.like( [ { x: 0 , y: 3 , z: 0 } , { x: 4 , y: 0 , z: 5 } ] ) ;
+			expect( v.decompose( new Vector3D( -5 , 0 , 0 ) ) ).to.be.like( [ { x: 4 , y: 0 , z: 0 } , { x: 0 , y: 3 , z: 5 } ] ) ;
 
-			decomp = v.decompose( Vector3D( 1 , 1 , 1 ) ) ;
+			decomp = v.decompose( new Vector3D( 1 , 1 , 1 ) ) ;
 			expectCirca( decomp[0].x , 4 ) ;
 			expectCirca( decomp[0].y , 4 ) ;
 			expectCirca( decomp[0].z , 4 ) ;
@@ -759,7 +759,7 @@ describe( "Geometry" , () => {
 			expectCirca( decomp[1].y , -1 ) ;
 			expectCirca( decomp[1].z , 1 ) ;
 
-			decomp = v.decompose( Vector3D( 1 , 2 , 0 ) ) ;
+			decomp = v.decompose( new Vector3D( 1 , 2 , 0 ) ) ;
 			expectCirca( decomp[0].x , 2 ) ;
 			expectCirca( decomp[0].y , 4 ) ;
 			expectCirca( decomp[0].z , 0 ) ;
@@ -767,7 +767,7 @@ describe( "Geometry" , () => {
 			expectCirca( decomp[1].y , -1 ) ;
 			expectCirca( decomp[1].z , 5 ) ;
 
-			decomp = v.decompose( Vector3D( 1 , 2 , 3 ) ) ;
+			decomp = v.decompose( new Vector3D( 1 , 2 , 3 ) ) ;
 			expectCirca( decomp[0].x , 1.785714285714286 ) ;
 			expectCirca( decomp[0].y , 3.571428571428572 ) ;
 			expectCirca( decomp[0].z , 5.357142857142858 ) ;
@@ -777,19 +777,19 @@ describe( "Geometry" , () => {
 		} ) ;
 
 		it( "fast decompose" , () => {
-			var v , decomp , alongAxis = Vector3D() , perpToAxis = Vector3D() ;
+			var v , decomp , alongAxis = new Vector3D() , perpToAxis = new Vector3D() ;
 
-			v = Vector3D( 4 , 3 , 5 ) ;
+			v = new Vector3D( 4 , 3 , 5 ) ;
 
-			v.fastDecompose( Vector3D( 1 , 0 , 0 ) , alongAxis , perpToAxis ) ;
+			v.fastDecompose( new Vector3D( 1 , 0 , 0 ) , alongAxis , perpToAxis ) ;
 			expect( alongAxis ).to.be.like( { x: 4 , y: 0 , z: 0 } ) ;
 			expect( perpToAxis ).to.be.like( { x: 0 , y: 3 , z: 5 } ) ;
 
-			v.fastDecompose( Vector3D( 0 , 1 , 0 ) , alongAxis , perpToAxis ) ;
+			v.fastDecompose( new Vector3D( 0 , 1 , 0 ) , alongAxis , perpToAxis ) ;
 			expect( alongAxis ).to.be.like( { x: 0 , y: 3 , z: 0 } ) ;
 			expect( perpToAxis ).to.be.like( { x: 4 , y: 0 , z: 5 } ) ;
 
-			v.fastDecompose( Vector3D( 1 , 1 , 1 ).normalize() , alongAxis , perpToAxis ) ;
+			v.fastDecompose( new Vector3D( 1 , 1 , 1 ).normalize() , alongAxis , perpToAxis ) ;
 			expectCirca( alongAxis.x , 4 ) ;
 			expectCirca( alongAxis.y , 4 ) ;
 			expectCirca( alongAxis.z , 4 ) ;
@@ -797,7 +797,7 @@ describe( "Geometry" , () => {
 			expectCirca( perpToAxis.y , -1 ) ;
 			expectCirca( perpToAxis.z , 1 ) ;
 
-			v.fastDecompose( Vector3D( 1 , 2 , 0 ).normalize() , alongAxis , perpToAxis ) ;
+			v.fastDecompose( new Vector3D( 1 , 2 , 0 ).normalize() , alongAxis , perpToAxis ) ;
 			expectCirca( alongAxis.x , 2 ) ;
 			expectCirca( alongAxis.y , 4 ) ;
 			expectCirca( alongAxis.z , 0 ) ;
@@ -805,7 +805,7 @@ describe( "Geometry" , () => {
 			expectCirca( perpToAxis.y , -1 ) ;
 			expectCirca( perpToAxis.z , 5 ) ;
 
-			v.fastDecompose( Vector3D( 1 , 2 , 3 ).normalize() , alongAxis , perpToAxis ) ;
+			v.fastDecompose( new Vector3D( 1 , 2 , 3 ).normalize() , alongAxis , perpToAxis ) ;
 			expectCirca( alongAxis.x , 1.785714285714286 ) ;
 			expectCirca( alongAxis.y , 3.571428571428572 ) ;
 			expectCirca( alongAxis.z , 5.357142857142858 ) ;
@@ -817,37 +817,37 @@ describe( "Geometry" , () => {
 		it( "transpose 2D" , () => {
 			var v , transposed , origin , normal , xAxis ;
 
-			v = Vector3D( 1 , 3 , 0 ) ;
-			origin = Vector3D( 0 , 0 , 1 ) ;
-			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
-			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			v = new Vector3D( 1 , 3 , 0 ) ;
+			origin = new Vector3D( 0 , 0 , 1 ) ;
+			normal = new Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = new Vector3D( 1 , 0 , -1 ).normalize() ;
 			transposed = v.transpose2D( origin , normal , xAxis ) ;
 			//console.log( transposed ) ;
 			expectCirca( transposed.x , Math.SQRT2 ) ;
 			expectCirca( transposed.y , 3 ) ;
 
-			v = Vector3D( 1 , 3 , 0 ) ;
-			origin = Vector3D( 1 , 0 , 0 ) ;
-			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
-			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			v = new Vector3D( 1 , 3 , 0 ) ;
+			origin = new Vector3D( 1 , 0 , 0 ) ;
+			normal = new Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = new Vector3D( 1 , 0 , -1 ).normalize() ;
 			transposed = v.transpose2D( origin , normal , xAxis ) ;
 			//console.log( transposed ) ;
 			expectCirca( transposed.x , 0 ) ;
 			expectCirca( transposed.y , 3 ) ;
 
-			v = Vector3D( 1 , 3 , 0 ) ;
-			origin = Vector3D( -2 , 0 , 3 ) ;
-			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
-			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			v = new Vector3D( 1 , 3 , 0 ) ;
+			origin = new Vector3D( -2 , 0 , 3 ) ;
+			normal = new Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = new Vector3D( 1 , 0 , -1 ).normalize() ;
 			transposed = v.transpose2D( origin , normal , xAxis ) ;
 			//console.log( transposed ) ;
 			expectCirca( transposed.x , 3 * Math.SQRT2 ) ;
 			expectCirca( transposed.y , 3 ) ;
 
-			v = Vector3D( 5 , 3 , 4 ) ;
-			origin = Vector3D( 0 , 0 , 1 ) ;
-			normal = Vector3D( 1 , 0 , 1 ).normalize() ;
-			xAxis = Vector3D( 1 , 0 , -1 ).normalize() ;
+			v = new Vector3D( 5 , 3 , 4 ) ;
+			origin = new Vector3D( 0 , 0 , 1 ) ;
+			normal = new Vector3D( 1 , 0 , 1 ).normalize() ;
+			xAxis = new Vector3D( 1 , 0 , -1 ).normalize() ;
 			transposed = v.transpose2D( origin , normal , xAxis ) ;
 			//console.log( transposed ) ;
 			expectCirca( transposed.x , Math.SQRT2 ) ;
@@ -860,20 +860,20 @@ describe( "Geometry" , () => {
 	describe( "BoundVector3D" , () => {
 
 		it( "constructor" , () => {
-			expect( BoundVector3D( 3 , 4 , 5 , 5 , 2 , -1 ) )
+			expect( new BoundVector3D( 3 , 4 , 5 , 5 , 2 , -1 ) )
 				.to.be.like( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: 2 , z: -1 } } ) ;
 		} ) ;
 
 		it( "from/to constructor" , () => {
-			expect( BoundVector3D.fromTo( Vector3D( 3 , 4 , 5 ) , Vector3D( 8 , 2 , 7 ) ) )
+			expect( BoundVector3D.fromTo( new Vector3D( 3 , 4 , 5 ) , new Vector3D( 8 , 2 , 7 ) ) )
 				.to.be.like( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: -2 , z: 2 } } ) ;
 		} ) ;
 
 		it( "get/set endPoint" , () => {
-			var v = BoundVector3D.fromTo( Vector3D( 3 , 4 , 5 ) , Vector3D( 8 , 2 , 7 ) ) ;
+			var v = BoundVector3D.fromTo( new Vector3D( 3 , 4 , 5 ) , new Vector3D( 8 , 2 , 7 ) ) ;
 			expect( v ).to.be.like( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: 5 , y: -2 , z: 2 } } ) ;
 			expect( v.endPoint ).to.be.like( { x: 8 , y: 2 , z: 7 } ) ;
-			expect( v.setEndPoint( Vector3D( -4 , 1 , 11 ) ) ).to.be.like( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: -7 , y: -3 , z: 6 } } ) ;
+			expect( v.setEndPoint( new Vector3D( -4 , 1 , 11 ) ) ).to.be.like( { position: { x: 3 , y: 4 , z: 5 } , vector: { x: -7 , y: -3 , z: 6 } } ) ;
 			expect( v.endPoint ).to.be.like( { x: -4 , y: 1 , z: 11 } ) ;
 		} ) ;
 
@@ -884,42 +884,42 @@ describe( "Geometry" , () => {
 		it( "test if a point is on the line" , () => {
 			var line ;
 
-			line = BoundVector3D( 2 , 3 , 5 , 2 , 1 , -1 ) ;
-			expect( line.isOnLine( Vector3D( 2 , 3 , 5 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( 2 , 2 , 2 ) ) ).to.be( false ) ;
-			expect( line.isOnLine( Vector3D( 4 , 4 , 4 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( 3 , 3.5 , 4.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( 2.5 , 3.25 , 4.75 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( 2.25 , 3.25 , 4.75 ) ) ).to.be( false ) ;
-			expect( line.isOnLine( Vector3D( 5 , 4.5 , 3.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( 0 , 2 , 6 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( -1 , 1.5 , 6.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( -1.5 , 1.25 , 6.75 ) ) ).to.be( true ) ;
-			expect( line.isOnLine( Vector3D( -1.5 , 1.25 , 6.5 ) ) ).to.be( false ) ;
-			expect( line.isOnLine( Vector3D( -1.4 , 1.25 , 6.75 ) ) ).to.be( false ) ;
+			line = new BoundVector3D( 2 , 3 , 5 , 2 , 1 , -1 ) ;
+			expect( line.isOnLine( new Vector3D( 2 , 3 , 5 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector3D( 2 , 2 , 2 ) ) ).to.be( false ) ;
+			expect( line.isOnLine( new Vector3D( 4 , 4 , 4 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector3D( 3 , 3.5 , 4.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector3D( 2.5 , 3.25 , 4.75 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector3D( 2.25 , 3.25 , 4.75 ) ) ).to.be( false ) ;
+			expect( line.isOnLine( new Vector3D( 5 , 4.5 , 3.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector3D( 0 , 2 , 6 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector3D( -1 , 1.5 , 6.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector3D( -1.5 , 1.25 , 6.75 ) ) ).to.be( true ) ;
+			expect( line.isOnLine( new Vector3D( -1.5 , 1.25 , 6.5 ) ) ).to.be( false ) ;
+			expect( line.isOnLine( new Vector3D( -1.4 , 1.25 , 6.75 ) ) ).to.be( false ) ;
 		} ) ;
 
 		it( "test if a point is on the line segment" , () => {
 			var line ;
 
-			line = BoundVector3D( 2 , 3 , 5 , 2 , 1 , -1 ) ;
-			expect( line.isOnLineSegment( Vector3D( 2 , 3 , 5 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector3D( 2 , 2 , 2 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( 4 , 4 , 4 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector3D( 3 , 3.5 , 4.5 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector3D( 2.5 , 3.25 , 4.75 ) ) ).to.be( true ) ;
-			expect( line.isOnLineSegment( Vector3D( 2.25 , 3.25 , 4.75 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( 5 , 4.5 , 3.5 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( 0 , 2 , 6 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( -1 , 1.5 , 6.5 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( -1.5 , 1.25 , 6.75 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( -1.5 , 1.25 , 6.5 ) ) ).to.be( false ) ;
-			expect( line.isOnLineSegment( Vector3D( -1.4 , 1.25 , 6.75 ) ) ).to.be( false ) ;
+			line = new BoundVector3D( 2 , 3 , 5 , 2 , 1 , -1 ) ;
+			expect( line.isOnLineSegment( new Vector3D( 2 , 3 , 5 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( new Vector3D( 2 , 2 , 2 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector3D( 4 , 4 , 4 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( new Vector3D( 3 , 3.5 , 4.5 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( new Vector3D( 2.5 , 3.25 , 4.75 ) ) ).to.be( true ) ;
+			expect( line.isOnLineSegment( new Vector3D( 2.25 , 3.25 , 4.75 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector3D( 5 , 4.5 , 3.5 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector3D( 0 , 2 , 6 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector3D( -1 , 1.5 , 6.5 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector3D( -1.5 , 1.25 , 6.75 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector3D( -1.5 , 1.25 , 6.5 ) ) ).to.be( false ) ;
+			expect( line.isOnLineSegment( new Vector3D( -1.4 , 1.25 , 6.75 ) ) ).to.be( false ) ;
 		} ) ;
 
 		it( "projection of a point on a 3D line" , () => {
-			var bv1 = BoundVector3D( 2 , 1 , 0 , 2 , 1 , 0 ) ;
-			var v2 = Vector3D( 3 , 9 , 0 ) ;
+			var bv1 = new BoundVector3D( 2 , 1 , 0 , 2 , 1 , 0 ) ;
+			var v2 = new Vector3D( 3 , 9 , 0 ) ;
 			var vi = bv1.pointProjection( v2 ) ;
 			expect( vi ).to.be.an( Vector3D ) ;
 			expect( vi ).to.be.like( { x: 6 , y: 3 , z: 0 } ) ;
@@ -928,65 +928,65 @@ describe( "Geometry" , () => {
 		it( "distance of a point to a 3D line" , () => {
 			var line , point ;
 
-			line = BoundVector3D( 0 , 0 , 0 , 1 , 0 , 0 ) ;
-			point = Vector3D( 0 , 2 , 0 ) ;
+			line = new BoundVector3D( 0 , 0 , 0 , 1 , 0 , 0 ) ;
+			point = new Vector3D( 0 , 2 , 0 ) ;
 			expect( line.pointDistance( point ) ).to.be( 2 ) ;
 
-			line = BoundVector3D( 0 , 0 , 0 , 10 , 0 , 0 ) ;
-			point = Vector3D( 0 , 2 , 0 ) ;
+			line = new BoundVector3D( 0 , 0 , 0 , 10 , 0 , 0 ) ;
+			point = new Vector3D( 0 , 2 , 0 ) ;
 			expect( line.pointDistance( point ) ).to.be( 2 ) ;
 
-			line = BoundVector3D( 0 , 0 , 0 , -10 , 0 , 0 ) ;
-			point = Vector3D( 0 , 2 , 0 ) ;
+			line = new BoundVector3D( 0 , 0 , 0 , -10 , 0 , 0 ) ;
+			point = new Vector3D( 0 , 2 , 0 ) ;
 			expect( line.pointDistance( point ) ).to.be( 2 ) ;
 
-			line = BoundVector3D( -7 , 0 , 0 , -10 , 0 , 0 ) ;
-			point = Vector3D( 0 , 2 , 0 ) ;
+			line = new BoundVector3D( -7 , 0 , 0 , -10 , 0 , 0 ) ;
+			point = new Vector3D( 0 , 2 , 0 ) ;
 			expect( line.pointDistance( point ) ).to.be( 2 ) ;
 
-			line = BoundVector3D( 0 , 0 , 0 , 1 , 1 , 1 ) ;
-			point = Vector3D( 0 , 2 , 1 ) ;
+			line = new BoundVector3D( 0 , 0 , 0 , 1 , 1 , 1 ) ;
+			point = new Vector3D( 0 , 2 , 1 ) ;
 			expectCirca( line.pointDistance( point ) , Math.sqrt( 2 ) ) ;
 
-			line = BoundVector3D( 0 , 0 , 0 , 10 , 10 , 10 ) ;
-			point = Vector3D( 0 , 2 , 1 ) ;
+			line = new BoundVector3D( 0 , 0 , 0 , 10 , 10 , 10 ) ;
+			point = new Vector3D( 0 , 2 , 1 ) ;
 			expectCirca( line.pointDistance( point ) , Math.sqrt( 2 ) ) ;
 		} ) ;
 
 		it( "shortest segment between two 3D lines" , () => {
 			var line1 , line2 ;
 
-			line1 = BoundVector3D( -1 , 0 , 0 , 0 , 1 , 1 ) ;
-			line2 = BoundVector3D( 1 , 0 , 0 , 0 , -1 , 1 ) ;
+			line1 = new BoundVector3D( -1 , 0 , 0 , 0 , 1 , 1 ) ;
+			line2 = new BoundVector3D( 1 , 0 , 0 , 0 , -1 , 1 ) ;
 			expect( line1.shortestSegmentToLine( line2 ) ).to.be.like( { position: { x: -1 , y: 0 , z: 0 } , vector: { x: 2 , y: 0 , z: 0 } } ) ;
 			line1.apply( 7 ) ;
 			expect( line1.shortestSegmentToLine( line2 ) ).to.be.like( { position: { x: -1 , y: 0 , z: 0 } , vector: { x: 2 , y: 0 , z: 0 } } ) ;
 			line2.apply( -2.5 ) ;
 			expect( line1.shortestSegmentToLine( line2 ) ).to.be.like( { position: { x: -1 , y: 0 , z: 0 } , vector: { x: 2 , y: 0 , z: 0 } } ) ;
 
-			line1 = BoundVector3D( -1 , 0 , 0 , 0 , 1 , 12 ) ;
-			line2 = BoundVector3D( 1 , 0 , 0 , 0 , -3 , 1 ) ;
+			line1 = new BoundVector3D( -1 , 0 , 0 , 0 , 1 , 12 ) ;
+			line2 = new BoundVector3D( 1 , 0 , 0 , 0 , -3 , 1 ) ;
 			expect( line1.shortestSegmentToLine( line2 ) ).to.be.like( { position: { x: -1 , y: 0 , z: 0 } , vector: { x: 2 , y: 0 , z: 0 } } ) ;
 
-			line1 = BoundVector3D( -1 , 0 , 0 , 0 , 1 , 1 ) ;
-			line2 = BoundVector3D( 2 , 0 , 0 , 1 , -1 , 1 ) ;
+			line1 = new BoundVector3D( -1 , 0 , 0 , 0 , 1 , 1 ) ;
+			line2 = new BoundVector3D( 2 , 0 , 0 , 1 , -1 , 1 ) ;
 			expect( line1.shortestSegmentToLine( line2 ) ).to.be.like( { position: { x: -1 , y: 0 , z: 0 } , vector: { x: 2 , y: 1 , z: -1 } } ) ;
 
-			line1 = BoundVector3D( -1 , 0 , 0 , 0 , 1 , 1 ) ;
-			line2 = BoundVector3D( 2 , 0 , 0 , 1 , -1 , 3 ) ;
+			line1 = new BoundVector3D( -1 , 0 , 0 , 0 , 1 , 1 ) ;
+			line2 = new BoundVector3D( 2 , 0 , 0 , 1 , -1 , 3 ) ;
 			expect( line1.shortestSegmentToLine( line2 ) ).to.be.like( { position: { x: -1 , y: -1 / 3 , z: -1 / 3 } , vector: { x: 2 + 2 / 3 + Number.EPSILON , y: 2 / 3 , z: -2 / 3 - Number.EPSILON / 2 } } ) ;
 
-			line1 = BoundVector3D( -2 , 0 , 0 , 1 , 1 , 1 ) ;
-			line2 = BoundVector3D( 1 , 0 , 0 , 0 , -1 , 1 ) ;
+			line1 = new BoundVector3D( -2 , 0 , 0 , 1 , 1 , 1 ) ;
+			line2 = new BoundVector3D( 1 , 0 , 0 , 0 , -1 , 1 ) ;
 			expect( line1.shortestSegmentToLine( line2 ) ).to.be.like( { position: { x: -1 , y: 1 , z: 1 } , vector: { x: 2 , y: -1 , z: -1 } } ) ;
 
 			// Collinear lines
-			line1 = BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
-			line2 = BoundVector3D( 3 , 0 , 0 , 0 , 0 , 1 ) ;
+			line1 = new BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
+			line2 = new BoundVector3D( 3 , 0 , 0 , 0 , 0 , 1 ) ;
 			expect( line1.shortestSegmentToLine( line2 ) ).to.be.like( { position: { x: 0 , y: 0 , z: 0 } , vector: { x: 3 , y: 0 , z: 0 } } ) ;
 
-			line1 = BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
-			line2 = BoundVector3D( 3 , 0 , 0 , 0 , 0 , -1 ) ;
+			line1 = new BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
+			line2 = new BoundVector3D( 3 , 0 , 0 , 0 , 0 , -1 ) ;
 			expect( line1.shortestSegmentToLine( line2 ) ).to.be.like( { position: { x: 0 , y: 0 , z: 0 } , vector: { x: 3 , y: 0 , z: 0 } } ) ;
 		} ) ;
 	} ) ;
@@ -999,30 +999,30 @@ describe( "Geometry" , () => {
 			var plane ;
 
 			plane = Plane3D.fromThreePoints(
-				Vector3D( 0 , 0 , 2 ) ,
-				Vector3D( 2 , 1 , 2 ) ,
-				Vector3D( 1 , 2 , 2 )
+				new Vector3D( 0 , 0 , 2 ) ,
+				new Vector3D( 2 , 1 , 2 ) ,
+				new Vector3D( 1 , 2 , 2 )
 			) ;
 			expect( plane ).to.be.like( { normal: { x: 0 , y: 0 , z: 1 } , d: -2 } ) ;
 
 			plane = Plane3D.fromThreePoints(
-				Vector3D( 0 , 0 , 2 ) ,
-				Vector3D( 1 , 2 , 2 ) ,
-				Vector3D( 2 , 1 , 2 )
+				new Vector3D( 0 , 0 , 2 ) ,
+				new Vector3D( 1 , 2 , 2 ) ,
+				new Vector3D( 2 , 1 , 2 )
 			) ;
 			expect( plane ).to.be.like( { normal: { x: 0 , y: 0 , z: -1 } , d: 2 } ) ;
 
 			plane = Plane3D.fromThreePoints(
-				Vector3D( 1 , 0 , 0 ) ,
-				Vector3D( 0 , 1 , 0 ) ,
-				Vector3D( 0 , 0 , 1 )
+				new Vector3D( 1 , 0 , 0 ) ,
+				new Vector3D( 0 , 1 , 0 ) ,
+				new Vector3D( 0 , 0 , 1 )
 			) ;
 			expect( plane ).to.be.like( { normal: { x: 0.5773502691896258 , y: 0.5773502691896258 , z: 0.5773502691896258 } , d: -0.5773502691896258 } ) ;
 
 			plane = Plane3D.fromThreePoints(
-				Vector3D( 1 , 0 , 0 ) ,
-				Vector3D( 0 , 0 , 1 ) ,
-				Vector3D( 0 , 1 , 0 )
+				new Vector3D( 1 , 0 , 0 ) ,
+				new Vector3D( 0 , 0 , 1 ) ,
+				new Vector3D( 0 , 1 , 0 )
 			) ;
 			expect( plane ).to.be.like( { normal: { x: -0.5773502691896258 , y: -0.5773502691896258 , z: -0.5773502691896258 } , d: 0.5773502691896258 } ) ;
 		} ) ;
@@ -1031,43 +1031,43 @@ describe( "Geometry" , () => {
 			var plane , line , point ;
 
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
-			line = BoundVector3D( 0 , 0 , 5 , 0 , 0 , 3 ) ;
+			line = new BoundVector3D( 0 , 0 , 5 , 0 , 0 , 3 ) ;
 			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.be.like( { x: 0 , y: 0 , z: 0 } ) ;
 
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
-			line = BoundVector3D( 0 , 0 , 2 , 1 , 0 , 2 ) ;
+			line = new BoundVector3D( 0 , 0 , 2 , 1 , 0 , 2 ) ;
 			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.be.like( { x: -1 , y: 0 , z: 0 } ) ;
 
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
-			line = BoundVector3D( 0 , 0 , 2 , 1 , 4 , 2 ) ;
+			line = new BoundVector3D( 0 , 0 , 2 , 1 , 4 , 2 ) ;
 			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.be.like( { x: -1 , y: -4 , z: 0 } ) ;
 
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
-			line = BoundVector3D( 0 , 0 , 1 , 1 , 4 , 2 ) ;
+			line = new BoundVector3D( 0 , 0 , 1 , 1 , 4 , 2 ) ;
 			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.be.like( { x: -0.5 , y: -2 , z: 0 } ) ;
 
 			plane = Plane3D.fromNormal( 5 , -18 , 0 , 0 , 0 , 4 ) ;
-			line = BoundVector3D( 0 , 0 , 1 , 1 , 4 , 2 ) ;
+			line = new BoundVector3D( 0 , 0 , 1 , 1 , 4 , 2 ) ;
 			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.be.like( { x: -0.5 , y: -2 , z: 0 } ) ;
 
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 1 , 0 , 2 ) ;
-			line = BoundVector3D( 0 , 0 , 2 , 1 , 0 , 0 ) ;
+			line = new BoundVector3D( 0 , 0 , 2 , 1 , 0 , 0 ) ;
 			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.be.like( { x: -4 , y: 0 , z: 2 } ) ;
 
 			plane = Plane3D.fromNormal( -3 , 5 , 0 , 1 , 0 , 2 ) ;
-			line = BoundVector3D( 0 , 0 , 2 , 1 , 0 , 0 ) ;
+			line = new BoundVector3D( 0 , 0 , 2 , 1 , 0 , 0 ) ;
 			point = plane.lineIntersection( line ) ;
 			expect( point ).to.be.an( Vector3D ) ;
 			expect( point ).to.be.like( { x: -7 , y: 0 , z: 2 } ) ;
@@ -1077,25 +1077,25 @@ describe( "Geometry" , () => {
 			var plane , point , projected ;
 
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
-			point = Vector3D( 0 , 0 , 5 ) ;
+			point = new Vector3D( 0 , 0 , 5 ) ;
 			projected = plane.pointProjection( point ) ;
 			expect( projected ).to.be.an( Vector3D ) ;
 			expect( projected ).to.be.like( { x: 0 , y: 0 , z: 0 } ) ;
 
 			plane = Plane3D.fromNormal( 777 , 111 , 0 , 0 , 0 , 4 ) ;
-			point = Vector3D( 0 , 0 , 5 ) ;
+			point = new Vector3D( 0 , 0 , 5 ) ;
 			projected = plane.pointProjection( point ) ;
 			expect( projected ).to.be.an( Vector3D ) ;
 			expect( projected ).to.be.like( { x: 0 , y: 0 , z: 0 } ) ;
 
 			plane = Plane3D.fromNormal( 0 , 0 , -4 , 0 , 0 , 4 ) ;
-			point = Vector3D( 0 , 0 , 5 ) ;
+			point = new Vector3D( 0 , 0 , 5 ) ;
 			projected = plane.pointProjection( point ) ;
 			expect( projected ).to.be.an( Vector3D ) ;
 			expect( projected ).to.be.like( { x: 0 , y: 0 , z: -4 } ) ;
 
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 1 , 0 , 1 ) ;
-			point = Vector3D( 0 , 0 , 5 ) ;
+			point = new Vector3D( 0 , 0 , 5 ) ;
 			projected = plane.pointProjection( point ) ;
 			expect( projected ).to.be.an( Vector3D ) ;
 			expect( projected ).to.be.like( { x: -2.5 , y: 0 , z: 2.5 } ) ;
@@ -1105,19 +1105,19 @@ describe( "Geometry" , () => {
 			var plane , point ;
 
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 4 ) ;
-			point = Vector3D( 0 , 0 , 5 ) ;
+			point = new Vector3D( 0 , 0 , 5 ) ;
 			expect( plane.pointDistance( point ) ).to.be( 5 ) ;
 
 			plane = Plane3D.fromNormal( 777 , 111 , 0 , 0 , 0 , 4 ) ;
-			point = Vector3D( 0 , 0 , 5 ) ;
+			point = new Vector3D( 0 , 0 , 5 ) ;
 			expect( plane.pointDistance( point ) ).to.be( 5 ) ;
 
 			plane = Plane3D.fromNormal( 0 , 0 , -4 , 0 , 0 , 4 ) ;
-			point = Vector3D( 0 , 0 , 5 ) ;
+			point = new Vector3D( 0 , 0 , 5 ) ;
 			expect( plane.pointDistance( point ) ).to.be( 9 ) ;
 
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 1 , 0 , 1 ) ;
-			point = Vector3D( 0 , 0 , 5 ) ;
+			point = new Vector3D( 0 , 0 , 5 ) ;
 			expectCirca( plane.pointDistance( point ) , Math.hypot( 2.5 , 2.5 ) ) ;
 		} ) ;
 
@@ -1204,21 +1204,21 @@ describe( "Geometry" , () => {
 		it( "projection of a point on a circle" , () => {
 			var circle , point , projected ;
 
-			circle = Circle2D( 0 , 0 , 2 ) ;
-			point = Vector2D( 0 , 1 ) ;
+			circle = new Circle2D( 0 , 0 , 2 ) ;
+			point = new Vector2D( 0 , 1 ) ;
 			projected = circle.pointProjection( point ) ;
 			expect( projected ).to.be.a( Vector2D ) ;
 			expect( projected ).to.be.like( { x: 0 , y: 2 } ) ;
 
-			circle = Circle2D( 0 , 0 , 2 ) ;
-			point = Vector2D( 1 , 1 ) ;
+			circle = new Circle2D( 0 , 0 , 2 ) ;
+			point = new Vector2D( 1 , 1 ) ;
 			projected = circle.pointProjection( point ) ;
 			expect( projected ).to.be.a( Vector2D ) ;
 			expectCirca( projected.x , Math.sqrt( 2 ) ) ;
 			expectCirca( projected.y , Math.sqrt( 2 ) ) ;
 
-			circle = Circle2D( 0 , 0 , 2 ) ;
-			point = Vector2D( 10 , 10 ) ;
+			circle = new Circle2D( 0 , 0 , 2 ) ;
+			point = new Vector2D( 10 , 10 ) ;
 			projected = circle.pointProjection( point ) ;
 			expect( projected ).to.be.a( Vector2D ) ;
 			expectCirca( projected.x , Math.sqrt( 2 ) ) ;
@@ -1228,31 +1228,31 @@ describe( "Geometry" , () => {
 		it( "intersection of circle and a line" , () => {
 			var circle , line , points ;
 
-			circle = Circle2D( 0 , 0 , 2 ) ;
-			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
+			circle = new Circle2D( 0 , 0 , 2 ) ;
+			line = new BoundVector2D( 0 , 1 , 1 , 0 ) ;
 			points = circle.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.be.like( [ { x: Math.sqrt( 3 ) , y: 1 } , { x: -Math.sqrt( 3 ) , y: 1 } ] ) ;
 
-			circle = Circle2D( 0 , 1 , 2 ) ;
-			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
+			circle = new Circle2D( 0 , 1 , 2 ) ;
+			line = new BoundVector2D( 0 , 1 , 1 , 0 ) ;
 			points = circle.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.be.like( [ { x: 2 , y: 1 } , { x: -2 , y: 1 } ] ) ;
 
-			circle = Circle2D( 0 , -1 , 2 ) ;
-			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
+			circle = new Circle2D( 0 , -1 , 2 ) ;
+			line = new BoundVector2D( 0 , 1 , 1 , 0 ) ;
 			points = circle.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.be.like( [ { x: 0 , y: 1 } ] ) ;
 
-			circle = Circle2D( 0 , -1.1 , 2 ) ;
-			line = BoundVector2D( 0 , 1 , 1 , 0 ) ;
+			circle = new Circle2D( 0 , -1.1 , 2 ) ;
+			line = new BoundVector2D( 0 , 1 , 1 , 0 ) ;
 			points = circle.lineIntersection( line ) ;
 			expect( points ).to.be( null ) ;
 
-			circle = Circle2D( 1 , 1 , 2 ) ;
-			line = BoundVector2D( 2 , 2 , 1 , -1 ) ;
+			circle = new Circle2D( 1 , 1 , 2 ) ;
+			line = new BoundVector2D( 2 , 2 , 1 , -1 ) ;
 			points = circle.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.be.like( [ { x: 3 , y: 1 } , { x: 1 , y: 3 } ] ) ;
@@ -1266,22 +1266,22 @@ describe( "Geometry" , () => {
 		it( "projection of a point on a sphere" , () => {
 			var sphere , point , projected ;
 
-			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
-			point = Vector3D( 0 , 1 , 0 ) ;
+			sphere = new Sphere3D( 0 , 0 , 0 , 2 ) ;
+			point = new Vector3D( 0 , 1 , 0 ) ;
 			projected = sphere.pointProjection( point ) ;
 			expect( projected ).to.be.a( Vector3D ) ;
 			expect( projected ).to.be.like( { x: 0 , y: 2 , z: 0 } ) ;
 
-			sphere = Sphere3D( 0 , 0 , 0 , 3 ) ;
-			point = Vector3D( 1 , 1 , 1 ) ;
+			sphere = new Sphere3D( 0 , 0 , 0 , 3 ) ;
+			point = new Vector3D( 1 , 1 , 1 ) ;
 			projected = sphere.pointProjection( point ) ;
 			expect( projected ).to.be.a( Vector3D ) ;
 			expectCirca( projected.x , Math.sqrt( 3 ) ) ;
 			expectCirca( projected.y , Math.sqrt( 3 ) ) ;
 			expectCirca( projected.z , Math.sqrt( 3 ) ) ;
 
-			sphere = Sphere3D( 0 , 0 , 0 , 3 ) ;
-			point = Vector3D( 10 , 10 , 10 ) ;
+			sphere = new Sphere3D( 0 , 0 , 0 , 3 ) ;
+			point = new Vector3D( 10 , 10 , 10 ) ;
 			projected = sphere.pointProjection( point ) ;
 			expect( projected ).to.be.a( Vector3D ) ;
 			expectCirca( projected.x , Math.sqrt( 3 ) ) ;
@@ -1292,31 +1292,31 @@ describe( "Geometry" , () => {
 		it( "intersection of sphere and a line" , () => {
 			var sphere , line , points ;
 
-			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
-			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
+			sphere = new Sphere3D( 0 , 0 , 0 , 2 ) ;
+			line = new BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
 			points = sphere.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.be.like( [ { x: Math.sqrt( 3 ) , y: 1 , z: 0 } , { x: -Math.sqrt( 3 ) , y: 1 , z: 0 } ] ) ;
 
-			sphere = Sphere3D( 0 , 1 , 0 , 2 ) ;
-			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
+			sphere = new Sphere3D( 0 , 1 , 0 , 2 ) ;
+			line = new BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
 			points = sphere.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.be.like( [ { x: 2 , y: 1 , z: 0 } , { x: -2 , y: 1 , z: 0 } ] ) ;
 
-			sphere = Sphere3D( 0 , -1 , 0 , 2 ) ;
-			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
+			sphere = new Sphere3D( 0 , -1 , 0 , 2 ) ;
+			line = new BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
 			points = sphere.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expect( points ).to.be.like( [ { x: 0 , y: 1 , z: 0 } ] ) ;
 
-			sphere = Sphere3D( 0 , -1.1 , 0 , 2 ) ;
-			line = BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
+			sphere = new Sphere3D( 0 , -1.1 , 0 , 2 ) ;
+			line = new BoundVector3D( 0 , 1 , 0 , 1 , 0 , 0 ) ;
 			points = sphere.lineIntersection( line ) ;
 			expect( points ).to.be( null ) ;
 
-			sphere = Sphere3D( 0 , 0 , 0 , 3 ) ;
-			line = BoundVector3D( 1 , 1 , 1 , 1 , 1 , 1 ) ;
+			sphere = new Sphere3D( 0 , 0 , 0 , 3 ) ;
+			line = new BoundVector3D( 1 , 1 , 1 , 1 , 1 , 1 ) ;
 			points = sphere.lineIntersection( line ) ;
 			expect( points ).to.be.an( Array ) ;
 			expectCirca( points[0].x , Math.sqrt( 3 ) ) ;
@@ -1330,18 +1330,18 @@ describe( "Geometry" , () => {
 		it( "intersection of sphere and a plane" , () => {
 			var sphere , plane , circle ;
 
-			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
+			sphere = new Sphere3D( 0 , 0 , 0 , 2 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , 1 , 0 , 0 , 1 ) ;
 			circle = sphere.planeIntersection( plane ) ;
 			expect( circle ).to.be.a( Circle3D ) ;
 			expect( circle ).to.be.like( { center: { x: 0 , y: 0 , z: 1 } , r: 1.7320508075688772 , planeNormal: { x: 0 , y: 0 , z: 1 } } ) ;
 
-			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
+			sphere = new Sphere3D( 0 , 0 , 0 , 2 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , 1 , 1 , 0 , 1 ) ;
 			circle = sphere.planeIntersection( plane ) ;
 			expect( circle ).to.be.like( { center: { x: 0.5 , y: 0 , z: 0.5 } , r: 1.8708286933869707 , planeNormal: { x: 0.7071067811865475 , y: 0 , z: 0.7071067811865475 } } ) ;
 
-			sphere = Sphere3D( 0 , 0 , 0 , 2 ) ;
+			sphere = new Sphere3D( 0 , 0 , 0 , 2 ) ;
 			plane = Plane3D.fromNormal( 0 , 5 , 5 , 1 , 0 , 1 ) ;
 			circle = sphere.planeIntersection( plane ) ;
 			expect( circle ).to.be( null ) ;
@@ -1355,24 +1355,24 @@ describe( "Geometry" , () => {
 		it( "projection of a point on a 3D circle" , () => {
 			var circle , point ;
 
-			circle = Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
-			point = Vector3D( 0 , 0 , 0 ) ;
+			circle = new Circle3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			point = new Vector3D( 0 , 0 , 0 ) ;
 			expect( circle.pointProjection( point ).isUndefined() ).to.be( true ) ;
 
-			circle = Circle3D( 0 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
-			point = Vector3D( 5 , 0 , 0 ) ;
+			circle = new Circle3D( 0 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			point = new Vector3D( 5 , 0 , 0 ) ;
 			expect( circle.pointProjection( point ) ).to.be.like( { x: 1 , y: 0 , z: 0 } ) ;
 
-			circle = Circle3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
-			point = Vector3D( 5 , 0 , 0 ) ;
+			circle = new Circle3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			point = new Vector3D( 5 , 0 , 0 ) ;
 			expect( circle.pointProjection( point ) ).to.be.like( { x: 4 , y: 0 , z: 0 } ) ;
 
-			circle = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.sqrt( 2 ) ) ;
-			point = Vector3D( 3 , 0 , 1 ) ;
+			circle = new Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.sqrt( 2 ) ) ;
+			point = new Vector3D( 3 , 0 , 1 ) ;
 			expect( circle.pointProjection( point ) ).to.be.like( { x: 2 , y: 0 , z: 0 } ) ;
 
-			circle = Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 1 ) ;
-			point = Vector3D( 3 , 0 , 1 ) ;
+			circle = new Circle3D( 0 , 0 , 2 , 1 , 0 , 1 , 1 ) ;
+			point = new Vector3D( 3 , 0 , 1 ) ;
 			expect( circle.pointProjection( point ) ).to.be.like( { x: 0.7071067811865475 , y: 0 , z: 1.2928932188134525 } ) ;
 		} ) ;
 	} ) ;
@@ -1384,77 +1384,77 @@ describe( "Geometry" , () => {
 		it( "projection of a point on an infinite cylinder" , () => {
 			var cylinder , point ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
-			point = Vector3D( 0 , 0 , 0 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			point = new Vector3D( 0 , 0 , 0 ) ;
 			expect( cylinder.pointProjection( point ).isUndefined() ).to.be( true ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
-			point = Vector3D( 5 , 0 , 0 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			point = new Vector3D( 5 , 0 , 0 ) ;
 			expect( cylinder.pointProjection( point ) ).to.be.like( { x: 1 , y: 0 , z: 0 } ) ;
 
-			cylinder = InfiniteCylinder3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
-			point = Vector3D( 5 , 0 , 0 ) ;
+			cylinder = new InfiniteCylinder3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			point = new Vector3D( 5 , 0 , 0 ) ;
 			expect( cylinder.pointProjection( point ) ).to.be.like( { x: 4 , y: 0 , z: 0 } ) ;
 
-			cylinder = InfiniteCylinder3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
-			point = Vector3D( 5 , 0 , -7 ) ;
+			cylinder = new InfiniteCylinder3D( 3 , 0 , 0 , 0 , 0 , 5 , 1 ) ;
+			point = new Vector3D( 5 , 0 , -7 ) ;
 			expect( cylinder.pointProjection( point ) ).to.be.like( { x: 4 , y: 0 , z: -7 } ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , Math.SQRT2 ) ;
-			point = Vector3D( 3 , 0 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , Math.SQRT2 ) ;
+			point = new Vector3D( 3 , 0 , 1 ) ;
 			expect( cylinder.pointProjection( point ) ).to.be.like( { x: 2 , y: 0 , z: 2 } ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.SQRT2 ) ;
-			point = Vector3D( 3 , 0 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.SQRT2 ) ;
+			point = new Vector3D( 3 , 0 , 1 ) ;
 			expect( cylinder.pointProjection( point ) ).to.be.like( { x: 3 , y: 0 , z: 1 } ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , 1 ) ;
-			point = Vector3D( 3 , 0 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , 1 ) ;
+			point = new Vector3D( 3 , 0 , 1 ) ;
 			expect( cylinder.pointProjection( point ) ).to.be.like( { x: 1.7071067811865475 , y: 0 , z: 2.2928932188134525 } ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.SQRT2 ) ;
-			point = Vector3D( 3 , 1 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 2 , 1 , 0 , 1 , 2 * Math.SQRT2 ) ;
+			point = new Vector3D( 3 , 1 , 1 ) ;
 			expect( cylinder.pointProjection( point ) ).to.be.like( { x: 2.885618083164127 , y: 0.9428090415820635 , z: 1.114381916835873 } ) ;
 		} ) ;
 
 		it( "line intersection with an infinite cylinder" , () => {
 			var cylinder , line , projected ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
-			line = BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			line = new BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
 			expect( cylinder.lineIntersection( line ) ).to.be( null ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
-			line = BoundVector3D( 0 , 0 , 0 , 1 , 0 , 0 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			line = new BoundVector3D( 0 , 0 , 0 , 1 , 0 , 0 ) ;
 			expect( cylinder.lineIntersection( line ) ).to.be.like( [ { x: 1 , y: 0 , z: 0 } , { x: -1 , y: 0 , z: 0 } ] ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
-			line = BoundVector3D( 0 , 0 , 10 , 1 , 0 , 0 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			line = new BoundVector3D( 0 , 0 , 10 , 1 , 0 , 0 ) ;
 			expect( cylinder.lineIntersection( line ) ).to.be.like( [ { x: 1 , y: 0 , z: 10 } , { x: -1 , y: 0 , z: 10 } ] ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
-			line = BoundVector3D( 0 , 0 , 0 , 1 , 1 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			line = new BoundVector3D( 0 , 0 , 0 , 1 , 1 , 1 ) ;
 			expect( cylinder.lineIntersection( line ) ).to.be.like( [
 				{ x: Math.SQRT1_2 , y: Math.SQRT1_2 , z: Math.SQRT1_2 } ,
 				{ x: -Math.SQRT1_2 , y: -Math.SQRT1_2 , z: -Math.SQRT1_2 }
 			] ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , -1 , 0 , 1 , 1 ) ;
-			line = BoundVector3D( 0 , 0 , 0 , 1 , 1 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 0 , -1 , 0 , 1 , 1 ) ;
+			line = new BoundVector3D( 0 , 0 , 0 , 1 , 1 , 1 ) ;
 			expect( cylinder.lineIntersection( line ) ).to.be.like( [
 				{ x: 0.5773502691896258 , y: 0.5773502691896258 , z: 0.5773502691896258 } ,
 				{ x: -0.5773502691896258 , y: -0.5773502691896258 , z: -0.5773502691896258 }
 			] ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , -1 , 0 , 1 , 1 ) ;
-			line = BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 0 , -1 , 0 , 1 , 1 ) ;
+			line = new BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
 			expect( cylinder.lineIntersection( line ) ).to.be.like( [
 				{ x: 0 , y: 0 , z: Math.SQRT2 } ,
 				{ x: 0 , y: 0 , z: -Math.SQRT2 }
 			] ) ;
 
-			cylinder = InfiniteCylinder3D( 0.5 , 0.5 , 0 , -1 , 0 , 1 , 1 ) ;
-			line = BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0.5 , 0.5 , 0 , -1 , 0 , 1 , 1 ) ;
+			line = new BoundVector3D( 0 , 0 , 0 , 0 , 0 , 1 ) ;
 			expect( cylinder.lineIntersection( line ) ).to.be.like( [
 				{ x: 0 , y: 0 , z: 1.7247448713915892 } ,
 				{ x: 0 , y: 0 , z: -0.7247448713915893 }
@@ -1464,19 +1464,19 @@ describe( "Geometry" , () => {
 		it( "plane intersection with an infinite cylinder" , () => {
 			var cylinder , plane , intersection ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , 0 , 0 , 0 , 1 ) ;
 			intersection = cylinder.planeIntersection( plane ) ;
 			expect( intersection ).to.be.a( Circle3D ) ;
 			expect( intersection ).to.be.like( { center: { x: 0 , y: 0 , z: 0 } , r: 1 , planeNormal: { x: 0 , y: 0 , z: 1 } } ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , -20 , 0 , 0 , 1 ) ;
 			intersection = cylinder.planeIntersection( plane ) ;
 			expect( intersection ).to.be.a( Circle3D ) ;
 			expect( intersection ).to.be.like( { center: { x: 0 , y: 0 , z: -20 } , r: 1 , planeNormal: { x: 0 , y: 0 , z: 1 } } ) ;
 
-			cylinder = InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
+			cylinder = new InfiniteCylinder3D( 0 , 0 , 0 , 0 , 0 , 1 , 1 ) ;
 			plane = Plane3D.fromNormal( 0 , 0 , 2 , 1 , 0 , 1 ) ;
 			intersection = cylinder.planeIntersection( plane ) ;
 			//console.log( intersection ) ;
@@ -1503,18 +1503,18 @@ describe( "Geometry" , () => {
 		it( "Focal points, eccentricity" , () => {
 			var ellipse , focalPoints ;
 
-			ellipse = Ellipse2D( 0 , 0 , 1 , 0 , 1 , 0.5 ) ;
+			ellipse = new Ellipse2D( 0 , 0 , 1 , 0 , 1 , 0.5 ) ;
 			//expect( ellipse.getFocalPoints() ).to.be.like( [ { x: 0.8660254037844386 , y: 0 } , { x: -0.8660254037844386 , y: 0 } ] ) ;
 			expect( ellipse.e ).to.be( Math.sqrt( 0.75 ) ) ;
 			expect( ellipse.focus1 ).to.be.like( { x: Math.sqrt( 0.75 ) , y: 0 } ) ;
 			expect( ellipse.focus2 ).to.be.like( { x: -Math.sqrt( 0.75 ) , y: 0 } ) ;
 
-			ellipse = Ellipse2D( 2 , 2 , 1 , 0 , 1 , 0.5 ) ;
+			ellipse = new Ellipse2D( 2 , 2 , 1 , 0 , 1 , 0.5 ) ;
 			expect( ellipse.e ).to.be( Math.sqrt( 0.75 ) ) ;
 			expect( ellipse.focus1 ).to.be.like( { x: 2 + Math.sqrt( 0.75 ) , y: 2 } ) ;
 			expect( ellipse.focus2 ).to.be.like( { x: 2 - Math.sqrt( 0.75 ) , y: 2 } ) ;
 
-			ellipse = Ellipse2D( 2 , 2 , 1 , 1 , 1 , 0.5 ) ;
+			ellipse = new Ellipse2D( 2 , 2 , 1 , 1 , 1 , 0.5 ) ;
 			expect( ellipse.e ).to.be( Math.sqrt( 0.75 ) ) ;
 			expect( ellipse.focus1 ).to.be.like( { x: 2 + Math.sqrt( 0.75 ) * Math.SQRT1_2 , y: 2 + Math.sqrt( 0.75 ) * Math.SQRT1_2 } ) ;
 			expectCirca( ellipse.focus2.x , 2 - Math.sqrt( 0.75 ) * Math.SQRT1_2 ) ;
@@ -1524,7 +1524,7 @@ describe( "Geometry" , () => {
 		it( "test if a point is on/inside the ellipse" , () => {
 			var ellipse ;
 
-			ellipse = Ellipse2D( 0 , 0 , 1 , 0 , 1 , 0.5 ) ;
+			ellipse = new Ellipse2D( 0 , 0 , 1 , 0 , 1 , 0.5 ) ;
 			expectCirca( ellipse.test( 0 , 0 ) , -0.2679491924311228 ) ;
 			expectCirca( ellipse.test( 1 , 0 ) , 0 ) ;
 		} ) ;
@@ -1537,25 +1537,25 @@ describe( "Geometry" , () => {
 		it( "point projection" , () => {
 			var ellipse , point , projected ;
 
-			ellipse = Ellipse3D(
+			ellipse = new Ellipse3D(
 				0 , 0 , 1 ,
 				1 , 0 , 1 ,
 				1 , 0 , -1 ,
 				1 , 0.5
 			) ;
-			point = Vector3D( 1 , 0 , 0 ) ;
+			point = new Vector3D( 1 , 0 , 0 ) ;
 			projected = ellipse.pointProjection( point ) ;
 			expectCirca( projected.x , Math.SQRT1_2 ) ;
 			expectCirca( projected.y , 0 ) ;
 			expectCirca( projected.z , 1 - Math.SQRT1_2 ) ;
 
-			ellipse = Ellipse3D(
+			ellipse = new Ellipse3D(
 				0 , 0 , 1 ,
 				1 , 0 , 1 ,
 				1 , 0 , -1 ,
 				1 , 0.5
 			) ;
-			point = Vector3D( 1 , 1 , 0 ) ;
+			point = new Vector3D( 1 , 1 , 0 ) ;
 			projected = ellipse.pointProjection( point ) ;
 			expectCirca( projected.x , 0.5958015781628886 ) ;
 			expectCirca( projected.y , 0.2692772543853373 ) ;
@@ -1568,17 +1568,17 @@ describe( "Geometry" , () => {
 	describe( "Epsilon" , () => {
 
 		it( "Vector2D collinearity epsilon" , () => {
-			expect( Vector2D( 0.3 , 0.4 ).isCollinearTo( Vector2D( 0.3 , 0.4 ) ) ).to.be( true ) ;
-			expect( Vector2D( 0.3 , 0.4 ).isCollinearTo( Vector2D( 0.3 + Number.EPSILON , 0.4 ) ) ).to.be( true ) ;
-			expect( Vector2D( 0.3 , 0.4 ).isCollinearTo( Vector2D( 0.3 + Number.EPSILON , 0.4 + Number.EPSILON ) ) ).to.be( true ) ;
-			expect( Vector2D( 0.3 , 0.4 ).isCollinearTo( Vector2D( 0.3 + Number.EPSILON , 0.4 - Number.EPSILON ) ) ).to.be( true ) ;
+			expect( new Vector2D( 0.3 , 0.4 ).isCollinearTo( new Vector2D( 0.3 , 0.4 ) ) ).to.be( true ) ;
+			expect( new Vector2D( 0.3 , 0.4 ).isCollinearTo( new Vector2D( 0.3 + Number.EPSILON , 0.4 ) ) ).to.be( true ) ;
+			expect( new Vector2D( 0.3 , 0.4 ).isCollinearTo( new Vector2D( 0.3 + Number.EPSILON , 0.4 + Number.EPSILON ) ) ).to.be( true ) ;
+			expect( new Vector2D( 0.3 , 0.4 ).isCollinearTo( new Vector2D( 0.3 + Number.EPSILON , 0.4 - Number.EPSILON ) ) ).to.be( true ) ;
 		} ) ;
 
 		it( "Vector3D collinearity epsilon" , () => {
-			expect( Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( Vector3D( 0.3 , 0.4 , 0.5 ) ) ).to.be( true ) ;
-			expect( Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( Vector3D( 0.3 + Number.EPSILON , 0.4 , 0.5 ) ) ).to.be( true ) ;
-			expect( Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( Vector3D( 0.3 + Number.EPSILON , 0.4 + Number.EPSILON , 0.5 + Number.EPSILON ) ) ).to.be( true ) ;
-			expect( Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( Vector3D( 0.3 + Number.EPSILON , 0.4 - Number.EPSILON , 0.5 ) ) ).to.be( true ) ;
+			expect( new Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( new Vector3D( 0.3 , 0.4 , 0.5 ) ) ).to.be( true ) ;
+			expect( new Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( new Vector3D( 0.3 + Number.EPSILON , 0.4 , 0.5 ) ) ).to.be( true ) ;
+			expect( new Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( new Vector3D( 0.3 + Number.EPSILON , 0.4 + Number.EPSILON , 0.5 + Number.EPSILON ) ) ).to.be( true ) ;
+			expect( new Vector3D( 0.3 , 0.4 , 0.5 ).isCollinearTo( new Vector3D( 0.3 + Number.EPSILON , 0.4 - Number.EPSILON , 0.5 ) ) ).to.be( true ) ;
 		} ) ;
 	} ) ;
 
