@@ -3,18 +3,18 @@
   "version": "0.11.14",
   "description": "Math utilities (random, stats, and more)",
   "main": "lib/math.js",
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "directories": {
     "test": "test"
   },
   "dependencies": {},
   "devDependencies": {
-    "gm": "^1.21.1",
-    "expect.js": "^0.3.1",
-    "jshint": "^2.9.2",
-    "mocha": "^2.5.3"
+    "gm": "^1.21.1"
   },
   "scripts": {
-    "test": "mocha -R dot"
+    "test": "tea-time -R dot"
   },
   "repository": {
     "type": "git",
@@ -40,7 +40,7 @@
     "title": "Math Kit",
     "years": [
       2014,
-      2017
+      2019
     ],
     "owner": "Cédric Ronvel"
   }
