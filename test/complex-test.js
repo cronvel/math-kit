@@ -68,6 +68,26 @@ describe( "Complex numbers" , () => {
 
 	it( "add" , () => {
 		expect( new Complex( 3 , 4 ).add( new Complex( 1 , 5 ) ) ).to.be.like( { re: 4 , im: 9 } ) ;
+		expect( new Complex( -5 , -2 ).add( new Complex( 1 , 5 ) ) ).to.be.like( { re: -4 , im: 3 } ) ;
+		expect( new Complex( 1 , -2 ).add( new Complex( -4 , -5 ) ) ).to.be.like( { re: -3 , im: -7 } ) ;
+	} ) ;
+
+	it( "mul" , () => {
+		expect( new Complex( 3 , 4 ).mul( new Complex( 2 , 0 ) ) ).to.be.like( { re: 6 , im: 8 } ) ;
+		expect( new Complex( 3 , 4 ).mul( new Complex( 0 , 1 ) ) ).to.be.like( { re: -4 , im: 3 } ) ;
+		expect( new Complex( 3 , 4 ).mul( new Complex( 0 , 2 ) ) ).to.be.like( { re: -8 , im: 6 } ) ;
+		expect( new Complex( 3 , 4 ).mul( new Complex( 2 , 2 ) ) ).to.be.like( { re: -2 , im: 14 } ) ;
+		expect( new Complex( 4 , 3 ).mul( new Complex( 2 , 2 ) ) ).to.be.like( { re: 2 , im: 14 } ) ;
+		expect( new Complex( 2 , 1 ).mul( new Complex( 3 , 1 ) ) ).to.be.like( { re: 5 , im: 5 } ) ;
+		expect( new Complex( 3 , 4 ).mul( new Complex( 3 , 4 ) ) ).to.be.like( { re: -7 , im: 24 } ) ;
+	} ) ;
+
+	it( "intPow" , () => {
+		var c ;
+		
+		c = new Complex( 3 , 4 ).intPow( 2 ) ;
+		expect( c.re ).to.be.around( -7 ) ;
+		expect( c.im ).to.be.around( 24 ) ;
 	} ) ;
 } ) ;
 
