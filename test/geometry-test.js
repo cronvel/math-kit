@@ -60,12 +60,6 @@ function expectCirca( value , circa ) {
 
 
 
-
-
-/* Tests */
-
-
-
 describe( "Geometry" , () => {
 
 	describe( "Vector2D" , () => {
@@ -720,6 +714,18 @@ describe( "Geometry" , () => {
 			expect( new Vector3D( 3 , 4 , 0 ).isOrthogonalTo( new Vector3D( 0 , 0 , -1 ) ) ).to.be( true ) ;
 			expect( new Vector3D( 3 , 4 , 0 ).isOrthogonalTo( new Vector3D( 4 , -3 , 0 ) ) ).to.be( true ) ;
 			expect( new Vector3D( 3 , 4 , 2 ).isOrthogonalTo( new Vector3D( 4 , -4 , 2 ) ) ).to.be( true ) ;
+		} ) ;
+
+		it( "angle between 2 vectors" , () => {
+			var delta = 0.0000001 ;
+			expect( new Vector3D( 5 , 0 , 0 ).angleTo( new Vector3D( 5 , 0 , 0 ) ) ).to.be( 0 ) ;
+			expect( new Vector3D( 0 , 5 , 0 ).angleTo( new Vector3D( 0 , 5 , 0 ) ) ).to.be( 0 ) ;
+			expect( new Vector3D( 0 , 5 , 0 ).angleTo( new Vector3D( 0 , 1 , 0 ) ) ).to.be( 0 ) ;
+			expect( new Vector3D( 5 , 5 , 0 ).angleTo( new Vector3D( 5 , 5 , 0 ) ) ).to.be.around( 0 , delta ) ;
+			expect( new Vector3D( 5 , 0 , 0 ).angleTo( new Vector3D( 0 , 5 , 0 ) ) ).to.be.around( Math.PI / 2 ) ;
+			expect( new Vector3D( 5 , 0 , 0 ).angleTo( new Vector3D( 0 , 0 , 10 ) ) ).to.be.around( Math.PI / 2 ) ;
+			expect( new Vector3D( 5 , 0 , 0 ).angleTo( new Vector3D( 0 , 1 , 0 ) ) ).to.be.around( Math.PI / 2 ) ;
+			expect( new Vector3D( 5 , 5 , 5 ).angleTo( new Vector3D( 1 , 1 , 1 ) ) ).to.be( 0 ) ;
 		} ) ;
 
 		it( "projections" , () => {
