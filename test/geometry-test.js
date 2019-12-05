@@ -690,6 +690,29 @@ describe( "Geometry" , () => {
 			expect( v1 ).to.be.like( { x: 0.4242640687119285 , y: 0.565685424949238 , z: 0.7071067811865475 } ) ;
 		} ) ;
 
+		it( "zzz get/set spherical angle: azimuth and declination" , () => {
+			var v1 ;
+
+			v1 = new Vector3D( 3 , 3 , 3 * Math.SQRT2 ) ;
+			expect( v1.azimuthDeg ).to.be( 45 ) ;
+			expect( v1.declinationDeg ).to.be.around( 45 ) ;
+
+			v1 = new Vector3D( 0 , 0 , 1 ) ;
+			expect( v1.azimuthDeg ).to.be( 0 ) ;
+			expect( v1.declinationDeg ).to.be.around( 90 ) ;
+
+			v1 = new Vector3D( 0 , 0 , -1 ) ;
+			expect( v1.azimuthDeg ).to.be( 0 ) ;
+			expect( v1.declinationDeg ).to.be.around( -90 ) ;
+
+			v1.setRadiusAzimuthDeclinationDeg( 1 , 45 , 45 ) ;
+			expect( v1 ).to.be.like( {
+				x: 0.5000000000000001 ,
+				y: 0.5 ,
+				z: 0.7071067811865475
+			} ) ;
+		} ) ;
+
 		it( "dot product" , () => {
 			expect( new Vector3D( 3 , 4 , 5 ).dot( new Vector3D( 5 , 2 , 1 ) ) ).to.be( 28 ) ;
 			expect( new Vector3D( 3 , 4 , 5 ).dot( new Vector3D( -5 , 2 , -3 ) ) ).to.be( -22 ) ;
