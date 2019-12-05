@@ -24,20 +24,33 @@
 	SOFTWARE.
 */
 
+/* global expect, describe, it */
+
 "use strict" ;
 
 
 
-var math = {} ;
-module.exports = math ;
+const math = require( '..' ) ;
+const Matrix = math.Matrix ;
 
-Object.assign( math , require( './common.js' ) ) ;
 
-math.random = require( './random.js' ) ;
-math.stat = require( './stat.js' ) ;
-math.geometry = require( './geometry.js' ) ;
-math.Fn = require( './Fn.js' ) ;
-math.Complex = require( './Complex.js' ) ;
-math.Matrix = require( './Matrix.js' ) ;
 
+describe( "Matrix" , () => {
+
+	it( "constructor/identity" , () => {
+		expect( new Matrix( 2 , 2 ) ).to.be.like( { w: 2 , h: 2 , a: [ 1 , 0 , 0 , 1 ] } ) ;
+		expect( Matrix.identity( 2 , 2 ) ).to.be.like( { w: 2 , h: 2 , a: [ 1 , 0 , 0 , 1 ] } ) ;
+		
+		expect( new Matrix( 3 , 3 ) ).to.be.like( { w: 3 , h: 3 , a: [
+			1, 0, 0,
+			0, 1, 0,
+			0, 0, 1
+		] } ) ;
+		expect( Matrix.identity( 3 , 3 ) ).to.be.like( { w: 3 , h: 3 , a: [
+			1, 0, 0,
+			0, 1, 0,
+			0, 0, 1
+		] } ) ;
+	} ) ;
+} ) ;
 
