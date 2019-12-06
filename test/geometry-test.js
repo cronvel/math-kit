@@ -172,7 +172,7 @@ describe( "Geometry" , () => {
 			expectCirca( v1.y , 10 * Math.sqrt( 3 ) / 2 ) ;
 		} ) ;
 
-		it( "get/set/rotate angle in degree" , () => {
+		it( "zzz get/set/rotate angle in degree" , () => {
 			var v1 = new Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 			expectCirca( v1.angleDeg , 60 ) ;
 			expectCirca( v1.inv().angleDeg , -120 ) ;
@@ -192,6 +192,12 @@ describe( "Geometry" , () => {
 			expectCirca( v1.angleDeg , 60 ) ;
 			expectCirca( v1.x , 5 ) ;
 			expectCirca( v1.y , 10 * Math.sqrt( 3 ) / 2 ) ;
+
+			v1.setRadiusAngleDeg( 1 , 60 ) ;
+			expect( v1.radius ).to.be.around( 1 ) ;
+			expect( v1.angleDeg ).to.be.around( 60 ) ;
+			expect( v1.x ).to.be.around( 0.5 ) ;
+			expect( v1.y ).to.be.around( Math.sqrt( 3 ) / 2 ) ;
 		} ) ;
 
 		it( "dot product" , () => {
@@ -706,6 +712,9 @@ describe( "Geometry" , () => {
 			expect( v1.declinationDeg ).to.be.around( -90 ) ;
 
 			v1.setRadiusAzimuthDeclinationDeg( 1 , 45 , 45 ) ;
+			expect( v1.radius ).to.be.around( 1 ) ;
+			expect( v1.azimuthDeg ).to.be.around( 45 ) ;
+			expect( v1.declinationDeg ).to.be.around( 45 ) ;
 			expect( v1 ).to.be.like( {
 				x: 0.5000000000000001 ,
 				y: 0.5 ,
