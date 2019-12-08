@@ -88,7 +88,7 @@ describe( "Matrix" , () => {
 		] } ) ;
 	} ) ;
 
-	it( "determinant" , () => {
+	it( "2x2 determinant" , () => {
 		var m ;
 		
 		m = new Matrix( 2 , 2 , [
@@ -97,7 +97,11 @@ describe( "Matrix" , () => {
 		] ) ;
 		
 		expect( m.determinant() ).to.be( -2 ) ;
+	} ) ;
 
+	it( "3x3 determinant" , () => {
+		var m ;
+		
 		m = new Matrix( 3 , 3 , [
 			1, 2, 3,
 			4, 5, 6,
@@ -121,6 +125,46 @@ describe( "Matrix" , () => {
 		] ) ;
 		
 		expect( m.determinant() ).to.be( 765 ) ;
+	} ) ;
+
+	it( "4x4 determinant" , () => {
+		var m ;
+		
+		m = new Matrix( 4 , 4 , [
+			1, 2, 3, 4,
+			5, 6, 7, 8,
+			9, 10, 11, 12,
+			13, 14, 15, 16
+		] ) ;
+		
+		expect( m.determinant() ).to.be( 0 ) ;
+		
+		m = new Matrix( 4 , 4 , [
+			1, 2, -3, 4,
+			-5, 6, 7, 8,
+			9, 10, 11, 12,
+			13, 14, 15, 16
+		] ) ;
+		
+		expect( m.determinant() ).to.be( -480 ) ;
+		
+		m = new Matrix( 4 , 4 , [
+			10, 2, -3, 4,
+			-5, 6, 7, 8,
+			9, 10, 11, 12,
+			13, 14, 15, 16
+		] ) ;
+		
+		expect( m.determinant() ).to.be( -480 ) ;
+		
+		m = new Matrix( 4 , 4 , [
+			10, 2, -3, 4,
+			-5, 6, 7, 8,
+			9, 10, 1.1, 12,
+			13, 14, 15, 16
+		] ) ;
+		
+		expect( m.determinant() ).to.be.around( 3321.6 ) ;
 	} ) ;
 
 	it( "add two matrices" , () => {
