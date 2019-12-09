@@ -167,6 +167,70 @@ describe( "Matrix" , () => {
 		expect( m.determinant() ).to.be.around( 3321.6 ) ;
 	} ) ;
 
+	it( "invert of 2x2" , () => {
+		var m ;
+		
+		m = new Matrix( 2 , 2 , [
+			1, 2,
+			3, 4
+		] ) ;
+		
+		expect( m.invert() ).to.be.like( { w: 2 , h: 2 , a: [ -2 , 1 , 1.5 , -0.5 ] } ) ;
+	} ) ;
+
+	it( "invert of 3x3" , () => {
+		var m ;
+		
+		m = new Matrix( 3 , 3 , [
+			1, 2, 3,
+			4, 5, 6,
+			7, 8, 9
+		] ) ;
+		
+		// det=0, so not invertible
+		expect( m.invert() ).to.be( null ) ;
+
+		m = new Matrix( 3 , 3 , [
+			10, 2, 3,
+			4, 5, 6,
+			7, 8, 9
+		] ) ;
+		
+		expect( m.invert() ).to.be.like( { w: 3 , h: 3 , a: [
+			1/9, -2/9, 1/9,
+			-2/9, -23/9, 16/9,
+			1/9, 22/9-2*Number.EPSILON, -14/9+Number.EPSILON
+		] } ) ;
+	} ) ;
+
+	it( "invert of 4x4" , () => {
+		var m ;
+		
+		m = new Matrix( 4 , 4 , [
+			1, 2, 3, 4,
+			5, 6, 7, 8,
+			9, 10, 11, 12,
+			13, 14, 15, 16
+		] ) ;
+		
+		// det=0, so not invertible
+		expect( m.invert() ).to.be( null ) ;
+		
+		m = new Matrix( 4 , 4 , [
+			1, 2, -3, 4,
+			-5, 6, 7, 8,
+			9, 10, 11, 12,
+			13, 14, 15, 16
+		] ) ;
+		
+		expect( m.invert() ).to.be.like( { w: 4 , h: 4 , a: [
+			0 , -0.1 , 0.2 , -0.1 ,
+			0.08333333333333333 , 0.15 , -2.55 , 1.8166666666666667 ,
+			-0.16666666666666666 , 0 , 0.5 , -0.3333333333333333 ,
+			0.08333333333333333 , -0.05 , 1.6 , -1.1333333333333333
+		] } ) ;
+	} ) ;
+
 	it( "add two matrices" , () => {
 		expect( ( new Matrix( 2 , 2 , [ 1 , 2 , 3 , 4 ] ) ).add( new Matrix( 2 , 2 , [ 1 , 0 , 0 , 1 ] ) ) ).to.be.like( { w: 2 , h: 2 , a: [ 2 , 2 , 3 , 5 ] } ) ;
 	} ) ;
