@@ -352,11 +352,11 @@ describe( "Geometry" , () => {
 			xVector = new Vector2D( 2 , 1 ) ;
 			yVector = new Vector2D( -1 , 1 ) ;
 			
-			matrix = ( new Matrix( 2 , 2 ) ).changeOfBasis2( xVector , yVector ) ;
+			matrix = ( new Matrix( 2 , 2 ) ).changeOfBasis2D( xVector , yVector ) ;
 			expect( matrix ).to.be.like( { h: 2 , w: 2 , a: [ 1/3 , 1/3 , -1/3 , 2/3 ] } ) ;
 			
 			// Check with the reciprocal syntax
-			matrix = ( new Matrix( 2 , 2 ) ).changeOfBasis2( xVector , yVector , reciprocalMatrix = new Matrix() ) ;
+			matrix = ( new Matrix( 2 , 2 ) ).changeOfBasis2D( xVector , yVector , reciprocalMatrix = new Matrix() ) ;
 			expect( matrix ).to.be.like( { h: 2 , w: 2 , a: [ 1/3 , 1/3 , -1/3 , 2/3 ] } ) ;
 			expect( reciprocalMatrix ).to.be.like( { h: 2 , w: 2 , a: [ 2 , -1 , 1 , 1 ] } ) ;
 			
@@ -365,6 +365,19 @@ describe( "Geometry" , () => {
 
 			vector.transform( reciprocalMatrix ) ;
 			expect( vector ).to.be.like( { x: 1 , y: 2 } ) ;
+
+			
+			vector = new Vector2D( -1 , 4 ) ;
+			xVector = new Vector2D( 2 , -3 ) ;
+			yVector = new Vector2D( -1 , 2 ) ;
+			
+			matrix = ( new Matrix( 2 , 2 ) ).changeOfBasis2D( xVector , yVector , reciprocalMatrix = new Matrix() ) ;
+			
+			vector.transform( matrix ) ;
+			expect( vector ).to.be.like( { x: 2 , y: 5 } ) ;
+
+			vector.transform( reciprocalMatrix ) ;
+			expect( vector ).to.be.like( { x: -1 , y: 4 } ) ;
 		} ) ;
 		
 		it( "transpose" , () => {
