@@ -45,11 +45,7 @@ const Ellipse3D = geo.Ellipse3D ;
 const InfiniteCylinder3D = geo.InfiniteCylinder3D ;
 //geo.setFastMode( true ) ;
 
-
-
-
-
-/* Helper */
+const Matrix = math.Matrix ;
 
 
 
@@ -349,6 +345,28 @@ describe( "Geometry" , () => {
 			expect( transposed ).to.be.like( { x: 3 , y: 4 } ) ;
 		} ) ;
 
+		it( "xxx using a transformation matrix" , () => {
+			var vector , xVector , yVector , matrix , reciprocalMatrix ;
+			
+			vector = new Vector2D( 1 , 2 ) ;
+			xVector = new Vector2D( 2 , 1 ) ;
+			yVector = new Vector2D( -1 , 1 ) ;
+			
+			matrix = ( new Matrix( 2 , 2 ) ).changeOfBasis2( xVector , yVector ) ;
+			expect( matrix ).to.be.like( { h: 2 , w: 2 , a: [ 1/3 , 1/3 , -1/3 , 2/3 ] } ) ;
+			
+			// Check with the reciprocal syntax
+			matrix = ( new Matrix( 2 , 2 ) ).changeOfBasis2( xVector , yVector , reciprocalMatrix = new Matrix() ) ;
+			expect( matrix ).to.be.like( { h: 2 , w: 2 , a: [ 1/3 , 1/3 , -1/3 , 2/3 ] } ) ;
+			expect( reciprocalMatrix ).to.be.like( { h: 2 , w: 2 , a: [ 2 , -1 , 1 , 1 ] } ) ;
+			
+			vector.transform( matrix ) ;
+			expect( vector ).to.be.like( { x: 1 , y: 1 } ) ;
+
+			vector.transform( reciprocalMatrix ) ;
+			expect( vector ).to.be.like( { x: 1 , y: 2 } ) ;
+		} ) ;
+		
 		it( "transpose" , () => {
 			var vector , transposeOrigin , transposeXAxis ;
 
