@@ -45,12 +45,12 @@ describe( "Quaternion" , () => {
 	it( "to/from euler" , () => {
 		var q = Quaternion.fromEulerDeg( 45 , 50 ) ;
 		expect( q.norm ).to.be( 1 ) ;
-		expect( q.toEulerDeg() ).to.equal( {
+		expect( q.getEulerDeg() ).to.equal( {
 			yaw: 45 ,
 			pitch: 50 ,
 			roll: 4.948064700585223e-15
 		} ) ;
-		expect( q.toEuler() ).to.equal( {
+		expect( q.getEuler() ).to.equal( {
 			yaw: 0.7853981633974483 ,
 			pitch: 0.8726646259971648 ,
 			roll: 8.636002062691953e-17
@@ -62,7 +62,7 @@ describe( "Quaternion" , () => {
 		
 		q = Quaternion.fromEulerDeg( 30 ) ;
 		expect( q.norm ).to.be.around( 1 ) ;
-		expect( q.toEulerDeg() ).to.equal( {
+		expect( q.getEulerDeg() ).to.equal( {
 			yaw: 29.999999999999993 ,
 			pitch: 0 ,
 			roll: 0
@@ -70,7 +70,7 @@ describe( "Quaternion" , () => {
 		
 		q2 = q.multiply( q ) ;
 		expect( q2.norm ).to.be.around( 1 ) ;
-		expect( q2.toEulerDeg() ).to.equal( {
+		expect( q2.getEulerDeg() ).to.equal( {
 			yaw: 59.99999999999999 ,
 			pitch: 0 ,
 			roll: 0
@@ -78,7 +78,7 @@ describe( "Quaternion" , () => {
 
 		q2 = q2.multiply( Quaternion.fromEulerDeg( 0 , 60 ) ) ;
 		expect( q2.norm ).to.be.around( 1 ) ;
-		expect( q2.toEulerDeg() ).to.equal( {
+		expect( q2.getEulerDeg() ).to.equal( {
 			yaw: 59.99999999999999 ,
 			pitch: 59.99999999999999 ,
 			roll: 0
@@ -87,25 +87,25 @@ describe( "Quaternion" , () => {
 		// Now this is interesting: we can move farther than the zenith, and have the head down
 		q2 = q2.multiply( Quaternion.fromEulerDeg( 0 , 50 ) ) ;
 		expect( q2.norm ).to.be.around( 1 ) ;
-		expect( q2.toEulerDeg() ).to.equal( {
+		expect( q2.getEulerDeg() ).to.equal( {
 			yaw: -120.00000000000001 ,
 			pitch: 70.00000000000003 ,
 			roll: 180
 		} ) ;
 	} ) ;
 
-	it( "as a vector and a rotation" , () => {
+	it( "as vector + angle" , () => {
 		var q , q2 ;
 		
-		q = Quaternion.fromRotationVectorDeg( 30 , new Vector3D( 0 , 0 , 1 ) ) ;
+		q = Quaternion.fromVectorAngleDeg( new Vector3D( 0 , 0 , 1 ) , 30 ) ;
 		
 		expect( q.norm ).to.be.around( 1 ) ;
-		expect( q.toEulerDeg() ).to.equal( {
+		expect( q.getEulerDeg() ).to.equal( {
 			yaw: 29.999999999999993 ,
 			pitch: 0 ,
 			roll: 0
 		} ) ;
-		expect( q.getRotationVectorDeg() ).to.be.like( {
+		expect( q.getVectorAngleDeg() ).to.be.like( {
 			angle: 29.999999999999993 ,
 			vector: {
 				x: 0 ,

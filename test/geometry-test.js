@@ -352,11 +352,11 @@ describe( "Geometry" , () => {
 			xVector = new Vector2D( 2 , 1 ) ;
 			yVector = new Vector2D( -1 , 1 ) ;
 			
-			matrix = ( new Matrix( 2 , 2 ) ).changeOfBasis2D( xVector , yVector ) ;
+			matrix = Matrix.identity( 2 , 2 ).changeOfBasis2D( xVector , yVector ) ;
 			expect( matrix ).to.be.like( { h: 2 , w: 2 , a: [ 1/3 , 1/3 , -1/3 , 2/3 ] } ) ;
 			
 			// Check with the reciprocal syntax
-			matrix = ( new Matrix( 2 , 2 ) ).changeOfBasis2D( xVector , yVector , reciprocalMatrix = new Matrix() ) ;
+			matrix = Matrix.identity( 2 , 2 ).changeOfBasis2D( xVector , yVector , reciprocalMatrix = new Matrix() ) ;
 			expect( matrix ).to.be.like( { h: 2 , w: 2 , a: [ 1/3 , 1/3 , -1/3 , 2/3 ] } ) ;
 			expect( reciprocalMatrix ).to.be.like( { h: 2 , w: 2 , a: [ 2 , -1 , 1 , 1 ] } ) ;
 			
@@ -371,13 +371,66 @@ describe( "Geometry" , () => {
 			xVector = new Vector2D( 2 , -3 ) ;
 			yVector = new Vector2D( -1 , 2 ) ;
 			
-			matrix = ( new Matrix( 2 , 2 ) ).changeOfBasis2D( xVector , yVector , reciprocalMatrix = new Matrix() ) ;
+			matrix = Matrix.identity( 2 , 2 ).changeOfBasis2D( xVector , yVector , reciprocalMatrix = new Matrix() ) ;
 			
 			vector.transform( matrix ) ;
 			expect( vector ).to.be.like( { x: 2 , y: 5 } ) ;
 
 			vector.transform( reciprocalMatrix ) ;
 			expect( vector ).to.be.like( { x: -1 , y: 4 } ) ;
+		} ) ;
+		
+		it( "xxx using an affine transformation matrix" , () => {
+			var vector , tVector , oVector , xVector , yVector , matrix , reciprocalMatrix ;
+			
+			vector = new Vector2D( 1 , 2 ) ;
+			tVector = new Vector2D( 3 , -5 ) ;
+			
+			matrix = Matrix.identity( 3 , 3 ).translation2D( tVector ) ;
+			expect( matrix ).to.be.like( { h: 3 , w: 3 , a: [
+				1, 0, 3,
+				0, 1, -5,
+				0, 0, 1
+			] } ) ;
+			
+			vector.affineTransform( matrix ) ;
+			expect( vector ).to.be.like( { x: 4 , y: -3 } ) ;
+
+
+			// Change of origin
+			vector = new Vector2D( 1 , 2 ) ;
+			oVector = new Vector2D( 3 , 4 ) ;
+			
+			matrix = Matrix.identity( 3 , 3 ).changeOfOrigin2D( oVector ) ;
+			expect( matrix ).to.be.like( { h: 3 , w: 3 , a: [
+				1, 0, -3,
+				0, 1, -4,
+				0, 0, 1
+			] } ) ;
+			
+			vector.affineTransform( matrix ) ;
+			expect( vector ).to.be.like( { x: -2 , y: -2 } ) ;
+
+
+			// Change both the basis and the origin
+			vector = new Vector2D( 1 , 2 ) ;
+			oVector = new Vector2D( -2 , -1 ) ;
+			xVector = new Vector2D( 2 , 1 ) ;
+			yVector = new Vector2D( -1 , 1 ) ;
+			
+			// The change of origin comes first, but in matrix computing it should be on the right-side of the multiplication
+			matrix = Matrix.identity( 3 , 3 ).changeOfBasis2D( xVector , yVector ).multiplyByMatrix(
+				Matrix.identity( 3 , 3 ).changeOfOrigin2D( oVector )
+			) ;
+			
+			expect( matrix ).to.be.like( { h: 3 , w: 3 , a: [
+				1/3,  1/3, 1,
+				-1/3, 2/3, 0,
+				0,    0,   1
+			] } ) ;
+			
+			vector.affineTransform( matrix ) ;
+			expect( vector ).to.be.like( { x: 2 , y: 1 } ) ;
 		} ) ;
 		
 		it( "transpose" , () => {
