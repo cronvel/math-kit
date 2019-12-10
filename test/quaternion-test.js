@@ -32,6 +32,7 @@
 
 const math = require( '..' ) ;
 const Quaternion = math.Quaternion ;
+const Vector3D = math.geometry.Vector3D ;
 
 
 
@@ -56,7 +57,7 @@ describe( "Quaternion" , () => {
 		} ) ;
 	} ) ;
 
-	it( "multiply" , () => {
+	it( "multiply, aka successive rotation" , () => {
 		var q , q2 ;
 		
 		q = Quaternion.fromEulerDeg( 30 ) ;
@@ -90,6 +91,27 @@ describe( "Quaternion" , () => {
 			yaw: -120.00000000000001 ,
 			pitch: 70.00000000000003 ,
 			roll: 180
+		} ) ;
+	} ) ;
+
+	it( "as a vector and a rotation" , () => {
+		var q , q2 ;
+		
+		q = Quaternion.fromRotationVectorDeg( 30 , new Vector3D( 0 , 0 , 1 ) ) ;
+		
+		expect( q.norm ).to.be.around( 1 ) ;
+		expect( q.toEulerDeg() ).to.equal( {
+			yaw: 29.999999999999993 ,
+			pitch: 0 ,
+			roll: 0
+		} ) ;
+		expect( q.getRotationVectorDeg() ).to.be.like( {
+			angle: 29.999999999999993 ,
+			vector: {
+				x: 0 ,
+				y: 0 ,
+				z: 1.0000000000000002
+			}
 		} ) ;
 	} ) ;
 } ) ;
