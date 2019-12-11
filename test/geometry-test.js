@@ -46,6 +46,7 @@ const InfiniteCylinder3D = geo.InfiniteCylinder3D ;
 //geo.setFastMode( true ) ;
 
 const Matrix = math.Matrix ;
+const Quaternion = math.Quaternion ;
 
 
 
@@ -412,7 +413,7 @@ describe( "Geometry" , () => {
 			expect( vector ).to.be.like( { x: -2 , y: -2 } ) ;
 
 
-			// Change both the basis and the origin
+			// Change both the basis and the origin with 2 transformations matrix
 			vector = new Vector2D( 1 , 2 ) ;
 			oVector = new Vector2D( -2 , -1 ) ;
 			xVector = new Vector2D( 2 , 1 ) ;
@@ -427,6 +428,36 @@ describe( "Geometry" , () => {
 				1/3,  1/3, 1,
 				-1/3, 2/3, 0,
 				0,    0,   1
+			] } ) ;
+			
+			vector.affineTransform( matrix ) ;
+			expect( vector ).to.be.like( { x: 2 , y: 1 } ) ;
+
+
+			// Change both the basis and the origin using only one transformation matrix
+			vector = new Vector2D( 1 , 2 ) ;
+			oVector = new Vector2D( -2 , -1 ) ;
+			xVector = new Vector2D( 2 , 1 ) ;
+			yVector = new Vector2D( -1 , 1 ) ;
+			
+			// The change of origin comes first, but in matrix computing it should be on the right-side of the multiplication
+			matrix = Matrix.identity( 3 , 3 ).changeOfOriginAndBasis2D( oVector , xVector , yVector ) ;
+			expect( matrix ).to.be.like( { h: 3 , w: 3 , a: [
+				1/3,  1/3, 1,
+				-1/3, 2/3, 0,
+				0,    0,   1
+			] } ) ;
+			
+			matrix = Matrix.identity( 3 , 3 ).changeOfOriginAndBasis2D( oVector , xVector , yVector , reciprocalMatrix = new Matrix() ) ;
+			expect( matrix ).to.be.like( { h: 3 , w: 3 , a: [
+				1/3,  1/3, 1,
+				-1/3, 2/3, 0,
+				0,    0,   1
+			] } ) ;
+			expect( reciprocalMatrix ).to.be.like( { h: 3 , w: 3 , a: [
+				2, -1, -2,
+				1, 1,  -1,
+				0, 0,  1
 			] } ) ;
 			
 			vector.affineTransform( matrix ) ;
@@ -936,6 +967,107 @@ describe( "Geometry" , () => {
 			expectCirca( perpToAxis.z , -0.35714285714285765 ) ;
 		} ) ;
 
+		it( "xxx using a transformation matrix" , () => {
+			var vector , xVector , yVector , zVector , matrix , reciprocalMatrix ;
+			
+			vector = new Vector3D( 7 , 4 , 7 ) ;	// (3,2,1) in the new basis
+			xVector = new Vector3D( 2 , 1 , 1 ) ;
+			yVector = new Vector3D( -1 , 1 , 3 ) ;
+			zVector = new Vector3D( 3 , -1 , -2 ) ;
+			
+			matrix = Matrix.identity( 3 , 3 ).changeOfBasis3D( xVector , yVector , zVector ) ;
+			expect( matrix ).to.be.like( { h: 3 , w: 3 , a: [
+				1/7, 1,  -2/7,
+				1/7, -1, 5/7 - Number.EPSILON/2,
+				2/7, -1, 3/7
+			] } ) ;
+			
+			// Check with the reciprocal syntax
+			matrix = Matrix.identity( 3 , 3 ).changeOfBasis3D( xVector , yVector , zVector , reciprocalMatrix = new Matrix() ) ;
+			expect( matrix ).to.be.like( { h: 3 , w: 3 , a: [
+				1/7, 1,  -2/7,
+				1/7, -1, 5/7 - Number.EPSILON/2,
+				2/7, -1, 3/7
+			] } ) ;
+			expect( reciprocalMatrix ).to.be.like( { h: 3 , w: 3 , a: [
+				2, -1, 3,
+				1, 1, -1,
+				1, 3, -2
+			] } ) ;
+			
+			vector.transform( matrix ) ;
+			expect( vector ).to.be.like( { x: 3 , y: 2 - Number.EPSILON*4, z: 1 } ) ;
+
+			vector.transform( reciprocalMatrix ) ;
+			expect( vector ).to.be.like( { x: 7 + Number.EPSILON*4 , y: 4 - Number.EPSILON*4 , z: 7 - Number.EPSILON*16} ) ;
+		} ) ;
+		
+		it( "xxx using an affine transformation matrix" , () => {
+			var vector , oVector , xVector , yVector , zVector , matrix , reciprocalMatrix ;
+			
+			vector = new Vector3D( 14 , 9 , 4 ) ;	// (3,2,1) in the new basis
+			oVector = new Vector3D( 7 , 5 , -3 ) ;
+			xVector = new Vector3D( 2 , 1 , 1 ) ;
+			yVector = new Vector3D( -1 , 1 , 3 ) ;
+			zVector = new Vector3D( 3 , -1 , -2 ) ;
+			
+			matrix = Matrix.identity( 4 , 4 ).changeOfOriginAndBasis3D( oVector , xVector , yVector , zVector ) ;
+			expect( matrix ).to.be.like( { h: 4 , w: 4 , a: [
+				1/7, 1,  -2/7, -7+1/7,
+				1/7, -1, 5/7-Number.EPSILON/2, 6+1/7-Number.EPSILON*6,
+				2/7, -1, 3/7, 4+2/7,
+				0, 0, 0, 1
+			] } ) ;
+			
+			// Check with the reciprocal syntax
+			matrix = Matrix.identity( 4 , 4 ).changeOfOriginAndBasis3D( oVector , xVector , yVector , zVector , reciprocalMatrix = new Matrix() ) ;
+			expect( matrix ).to.be.like( { h: 4 , w: 4 , a: [
+				1/7, 1,  -2/7, -7+1/7,
+				1/7, -1, 5/7-Number.EPSILON/2, 6+1/7-Number.EPSILON*6,
+				2/7, -1, 3/7, 4+2/7,
+				0, 0, 0, 1
+			] } ) ;
+			expect( reciprocalMatrix ).to.be.like( { h: 4 , w: 4 , a: [
+				2, -1, 3, 7,
+				1, 1, -1, 5,
+				1, 3, -2, -3,
+				0, 0, 0, 1
+			] } ) ;
+			
+			vector.affineTransform( matrix ) ;
+			expect( vector ).to.be.like( { x: 3 + Number.EPSILON*2, y: 2 - Number.EPSILON*4, z: 1 - Number.EPSILON*5} ) ;
+
+			vector.affineTransform( reciprocalMatrix ) ;
+			expect( vector ).to.be.like( { x: 14 - Number.EPSILON*16 , y: 9 + Number.EPSILON*8 , z: 4} ) ;
+		} ) ;
+
+		it( "yyy using a rotation quaternion" , () => {
+			var vector , quat ;
+			
+			vector = new Vector3D( 3 , 2 , 1 ) ;
+			quat = Quaternion.fromVectorAngleDeg( new Vector3D( 0 , 0 , 1 ) , 90 ) ;
+			vector.rotateQuaternion( quat ) ;
+			expect( vector ).to.be.like( { x: -2 + Number.EPSILON*2, y: 3 + Number.EPSILON*4, z: 1 } ) ;
+
+			vector = new Vector3D( 3 , 2 , 1 ) ;
+			quat = Quaternion.fromVectorAngleDeg( new Vector3D( 0 , 0 , 1 ) , 45 ) ;
+			vector.rotateQuaternion( quat ) ;
+			expect( vector ).to.be.like( {
+				x: 0.707106781186547,
+				y: 3.5355339059327378,
+				z: 1
+			} ) ;
+
+			vector = new Vector3D( 3 , 2 , 1 ) ;
+			quat = Quaternion.fromVectorAngleDeg( new Vector3D( 0 , 1 , 0 ) , 45 ) ;
+			vector.rotateQuaternion( quat ) ;
+			expect( vector ).to.be.like( {
+				x: 2.8284271247461894,
+				y: 2,
+				z: -1.414213562373095
+			} ) ;
+		} ) ;
+		
 		it( "transpose 2D" , () => {
 			var v , transposed , origin , normal , xAxis ;
 
