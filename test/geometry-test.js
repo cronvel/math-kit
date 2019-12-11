@@ -169,7 +169,7 @@ describe( "Geometry" , () => {
 			expectCirca( v1.y , 10 * Math.sqrt( 3 ) / 2 ) ;
 		} ) ;
 
-		it( "zzz get/set/rotate angle in degree" , () => {
+		it( "get/set/rotate angle in degree" , () => {
 			var v1 = new Vector2D( 5 , 10 * Math.sqrt( 3 ) / 2 ) ;
 			expectCirca( v1.angleDeg , 60 ) ;
 			expectCirca( v1.inv().angleDeg , -120 ) ;
@@ -346,7 +346,7 @@ describe( "Geometry" , () => {
 			expect( transposed ).to.be.like( { x: 3 , y: 4 } ) ;
 		} ) ;
 
-		it( "xxx using a transformation matrix" , () => {
+		it( "using a transformation matrix" , () => {
 			var vector , xVector , yVector , matrix , reciprocalMatrix ;
 			
 			vector = new Vector2D( 1 , 2 ) ;
@@ -381,7 +381,7 @@ describe( "Geometry" , () => {
 			expect( vector ).to.be.like( { x: -1 , y: 4 } ) ;
 		} ) ;
 		
-		it( "xxx using an affine transformation matrix" , () => {
+		it( "using an affine transformation matrix" , () => {
 			var vector , tVector , oVector , xVector , yVector , matrix , reciprocalMatrix ;
 			
 			vector = new Vector2D( 1 , 2 ) ;
@@ -811,7 +811,7 @@ describe( "Geometry" , () => {
 			expect( v1 ).to.be.like( { x: 0.4242640687119285 , y: 0.565685424949238 , z: 0.7071067811865475 } ) ;
 		} ) ;
 
-		it( "zzz get/set spherical angle: azimuth and declination" , () => {
+		it( "get/set spherical angle: azimuth and declination" , () => {
 			var v1 ;
 
 			v1 = new Vector3D( 3 , 3 , 3 * Math.SQRT2 ) ;
@@ -967,7 +967,7 @@ describe( "Geometry" , () => {
 			expectCirca( perpToAxis.z , -0.35714285714285765 ) ;
 		} ) ;
 
-		it( "xxx using a transformation matrix" , () => {
+		it( "using a transformation matrix" , () => {
 			var vector , xVector , yVector , zVector , matrix , reciprocalMatrix ;
 			
 			vector = new Vector3D( 7 , 4 , 7 ) ;	// (3,2,1) in the new basis
@@ -1002,7 +1002,7 @@ describe( "Geometry" , () => {
 			expect( vector ).to.be.like( { x: 7 + Number.EPSILON*4 , y: 4 - Number.EPSILON*4 , z: 7 - Number.EPSILON*16} ) ;
 		} ) ;
 		
-		it( "xxx using an affine transformation matrix" , () => {
+		it( "using an affine transformation matrix" , () => {
 			var vector , oVector , xVector , yVector , zVector , matrix , reciprocalMatrix ;
 			
 			vector = new Vector3D( 14 , 9 , 4 ) ;	// (3,2,1) in the new basis
@@ -1041,7 +1041,35 @@ describe( "Geometry" , () => {
 			expect( vector ).to.be.like( { x: 14 - Number.EPSILON*16 , y: 9 + Number.EPSILON*8 , z: 4} ) ;
 		} ) ;
 
-		it( "yyy using a rotation quaternion" , () => {
+		it( "rotate by an axis vector" , () => {
+			var vector , axisVector ;
+			
+			vector = new Vector3D( 3 , 2 , 1 ) ;
+			vector.rotateAxisAngle( new Vector3D( 0 , 0 , 1 ) , Math.PI / 2 ) ;
+			expect( vector ).to.be.like( { x: -2 + Number.EPSILON, y: 3, z: 1 } ) ;
+
+			vector = new Vector3D( 3 , 2 , 1 ) ;
+			vector.rotateAxisAngleDeg( new Vector3D( 0 , 0 , 1 ) , 90 ) ;
+			expect( vector ).to.be.like( { x: -2 + Number.EPSILON, y: 3, z: 1 } ) ;
+
+			vector = new Vector3D( 3 , 2 , 1 ) ;
+			vector.rotateAxisAngleDeg( new Vector3D( 0 , 0 , 1 ) , 45 ) ;
+			expect( vector ).to.be.like( {
+				x: 0.7071067811865479,
+				y: 3.5355339059327378,
+				z: 1
+			} ) ;
+
+			vector = new Vector3D( 3 , 2 , 1 ) ;
+			vector.rotateAxisAngleDeg( new Vector3D( 0 , 1 , 0 ) , 45 ) ;
+			expect( vector ).to.be.like( {
+				x: 2.8284271247461903,
+				y: 2,
+				z: -1.414213562373095
+			} ) ;
+		} ) ;
+		
+		it( "using a rotation quaternion" , () => {
 			var vector , quat ;
 			
 			vector = new Vector3D( 3 , 2 , 1 ) ;
@@ -1064,6 +1092,33 @@ describe( "Geometry" , () => {
 			expect( vector ).to.be.like( {
 				x: 2.8284271247461894,
 				y: 2,
+				z: -1.414213562373095
+			} ) ;
+		} ) ;
+		
+		it( "using fastRotationQuaternion() (that use axis rotation behind the scene, e.g. Rodrigues' rotation formula)" , () => {
+			var vector , quat ;
+			
+			vector = new Vector3D( 3 , 2 , 1 ) ;
+			quat = Quaternion.fromVectorAngleDeg( new Vector3D( 0 , 0 , 1 ) , 90 ) ;
+			vector.fastRotateQuaternion( quat ) ;
+			expect( vector ).to.be.like( { x: -2 + Number.EPSILON, y: 3, z: 1 } ) ;
+
+			vector = new Vector3D( 3 , 2 , 1 ) ;
+			quat = Quaternion.fromVectorAngleDeg( new Vector3D( 0 , 0 , 1 ) , 45 ) ;
+			vector.fastRotateQuaternion( quat ) ;
+			expect( vector ).to.be.like( {
+				x: 0.7071067811865475,
+				y: 3.5355339059327373,
+				z: 0.9999999999999999
+			} ) ;
+
+			vector = new Vector3D( 3 , 2 , 1 ) ;
+			quat = Quaternion.fromVectorAngleDeg( new Vector3D( 0 , 1 , 0 ) , 45 ) ;
+			vector.fastRotateQuaternion( quat ) ;
+			expect( vector ).to.be.like( {
+				x: 2.82842712474619,
+				y: 1.9999999999999998,
 				z: -1.414213562373095
 			} ) ;
 		} ) ;
