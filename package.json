@@ -1,6 +1,6 @@
 {
   "name": "math-kit",
-  "version": "0.12.11",
+  "version": "0.12.12",
   "description": "Math utilities (random, stats, and more)",
   "main": "lib/math.js",
   "engines": {
