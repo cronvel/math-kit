@@ -1075,7 +1075,7 @@ describe( "Geometry" , () => {
 			vector = new Vector3D( 3 , 2 , 1 ) ;
 			quat = Quaternion.fromVectorAngleDeg( new Vector3D( 0 , 0 , 1 ) , 90 ) ;
 			vector.rotateQuaternion( quat ) ;
-			expect( vector ).to.be.like( { x: -2 + Number.EPSILON*2, y: 3 + Number.EPSILON*4, z: 1 } ) ;
+			expect( vector ).to.be.like( { x: -2 + Number.EPSILON*2, y: 3 + Number.EPSILON*4, z: 1 - Number.EPSILON/2 } ) ;
 
 			vector = new Vector3D( 3 , 2 , 1 ) ;
 			quat = Quaternion.fromVectorAngleDeg( new Vector3D( 0 , 0 , 1 ) , 45 ) ;
@@ -1091,7 +1091,7 @@ describe( "Geometry" , () => {
 			vector.rotateQuaternion( quat ) ;
 			expect( vector ).to.be.like( {
 				x: 2.8284271247461894,
-				y: 2,
+				y: 2-Number.EPSILON,
 				z: -1.414213562373095
 			} ) ;
 		} ) ;

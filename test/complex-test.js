@@ -35,12 +35,6 @@ const Complex = math.Complex ;
 
 
 
-
-
-/* Tests */
-
-
-
 describe( "Complex numbers" , () => {
 
 	it( "constructor" , () => {

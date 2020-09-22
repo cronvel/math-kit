@@ -39,7 +39,7 @@ const Vector3D = math.geometry.Vector3D ;
 describe( "Quaternion" , () => {
 
 	it( "constructor" , () => {
-		expect( new Quaternion( 1 , 0.5 , -2 , -1.5 ) ).to.be.like( { w: 1 , x: 0.5 , y: -2 , z: -1.5 } ) ;
+		expect( new Quaternion( 0.5 , -2 , -1.5 , 1 ) ).to.be.like( { x: 0.5 , y: -2 , z: -1.5 , w: 1 } ) ;
 	} ) ;
 
 	it( "to/from euler" , () => {
