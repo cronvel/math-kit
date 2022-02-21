@@ -24,65 +24,51 @@
 	SOFTWARE.
 */
 
+/* global describe, it */
+
 "use strict" ;
 
 
 
-/* jshint -W064 */
-/* global describe, it */
-
-
-
-var math = require( '../../lib/math.js' ) ;
-var geo = math.geometry ;
-var Vector2D = geo.Vector2D ;
+const math = require( '../../lib/math.js' ) ;
+const geo = math.geometry ;
+const Vector2D = geo.Vector2D ;
 //geo.setFastMode( true ) ;
 
-var gm = require( 'gm' ) ;
+const gm = require( 'gm' ) ;
 
-var random = math.random ;
-var rng = new math.random.MersenneTwister() ;
+const random = math.random ;
+const rng = new math.random.MersenneTwister() ;
 rng.seed() ;
 
 
 
+function trace( img , gen ) {
+	var r , pos , lastPos = new Vector2D() ;
 
-
-			/* Tests */
-
-
-
-function trace( img , gen )
-{
-	var r , pos , lastPos = Vector2D() ;
-	
 	if ( ( r = gen.next() ).done ) { return ; }
-	
+
 	lastPos.setVector( r.value ) ;
-	
-	while ( ! ( r = gen.next() ).done )
-	{
+
+	while ( ! ( r = gen.next() ).done ) {
 		pos = r.value ;
-		
-		if ( ! lastPos.isUndefined() && ! pos.isUndefined() )
-		{
+
+		if ( ! lastPos.isUndefined() && ! pos.isUndefined() ) {
 			//console.log( pos ) ;
 			img.drawLine( lastPos.x , img.__height__ - lastPos.y , pos.x , img.__height__ - pos.y ) ;
 		}
-		
+
 		lastPos.setVector( pos ) ;
 	}
 }
 
 
 
-function traceCps( img , cps )
-{
+function traceCps( img , cps ) {
 	//return ;
 	var i , len = cps.length , cp ;
-	
-	for ( i = 0 ; i < len ; i ++ )
-	{
+
+	for ( i = 0 ; i < len ; i ++ ) {
 		cp = cps[ i ] ;
 		img.drawCircle( cp.x , img.__height__ - cp.fx , cp.x + 4 , img.__height__ - cp.fx + 4 ) ;
 	}
@@ -92,144 +78,141 @@ function traceCps( img , cps )
 
 
 
-			/* Tests */
+/* Tests */
 
 
 
-describe( "Fn" , function() {
+describe( "Fn" , () => {
 
-	it( "Simple fn" , function( done ) {
+	it( "Simple fn" , ( done ) => {
 		var size = 600 ;
-		
+
 		var img = gm( size , size , "#000" ) ;
-		
+
 		img.__width__ = size ;
 		img.__height__ = size ;
-		
+
 		img.fill( "#fff6" ) ;
-		
-		var fn = math.Fn.create( [
-			{ x: 100, fx: 100 } ,
-			{ x: 300, fx: 500 } ,
-			{ x: 500, fx: 100 }
+
+		var fn = new math.Fn( [
+			{ x: 100 , fx: 100 } ,
+			{ x: 300 , fx: 500 } ,
+			{ x: 500 , fx: 100 }
 		] ) ;
-		
+
 		img.stroke( "#0f0" ) ;
 		trace( img , fn.tracer( 1 , 1 , size ) ) ;
 		img.stroke( '#ad0' ) ;
-		traceCps( img , fn.controlePoints ) ;
-		
+		traceCps( img , fn.controlPoints ) ;
+
 		img.write( __dirname + "/simple-fn.png" , done ) ;
 	} ) ;
 
-	it( "Simple fn2" , function( done ) {
+	it( "Simple fn2" , ( done ) => {
 		var size = 600 ;
-		
+
 		var img = gm( size , size , "#000" ) ;
-		
+
 		img.__width__ = size ;
 		img.__height__ = size ;
-		
+
 		img.fill( "#fff6" ) ;
-		
-		var fn = math.Fn.create( [
-			{ x: 100, fx: 100 } ,
-			{ x: 200, fx: 300 } ,
-			{ x: 400, fx: 300 } ,
-			{ x: 500, fx: 500 }
+
+		var fn = new math.Fn( [
+			{ x: 100 , fx: 100 } ,
+			{ x: 200 , fx: 300 } ,
+			{ x: 400 , fx: 300 } ,
+			{ x: 500 , fx: 500 }
 		] ) ;
-		
+
 		img.stroke( "#0f0" ) ;
 		trace( img , fn.tracer( 1 , 1 , size ) ) ;
 		img.stroke( '#ad0' ) ;
-		traceCps( img , fn.controlePoints ) ;
-		
+		traceCps( img , fn.controlPoints ) ;
+
 		img.write( __dirname + "/simple-fn2.png" , done ) ;
 	} ) ;
 
-	it( "Simple fn3" , function( done ) {
+	it( "Simple fn3" , ( done ) => {
 		var size = 600 ;
-		
+
 		var img = gm( size , size , "#000" ) ;
-		
+
 		img.__width__ = size ;
 		img.__height__ = size ;
-		
+
 		img.fill( "#fff6" ) ;
-		
-		var fn = math.Fn.create( [
-			{ x: 100, fx: 100 } ,
-			{ x: 200, fx: 350 } ,
-			{ x: 400, fx: 250 } ,
-			{ x: 500, fx: 500 }
+
+		var fn = new math.Fn( [
+			{ x: 100 , fx: 100 } ,
+			{ x: 200 , fx: 350 } ,
+			{ x: 400 , fx: 250 } ,
+			{ x: 500 , fx: 500 }
 		] ) ;
-		
+
 		img.stroke( "#0f0" ) ;
 		trace( img , fn.tracer( 1 , 1 , size ) ) ;
 		img.stroke( '#ad0' ) ;
-		traceCps( img , fn.controlePoints ) ;
-		
+		traceCps( img , fn.controlPoints ) ;
+
 		img.write( __dirname + "/simple-fn3.png" , done ) ;
 	} ) ;
 
-	it( "Simple fn4" , function( done ) {
+	it( "Simple fn4" , ( done ) => {
 		var size = 600 ;
-		
+
 		var img = gm( size , size , "#000" ) ;
-		
+
 		img.__width__ = size ;
 		img.__height__ = size ;
-		
+
 		img.fill( "#fff6" ) ;
-		
-		var fn = math.Fn.create( [
-			{ x: 0, fx: 250 } ,
-			{ x: 100, fx: 300 } ,
-			{ x: 200, fx: 400 } ,
-			{ x: 300, fx: 470 } ,
-			{ x: 400, fx: 490 } ,
-			{ x: 500, fx: 400 } ,
-			{ x: 600, fx: 350 } ,
+
+		var fn = new math.Fn( [
+			{ x: 0 , fx: 250 } ,
+			{ x: 100 , fx: 300 } ,
+			{ x: 200 , fx: 400 } ,
+			{ x: 300 , fx: 470 } ,
+			{ x: 400 , fx: 490 } ,
+			{ x: 500 , fx: 400 } ,
+			{ x: 600 , fx: 350 }
 		] ) ;
-		
+
 		img.stroke( "#0f0" ) ;
 		trace( img , fn.tracer( 1 , 1 , size ) ) ;
 		img.stroke( '#ad0' ) ;
-		traceCps( img , fn.controlePoints ) ;
-		
+		traceCps( img , fn.controlPoints ) ;
+
 		img.write( __dirname + "/simple-fn4.png" , done ) ;
 	} ) ;
 
-	it( "Random fn" , function( done ) {
+	it( "Random fn" , ( done ) => {
 		var size = 600 ;
-		
+
 		var img = gm( size , size , "#000" ) ;
-		
+
 		img.__width__ = size ;
 		img.__height__ = size ;
-		
+
 		img.fill( "#fff6" ) ;
-		
+
 		var i , array = [] ;
-		
-		for ( i = 0 ; i <= size ; i += rng.random( 10 , 80 ) )
-		{
+
+		for ( i = 0 ; i <= size ; i += rng.random( 10 , 80 ) ) {
 			array.push( {
 				x: i ,
 				fx: rng.random( 0 , 600 )
 			} ) ;
 		}
-		
-		var fn = math.Fn.create( array , { preserveExtrema: false , atanMeanSlope: true } ) ;
-		
+
+		var fn = new math.Fn( array , { preserveExtrema: false , atanMeanSlope: true } ) ;
+
 		img.stroke( "#0f0" ) ;
 		trace( img , fn.tracer( 1 , 1 , size ) ) ;
 		img.stroke( '#ad0' ) ;
-		traceCps( img , fn.controlePoints ) ;
-		
+		traceCps( img , fn.controlPoints ) ;
+
 		img.write( __dirname + "/random-fn.png" , done ) ;
 	} ) ;
 } ) ;
-
-
 
