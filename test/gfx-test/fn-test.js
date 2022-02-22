@@ -240,7 +240,7 @@ describe( "InterpolatedFn" , () => {
 
 		var x , fx , lastFx = 2 , array = [] ;
 
-		var area = { xmin: -1 , xmax: 6 , ymin: -3 , ymax: 8 } ;
+		var area = { xmin: -1 , xmax: 6 , ymin: -3 , ymax: 12 } ;
 
 		for ( x = area.xmin + rng.randomFloatRange( 0 , 0.8 ) ; x <= area.xmax ; x += rng.randomFloatRange( 0.2 , 0.8 ) ) {
 			fx = lastFx + rng.randomFloatRange( -3 , 3 ) ;
