@@ -55,7 +55,7 @@ function trace( img , area , fn ) {
 			lastImgX = NaN ;
 		}
 		else {
-			imgY = img.__height__ - 1 - ( img.__height__ - 1 ) * ( y - area.ymin ) / ( area.ymax - area.ymin ) ;
+			imgY = Math.round( img.__height__ - 1 - ( img.__height__ - 1 ) * ( y - area.ymin ) / ( area.ymax - area.ymin ) ) ;
 
 			if ( ! Number.isNaN( lastImgY ) ) {
 				img.drawLine( lastImgX , lastImgY , imgX , imgY ) ;
@@ -74,8 +74,8 @@ function traceCps( img , area , cps ) {
 
 	for ( i = 0 ; i < len ; i ++ ) {
 		cp = cps[ i ] ;
-		imgX = ( img.__width__ - 1 ) * ( cp.x - area.xmin ) / ( area.xmax - area.xmin ) ;
-		imgY = img.__height__ - 1 - ( img.__height__ - 1 ) * ( cp.fx - area.ymin ) / ( area.ymax - area.ymin ) ;
+		imgX = Math.round( ( img.__width__ - 1 ) * ( cp.x - area.xmin ) / ( area.xmax - area.xmin ) ) ;
+		imgY = Math.round( img.__height__ - 1 - ( img.__height__ - 1 ) * ( cp.fx - area.ymin ) / ( area.ymax - area.ymin ) ) ;
 		img.drawCircle( imgX , imgY , imgX + 4 , imgY + 4 ) ;
 	}
 }
@@ -83,8 +83,8 @@ function traceCps( img , area , cps ) {
 
 
 function traceAxis( img , area ) {
-	var imgX = ( img.__width__ - 1 ) * ( - area.xmin ) / ( area.xmax - area.xmin ) ,
-		imgY = img.__height__ - 1 - ( img.__height__ - 1 ) * ( - area.ymin ) / ( area.ymax - area.ymin ) ;
+	var imgX = Math.round( ( img.__width__ - 1 ) * ( - area.xmin ) / ( area.xmax - area.xmin ) ) ,
+		imgY = Math.round( img.__height__ - 1 - ( img.__height__ - 1 ) * ( - area.ymin ) / ( area.ymax - area.ymin ) ) ;
 	
 	img.drawLine( 0 , imgY , img.__width__ - 1 , imgY ) ;
 	img.drawLine( imgX , 0 , imgX , img.__height__ - 1 ) ;
@@ -110,7 +110,7 @@ describe( "InterpolatedFn" , () => {
 			{ x: 5 , fx: 1 }
 		] ) ;
 		
-		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 16 } ;
+		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 } ;
 
 		img.stroke( "#ff0" ) ;
 		traceAxis( img , area ) ;
@@ -143,7 +143,7 @@ describe( "InterpolatedFn" , () => {
 			{ x: 5 , fx: 5 }
 		] ) ;
 
-		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 16 } ;
+		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 } ;
 
 		img.stroke( "#ff0" ) ;
 		traceAxis( img , area ) ;
@@ -176,7 +176,7 @@ describe( "InterpolatedFn" , () => {
 			{ x: 5 , fx: 5 }
 		] ) ;
 
-		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 16 } ;
+		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 } ;
 
 		img.stroke( "#ff0" ) ;
 		traceAxis( img , area ) ;
@@ -212,7 +212,7 @@ describe( "InterpolatedFn" , () => {
 			{ x: 6 , fx: 3.5 }
 		] ) ;
 
-		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 16 } ;
+		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 } ;
 
 		img.stroke( "#ff0" ) ;
 		traceAxis( img , area ) ;
@@ -238,18 +238,17 @@ describe( "InterpolatedFn" , () => {
 
 		img.fill( "#fff6" ) ;
 
-		var i , array = [] ;
+		var x , fx , lastFx = 2 , array = [] ;
 
-		for ( i = 0 ; i <= size ; i += rng.random( 0.1 , 0.8 ) ) {
-			array.push( {
-				x: i ,
-				fx: rng.random( 0 , 6 )
-			} ) ;
+		var area = { xmin: -1 , xmax: 6 , ymin: -3 , ymax: 8 } ;
+
+		for ( x = area.xmin + rng.randomFloatRange( 0 , 0.8 ) ; x <= area.xmax ; x += rng.randomFloatRange( 0.2 , 0.8 ) ) {
+			fx = lastFx + rng.randomFloatRange( -3 , 3 ) ;
+			array.push( { x , fx } ) ;
+			lastFx = fx ;
 		}
 
 		var fn = new math.fn.InterpolatedFn( array , { preserveExtrema: false , atanMeanDfx: true } ) ;
-
-		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 16 } ;
 
 		img.stroke( "#ff0" ) ;
 		traceAxis( img , area ) ;
