@@ -43,48 +43,58 @@ rng.seed() ;
 
 
 
-function trace( img , gen ) {
-	var r , pos , lastPos = new Vector2D() ;
+function trace( img , area , fn ) {
+	var imgX , lastImgX , x , imgY , lastImgY , y ;
 
-	if ( ( r = gen.next() ).done ) { return ; }
-
-	lastPos.setVector( r.value ) ;
-
-	while ( ! ( r = gen.next() ).done ) {
-		pos = r.value ;
-
-		if ( ! lastPos.isUndefined() && ! pos.isUndefined() ) {
-			//console.log( pos ) ;
-			img.drawLine( lastPos.x , img.__height__ - lastPos.y , pos.x , img.__height__ - pos.y ) ;
+	for ( imgX = 0 ; imgX < img.__width__ ; imgX ++ ) {
+		x = area.xmin + ( area.xmax - area.xmin ) * ( imgX / ( img.__width__ - 1 ) ) ;
+		y = fn.fx( x ) ;
+		
+		if ( Number.isNaN( y ) ) {
+			lastImgY = NaN ;
+			lastImgX = NaN ;
 		}
+		else {
+			imgY = img.__height__ - 1 - ( img.__height__ - 1 ) * ( y - area.ymin ) / ( area.ymax - area.ymin ) ;
 
-		lastPos.setVector( pos ) ;
+			if ( ! Number.isNaN( lastImgY ) ) {
+				img.drawLine( lastImgX , lastImgY , imgX , imgY ) ;
+			}
+
+			lastImgY = imgY ;
+			lastImgX = imgX ;
+		}
 	}
 }
 
 
 
-function traceCps( img , cps ) {
-	//return ;
-	var i , len = cps.length , cp ;
+function traceCps( img , area , cps ) {
+	var i , len = cps.length , cp , imgX , imgY ;
 
 	for ( i = 0 ; i < len ; i ++ ) {
 		cp = cps[ i ] ;
-		img.drawCircle( cp.x , img.__height__ - cp.fx , cp.x + 4 , img.__height__ - cp.fx + 4 ) ;
+		imgX = ( img.__width__ - 1 ) * ( cp.x - area.xmin ) / ( area.xmax - area.xmin ) ;
+		imgY = img.__height__ - 1 - ( img.__height__ - 1 ) * ( cp.fx - area.ymin ) / ( area.ymax - area.ymin ) ;
+		img.drawCircle( imgX , imgY , imgX + 4 , imgY + 4 ) ;
 	}
 }
 
 
 
+function traceAxis( img , area ) {
+	var imgX = ( img.__width__ - 1 ) * ( - area.xmin ) / ( area.xmax - area.xmin ) ,
+		imgY = img.__height__ - 1 - ( img.__height__ - 1 ) * ( - area.ymin ) / ( area.ymax - area.ymin ) ;
+	
+	img.drawLine( 0 , imgY , img.__width__ - 1 , imgY ) ;
+	img.drawLine( imgX , 0 , imgX , img.__height__ - 1 ) ;
+}
 
 
-/* Tests */
 
+describe( "InterpolatedFn" , () => {
 
-
-describe( "Fn" , () => {
-
-	it( "Simple fn" , ( done ) => {
+	it( "Simple interpolated fn" , ( done ) => {
 		var size = 600 ;
 
 		var img = gm( size , size , "#000" ) ;
@@ -94,21 +104,29 @@ describe( "Fn" , () => {
 
 		img.fill( "#fff6" ) ;
 
-		var fn = new math.Fn( [
-			{ x: 100 , fx: 100 } ,
-			{ x: 300 , fx: 500 } ,
-			{ x: 500 , fx: 100 }
+		var fn = new math.fn.InterpolatedFn( [
+			{ x: 1 , fx: 1 } ,
+			{ x: 3 , fx: 5 } ,
+			{ x: 5 , fx: 1 }
 		] ) ;
+		
+		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 16 } ;
 
+		img.stroke( "#ff0" ) ;
+		traceAxis( img , area ) ;
 		img.stroke( "#0f0" ) ;
-		trace( img , fn.tracer( 1 , 1 , size ) ) ;
+		trace( img , area , fn ) ;
+		img.stroke( "#00f" ) ;
+		trace( img , area , fn.createDfxFn() ) ;
+		img.stroke( "#f00" ) ;
+		trace( img , area , fn.createSfxFn() ) ;
 		img.stroke( '#ad0' ) ;
-		traceCps( img , fn.controlPoints ) ;
+		traceCps( img , area , fn.controlPoints ) ;
 
-		img.write( __dirname + "/simple-fn.png" , done ) ;
+		img.write( __dirname + "/simple-interpolated-fn.png" , done ) ;
 	} ) ;
 
-	it( "Simple fn2" , ( done ) => {
+	it( "Simple interpolated fn2" , ( done ) => {
 		var size = 600 ;
 
 		var img = gm( size , size , "#000" ) ;
@@ -118,22 +136,30 @@ describe( "Fn" , () => {
 
 		img.fill( "#fff6" ) ;
 
-		var fn = new math.Fn( [
-			{ x: 100 , fx: 100 } ,
-			{ x: 200 , fx: 300 } ,
-			{ x: 400 , fx: 300 } ,
-			{ x: 500 , fx: 500 }
+		var fn = new math.fn.InterpolatedFn( [
+			{ x: 1 , fx: 1 } ,
+			{ x: 2 , fx: 3 } ,
+			{ x: 4 , fx: 3 } ,
+			{ x: 5 , fx: 5 }
 		] ) ;
 
-		img.stroke( "#0f0" ) ;
-		trace( img , fn.tracer( 1 , 1 , size ) ) ;
-		img.stroke( '#ad0' ) ;
-		traceCps( img , fn.controlPoints ) ;
+		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 16 } ;
 
-		img.write( __dirname + "/simple-fn2.png" , done ) ;
+		img.stroke( "#ff0" ) ;
+		traceAxis( img , area ) ;
+		img.stroke( "#0f0" ) ;
+		trace( img , area , fn ) ;
+		img.stroke( "#00f" ) ;
+		trace( img , area , fn.createDfxFn() ) ;
+		img.stroke( "#f00" ) ;
+		trace( img , area , fn.createSfxFn() ) ;
+		img.stroke( '#ad0' ) ;
+		traceCps( img , area , fn.controlPoints ) ;
+
+		img.write( __dirname + "/simple-interpolated-fn2.png" , done ) ;
 	} ) ;
 
-	it( "Simple fn3" , ( done ) => {
+	it( "Simple interpolated fn3" , ( done ) => {
 		var size = 600 ;
 
 		var img = gm( size , size , "#000" ) ;
@@ -143,22 +169,30 @@ describe( "Fn" , () => {
 
 		img.fill( "#fff6" ) ;
 
-		var fn = new math.Fn( [
-			{ x: 100 , fx: 100 } ,
-			{ x: 200 , fx: 350 } ,
-			{ x: 400 , fx: 250 } ,
-			{ x: 500 , fx: 500 }
+		var fn = new math.fn.InterpolatedFn( [
+			{ x: 1 , fx: 1 } ,
+			{ x: 2 , fx: 3.5 } ,
+			{ x: 4 , fx: 2.5 } ,
+			{ x: 5 , fx: 5 }
 		] ) ;
 
-		img.stroke( "#0f0" ) ;
-		trace( img , fn.tracer( 1 , 1 , size ) ) ;
-		img.stroke( '#ad0' ) ;
-		traceCps( img , fn.controlPoints ) ;
+		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 16 } ;
 
-		img.write( __dirname + "/simple-fn3.png" , done ) ;
+		img.stroke( "#ff0" ) ;
+		traceAxis( img , area ) ;
+		img.stroke( "#0f0" ) ;
+		trace( img , area , fn ) ;
+		img.stroke( "#00f" ) ;
+		trace( img , area , fn.createDfxFn() ) ;
+		img.stroke( "#f00" ) ;
+		trace( img , area , fn.createSfxFn() ) ;
+		img.stroke( '#ad0' ) ;
+		traceCps( img , area , fn.controlPoints ) ;
+
+		img.write( __dirname + "/simple-interpolated-fn3.png" , done ) ;
 	} ) ;
 
-	it( "Simple fn4" , ( done ) => {
+	it( "Simple interpolated fn4" , ( done ) => {
 		var size = 600 ;
 
 		var img = gm( size , size , "#000" ) ;
@@ -168,25 +202,33 @@ describe( "Fn" , () => {
 
 		img.fill( "#fff6" ) ;
 
-		var fn = new math.Fn( [
-			{ x: 0 , fx: 250 } ,
-			{ x: 100 , fx: 300 } ,
-			{ x: 200 , fx: 400 } ,
-			{ x: 300 , fx: 470 } ,
-			{ x: 400 , fx: 490 } ,
-			{ x: 500 , fx: 400 } ,
-			{ x: 600 , fx: 350 }
+		var fn = new math.fn.InterpolatedFn( [
+			{ x: 0 , fx: 2.5 } ,
+			{ x: 1 , fx: 3 } ,
+			{ x: 2 , fx: 4 } ,
+			{ x: 3 , fx: 4.7 } ,
+			{ x: 4 , fx: 4.9 } ,
+			{ x: 5 , fx: 4 } ,
+			{ x: 6 , fx: 3.5 }
 		] ) ;
 
-		img.stroke( "#0f0" ) ;
-		trace( img , fn.tracer( 1 , 1 , size ) ) ;
-		img.stroke( '#ad0' ) ;
-		traceCps( img , fn.controlPoints ) ;
+		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 16 } ;
 
-		img.write( __dirname + "/simple-fn4.png" , done ) ;
+		img.stroke( "#ff0" ) ;
+		traceAxis( img , area ) ;
+		img.stroke( "#0f0" ) ;
+		trace( img , area , fn ) ;
+		img.stroke( "#00f" ) ;
+		trace( img , area , fn.createDfxFn() ) ;
+		img.stroke( "#f00" ) ;
+		trace( img , area , fn.createSfxFn() ) ;
+		img.stroke( '#ad0' ) ;
+		traceCps( img , area , fn.controlPoints ) ;
+
+		img.write( __dirname + "/simple-interpolated-fn4.png" , done ) ;
 	} ) ;
 
-	it( "Random fn" , ( done ) => {
+	it( "Random interpolated fn" , ( done ) => {
 		var size = 600 ;
 
 		var img = gm( size , size , "#000" ) ;
@@ -198,21 +240,29 @@ describe( "Fn" , () => {
 
 		var i , array = [] ;
 
-		for ( i = 0 ; i <= size ; i += rng.random( 10 , 80 ) ) {
+		for ( i = 0 ; i <= size ; i += rng.random( 0.1 , 0.8 ) ) {
 			array.push( {
 				x: i ,
-				fx: rng.random( 0 , 600 )
+				fx: rng.random( 0 , 6 )
 			} ) ;
 		}
 
-		var fn = new math.Fn( array , { preserveExtrema: false , atanMeanSlope: true } ) ;
+		var fn = new math.fn.InterpolatedFn( array , { preserveExtrema: false , atanMeanDfx: true } ) ;
 
+		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 16 } ;
+
+		img.stroke( "#ff0" ) ;
+		traceAxis( img , area ) ;
 		img.stroke( "#0f0" ) ;
-		trace( img , fn.tracer( 1 , 1 , size ) ) ;
+		trace( img , area , fn ) ;
+		img.stroke( "#00f" ) ;
+		trace( img , area , fn.createDfxFn() ) ;
+		img.stroke( "#f00" ) ;
+		trace( img , area , fn.createSfxFn() ) ;
 		img.stroke( '#ad0' ) ;
-		traceCps( img , fn.controlPoints ) ;
+		traceCps( img , area , fn.controlPoints ) ;
 
-		img.write( __dirname + "/random-fn.png" , done ) ;
+		img.write( __dirname + "/random-interpolated-fn.png" , done ) ;
 	} ) ;
 } ) ;
 

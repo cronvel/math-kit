@@ -125,10 +125,10 @@ describe( "math.isGreater()" , () => {
 
 
 
-describe( "math.Fn()" , () => {
+describe( "math.fn.InterpolatedFn()" , () => {
 
 	it( "simple fn 1" , () => {
-		var fn = new math.Fn( [
+		var fn = new math.fn.InterpolatedFn( [
 			{ x: 0 , fx: 0 } ,
 			{ x: 1 , fx: 1 } ,
 			{ x: 2 , fx: 0 }
@@ -153,7 +153,7 @@ describe( "math.Fn()" , () => {
 	} ) ;
 
 	it( "simple fn 2" , () => {
-		var fn = new math.Fn( [
+		var fn = new math.fn.InterpolatedFn( [
 			{ x: 0 , fx: 0 } ,
 			{ x: 1 , fx: 1 } ,
 			{ x: 2 , fx: 1 } ,
@@ -180,7 +180,7 @@ describe( "math.Fn()" , () => {
 	} ) ;
 
 	it( "simple fn 3" , () => {
-		var fn = new math.Fn( [
+		var fn = new math.fn.InterpolatedFn( [
 			{ x: 0 , fx: 0 } ,
 			{ x: 2 , fx: 2 } ,
 			{ x: 4 , fx: 1 } ,
