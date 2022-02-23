@@ -43,6 +43,7 @@ const Plane3D = geo.Plane3D ;
 const Circle3D = geo.Circle3D ;
 //geo.setFastMode( true ) ;
 
+const GmTracer = require( '../../lib/tracer/GmTracer.js' ) ;
 const gm = require( 'gm' ) ;
 
 const random = math.random ;
@@ -81,86 +82,89 @@ function trace( img , gen ) {
 
 describe( "Circle" , () => {
 
-	it( "Circle random shortest point" , ( done ) => {
-		var i , test , tries = 200 , size = 600 ;
+	it( "Circle random shortest point" , async () => {
+		var tracer = new GmTracer( {
+			size: 600 , bgColor: '#000' ,
+			xmin: -12 , xmax: 12 , ymin: -12 , ymax: 12 , every: 1 ,
+		} ) ;
 
-		var img = gm( size , size , "#000" ) ;
-		var position = new Vector2D() ;
-		var projected ;
+		var i , test , projected , segment ,
+			tries = 200 ,
+			position = new Vector2D() ,
+			circle = new Circle2D(
+				rng.randomFloatRange( tracer.xMin / 2 , tracer.xMax / 2 ) ,
+				rng.randomFloatRange( tracer.yMin / 2 , tracer.yMax / 2 ) ,
+				rng.randomFloatRange( ( tracer.xMax - tracer.xMin ) / 10 , ( tracer.xMax - tracer.xMin ) / 3 )
+			) ;
 
-		img.fill( "#fff6" ) ;
-
-		var circle = new Circle2D( size / 2 , size / 2 , size / 3 ) ;
-
-		img.stroke( "#0f0" ) ;
-		trace( img , circle.tracer( 1 ) ) ;
-
-		img.stroke( "#fff" ) ;
+		tracer.createImage() ;
+		tracer.trace( circle , '#0f0' ) ;
 
 		for ( i = 0 ; i < tries ; i ++ ) {
+			//console.log( ">>> New segment" ) ;
 			position.set(
-				rng.random( 1 , size - 1 ) ,
-				rng.random( 1 , size - 1 )
+				rng.randomFloatRange( tracer.xMin , tracer.xMax ) ,
+				rng.randomFloatRange( tracer.yMin , tracer.yMax )
 			) ;
 
 			projected = circle.pointProjection( position ) ;
-
 			test = circle.testVector( position ) ;
-			img.stroke( test > 0 ? '#ff8' : '#8ff' ) ;
-			img.drawLine( position.x , position.y , projected.x , projected.y ) ;
+			segment = BoundVector2D.fromTo( position , projected ) ;
+			//console.log( ">>>" , segment ) ;
+			tracer.trace( segment , test > 0 ? '#ff8' : '#8ff' ) ;
 		}
 
-		img.write( __dirname + "/circle-point-projection.png" , done ) ;
+		//console.log( ">>> end" ) ;
+
+		await tracer.saveImage( __dirname + "/circle-point-projection.png" ) ;
 	} ) ;
 
-	it( "Circle intersection" , ( done ) => {
-		var i , test , tries = 50 , size = 600 ;
+	it( "Circle intersection" , async () => {
+		var tracer = new GmTracer( {
+			size: 600 , bgColor: '#000' ,
+			xmin: -12 , xmax: 12 , ymin: -12 , ymax: 12 , every: 1 ,
+		} ) ;
 
-		var img = gm( size , size , "#000" ) ;
-		var line = new BoundVector2D() ;
-		var array ;
+		var i , test , segment , array ,
+			tries = 50 ,
+			line = new BoundVector2D() ,
+			circle = new Circle2D(
+				rng.randomFloatRange( tracer.xMin / 2 , tracer.xMax / 2 ) ,
+				rng.randomFloatRange( tracer.yMin / 2 , tracer.yMax / 2 ) ,
+				rng.randomFloatRange( ( tracer.xMax - tracer.xMin ) / 10 , ( tracer.xMax - tracer.xMin ) / 3 )
+			) ;
 
-		img.fill( "#000f" ) ;
-
-		var circle = new Circle2D( size / 2 , size / 2 , size / 3 ) ;
-		//var circle = new Circle2D( 0 , 0 , size / 3 ) ;
-
-		img.stroke( "#00f" ) ;
-		trace( img , circle.tracer( 1 ) ) ;
+		tracer.createImage() ;
+		tracer.trace( circle , '#00f' ) ;
 
 		for ( i = 0 ; i < tries ; i ++ ) {
 			line.set(
-				rng.random( 1 , size - 1 ) ,
-				rng.random( 1 , size - 1 ) ,
-				rng.random( -50 , 50 ) ,
-				rng.random( -50 , 50 )
+				rng.randomFloatRange( tracer.xMin , tracer.xMax ) ,
+				rng.randomFloatRange( tracer.yMin , tracer.yMax ) ,
+				rng.randomFloatRange( -5 , 5 ) ,
+				rng.randomFloatRange( -5 , 5 )
 			) ;
 
 			array = circle.lineIntersection( line ) ;
 			//console.log( '#' + i , array ) ;
 
 			if ( ! array ) {
-				img.stroke( '#f00' ) ;
-				img.drawLine( line.position.x , line.position.y , line.position.x + line.vector.x , line.position.y + line.vector.y ) ;
+				tracer.trace( line , '#f00' ) ;
 			}
 			else {
-				img.stroke( '#0f0' ) ;
-				img.drawLine( line.position.x , line.position.y , line.position.x + line.vector.x , line.position.y + line.vector.y ) ;
-
-				img.stroke( '#ad0' ) ;
-				img.drawCircle( array[ 0 ].x , array[ 0 ].y , array[ 0 ].x + 4 , array[ 0 ].y + 4 ) ;
+				tracer.trace( line , '#0f0' ) ;
+				tracer.trace( array[ 0 ] , '#ad0' , undefined , 4 ) ;
 
 				//console.log( 'a:' , circle.pointDistance( array[ 0 ] ) ) ;
 
 				if ( array[ 1 ] ) {
-					img.stroke( '#0da' ) ;
-					img.drawCircle( array[ 1 ].x , array[ 1 ].y , array[ 1 ].x + 4 , array[ 1 ].y + 4 ) ;
+					tracer.trace( array[ 1 ] , '#0ad' , undefined , 4 ) ;
 					//console.log( 'b:' , circle.pointDistance( array[ 1 ] ) ) ;
 				}
 			}
 		}
 
-		img.write( __dirname + "/circle-intersection.png" , done ) ;
+		await tracer.saveImage( __dirname + "/circle-intersection.png" ) ;
 	} ) ;
 } ) ;
 

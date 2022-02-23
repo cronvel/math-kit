@@ -34,8 +34,7 @@ const math = require( '../../lib/math.js' ) ;
 const geo = math.geometry ;
 const Vector2D = geo.Vector2D ;
 //geo.setFastMode( true ) ;
-
-const gm = require( 'gm' ) ;
+const GmTracer = require( '../../lib/tracer/GmTracer.js' ) ;
 
 const random = math.random ;
 const rng = new math.random.MersenneTwister() ;
@@ -43,60 +42,14 @@ rng.seed() ;
 
 
 
-function trace( img , area , fn ) {
-	var imgX , lastImgX , x , imgY , lastImgY , y ;
-
-	for ( imgX = 0 ; imgX < img.__width__ ; imgX ++ ) {
-		x = area.xmin + ( area.xmax - area.xmin ) * ( imgX / ( img.__width__ - 1 ) ) ;
-		y = fn.fx( x ) ;
-		
-		if ( Number.isNaN( y ) ) {
-			lastImgY = NaN ;
-			lastImgX = NaN ;
-		}
-		else {
-			imgY = Math.round( img.__height__ - 1 - ( img.__height__ - 1 ) * ( y - area.ymin ) / ( area.ymax - area.ymin ) ) ;
-
-			if ( ! Number.isNaN( lastImgY ) ) {
-				img.drawLine( lastImgX , lastImgY , imgX , imgY ) ;
-			}
-
-			lastImgY = imgY ;
-			lastImgX = imgX ;
-		}
-	}
-}
-
-
-
-function traceCps( img , area , cps ) {
-	var i , len = cps.length , cp , imgX , imgY ;
-
-	for ( i = 0 ; i < len ; i ++ ) {
-		cp = cps[ i ] ;
-		imgX = Math.round( ( img.__width__ - 1 ) * ( cp.x - area.xmin ) / ( area.xmax - area.xmin ) ) ;
-		imgY = Math.round( img.__height__ - 1 - ( img.__height__ - 1 ) * ( cp.fx - area.ymin ) / ( area.ymax - area.ymin ) ) ;
-		img.drawCircle( imgX , imgY , imgX + 4 , imgY + 4 ) ;
-	}
-}
-
-
-
-function traceAxis( img , area ) {
-	var imgX = Math.round( ( img.__width__ - 1 ) * ( - area.xmin ) / ( area.xmax - area.xmin ) ) ,
-		imgY = Math.round( img.__height__ - 1 - ( img.__height__ - 1 ) * ( - area.ymin ) / ( area.ymax - area.ymin ) ) ;
-	
-	img.drawLine( 0 , imgY , img.__width__ - 1 , imgY ) ;
-	img.drawLine( imgX , 0 , imgX , img.__height__ - 1 ) ;
-}
-
-
-const GmTracer = require( './GmTracer.js' ) ;
-
 describe( "InterpolatedFn" , () => {
 
-	it( "zzz Simple interpolated fn" , async () => {
-		var tracer = new GmTracer( { size: 600 , bgColor: '#000' , xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 , every: 1 } ) ;
+	it( "Simple interpolated fn" , async () => {
+		var tracer = new GmTracer( {
+			size: 600 , bgColor: '#000' ,
+			xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 , every: 1 ,
+			//xUnit: 'rpm' , yUnit: 'hp'
+		} ) ;
 
 		var fn = new math.fn.InterpolatedFn( [
 			{ x: 1 , fx: 1 } ,
@@ -104,59 +57,23 @@ describe( "InterpolatedFn" , () => {
 			{ x: 5 , fx: 1 }
 		] ) ;
 		
-		tracer.create() ;
+		tracer.createImage() ;
 		tracer.drawAxis() ;
-		tracer.traceFn( fn , '#0f0' ) ;
+		//tracer.traceFn( fn , '#0f0' ) ;
+		tracer.trace( fn , '#f0f' ) ;
 		tracer.traceFn( fn.createDfxFn() , '#00f' ) ;
 		tracer.traceFn( fn.createSfxFn() , '#f00' ) ;
 		tracer.traceControlPoints( fn ) ;
 
-		await tracer.save( __dirname + "/simple-interpolated-fn.png" ) ;
+		await tracer.saveImage( __dirname + "/simple-interpolated-fn.png" ) ;
 	} ) ;
 
-	it( "Simple interpolated fn" , ( done ) => {
-		var size = 600 ;
-
-		var img = gm( size , size , "#000" ) ;
-
-		img.__width__ = size ;
-		img.__height__ = size ;
-
-		//img.fill( "#fff6" ) ;
-		//img.fill( "#555" ) ;
-
-		var fn = new math.fn.InterpolatedFn( [
-			{ x: 1 , fx: 1 } ,
-			{ x: 3 , fx: 5 } ,
-			{ x: 5 , fx: 1 }
-		] ) ;
-		
-		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 } ;
-
-		//img.stroke( "#ff0" ) ;
-		img.stroke( "#dd7" ) ;
-		traceAxis( img , area ) ;
-		img.stroke( "#0f0" ) ;
-		trace( img , area , fn ) ;
-		img.stroke( "#00f" ) ;
-		trace( img , area , fn.createDfxFn() ) ;
-		img.stroke( "#f00" ) ;
-		trace( img , area , fn.createSfxFn() ) ;
-		img.stroke( '#ad0' ) ;
-		traceCps( img , area , fn.controlPoints ) ;
-
-		img.write( __dirname + "/simple-interpolated-fn.png" , done ) ;
-	} ) ;
-
-	it( "Simple interpolated fn2" , ( done ) => {
-		var size = 600 ;
-
-		var img = gm( size , size , "#000" ) ;
-
-		img.__width__ = size ;
-		img.__height__ = size ;
-
-		img.fill( "#fff6" ) ;
+	it( "Simple interpolated fn2" , async () => {
+		var tracer = new GmTracer( {
+			size: 600 , bgColor: '#000' ,
+			xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 , every: 1 ,
+			//xUnit: 'rpm' , yUnit: 'hp'
+		} ) ;
 
 		var fn = new math.fn.InterpolatedFn( [
 			{ x: 1 , fx: 1 } ,
@@ -165,31 +82,22 @@ describe( "InterpolatedFn" , () => {
 			{ x: 5 , fx: 5 }
 		] ) ;
 
-		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 } ;
+		tracer.createImage() ;
+		tracer.drawAxis() ;
+		tracer.traceFn( fn , '#0f0' ) ;
+		tracer.traceFn( fn.createDfxFn() , '#00f' ) ;
+		tracer.traceFn( fn.createSfxFn() , '#f00' ) ;
+		tracer.traceControlPoints( fn ) ;
 
-		img.stroke( "#ff0" ) ;
-		traceAxis( img , area ) ;
-		img.stroke( "#0f0" ) ;
-		trace( img , area , fn ) ;
-		img.stroke( "#00f" ) ;
-		trace( img , area , fn.createDfxFn() ) ;
-		img.stroke( "#f00" ) ;
-		trace( img , area , fn.createSfxFn() ) ;
-		img.stroke( '#ad0' ) ;
-		traceCps( img , area , fn.controlPoints ) ;
-
-		img.write( __dirname + "/simple-interpolated-fn2.png" , done ) ;
+		await tracer.saveImage( __dirname + "/simple-interpolated-fn2.png" ) ;
 	} ) ;
 
-	it( "Simple interpolated fn3" , ( done ) => {
-		var size = 600 ;
-
-		var img = gm( size , size , "#000" ) ;
-
-		img.__width__ = size ;
-		img.__height__ = size ;
-
-		img.fill( "#fff6" ) ;
+	it( "Simple interpolated fn3" , async () => {
+		var tracer = new GmTracer( {
+			size: 600 , bgColor: '#000' ,
+			xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 , every: 1 ,
+			//xUnit: 'rpm' , yUnit: 'hp'
+		} ) ;
 
 		var fn = new math.fn.InterpolatedFn( [
 			{ x: 1 , fx: 1 } ,
@@ -198,31 +106,22 @@ describe( "InterpolatedFn" , () => {
 			{ x: 5 , fx: 5 }
 		] ) ;
 
-		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 } ;
+		tracer.createImage() ;
+		tracer.drawAxis() ;
+		tracer.traceFn( fn , '#0f0' ) ;
+		tracer.traceFn( fn.createDfxFn() , '#00f' ) ;
+		tracer.traceFn( fn.createSfxFn() , '#f00' ) ;
+		tracer.traceControlPoints( fn ) ;
 
-		img.stroke( "#ff0" ) ;
-		traceAxis( img , area ) ;
-		img.stroke( "#0f0" ) ;
-		trace( img , area , fn ) ;
-		img.stroke( "#00f" ) ;
-		trace( img , area , fn.createDfxFn() ) ;
-		img.stroke( "#f00" ) ;
-		trace( img , area , fn.createSfxFn() ) ;
-		img.stroke( '#ad0' ) ;
-		traceCps( img , area , fn.controlPoints ) ;
-
-		img.write( __dirname + "/simple-interpolated-fn3.png" , done ) ;
+		await tracer.saveImage( __dirname + "/simple-interpolated-fn3.png" ) ;
 	} ) ;
 
-	it( "Simple interpolated fn4" , ( done ) => {
-		var size = 600 ;
-
-		var img = gm( size , size , "#000" ) ;
-
-		img.__width__ = size ;
-		img.__height__ = size ;
-
-		img.fill( "#fff6" ) ;
+	it( "Simple interpolated fn4" , async () => {
+		var tracer = new GmTracer( {
+			size: 600 , bgColor: '#000' ,
+			xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 , every: 1 ,
+			//xUnit: 'rpm' , yUnit: 'hp'
+		} ) ;
 
 		var fn = new math.fn.InterpolatedFn( [
 			{ x: 0 , fx: 2.5 } ,
@@ -234,37 +133,26 @@ describe( "InterpolatedFn" , () => {
 			{ x: 6 , fx: 3.5 }
 		] ) ;
 
-		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 } ;
+		tracer.createImage() ;
+		tracer.drawAxis() ;
+		tracer.traceFn( fn , '#0f0' ) ;
+		tracer.traceFn( fn.createDfxFn() , '#00f' ) ;
+		tracer.traceFn( fn.createSfxFn() , '#f00' ) ;
+		tracer.traceControlPoints( fn ) ;
 
-		img.stroke( "#ff0" ) ;
-		traceAxis( img , area ) ;
-		img.stroke( "#0f0" ) ;
-		trace( img , area , fn ) ;
-		img.stroke( "#00f" ) ;
-		trace( img , area , fn.createDfxFn() ) ;
-		img.stroke( "#f00" ) ;
-		trace( img , area , fn.createSfxFn() ) ;
-		img.stroke( '#ad0' ) ;
-		traceCps( img , area , fn.controlPoints ) ;
-
-		img.write( __dirname + "/simple-interpolated-fn4.png" , done ) ;
+		await tracer.saveImage( __dirname + "/simple-interpolated-fn4.png" ) ;
 	} ) ;
 
-	it( "Random interpolated fn" , ( done ) => {
-		var size = 600 ;
-
-		var img = gm( size , size , "#000" ) ;
-
-		img.__width__ = size ;
-		img.__height__ = size ;
-
-		img.fill( "#fff6" ) ;
+	it( "Random interpolated fn" , async () => {
+		var tracer = new GmTracer( {
+			size: 600 , bgColor: '#000' ,
+			xmin: -1 , xmax: 6 , ymin: -3 , ymax: 12 , every: 1 ,
+			//xUnit: 'rpm' , yUnit: 'hp'
+		} ) ;
 
 		var x , fx , lastFx = 2 , array = [] ;
 
-		var area = { xmin: -1 , xmax: 6 , ymin: -3 , ymax: 12 } ;
-
-		for ( x = area.xmin + rng.randomFloatRange( 0 , 0.8 ) ; x <= area.xmax ; x += rng.randomFloatRange( 0.2 , 0.8 ) ) {
+		for ( x = tracer.xMin + rng.randomFloatRange( 0 , 0.8 ) ; x <= tracer.xMax ; x += rng.randomFloatRange( 0.2 , 0.8 ) ) {
 			fx = lastFx + rng.randomFloatRange( -3 , 3 ) ;
 			array.push( { x , fx } ) ;
 			lastFx = fx ;
@@ -272,18 +160,14 @@ describe( "InterpolatedFn" , () => {
 
 		var fn = new math.fn.InterpolatedFn( array , { preserveExtrema: false , atanMeanDfx: true } ) ;
 
-		img.stroke( "#ff0" ) ;
-		traceAxis( img , area ) ;
-		img.stroke( "#0f0" ) ;
-		trace( img , area , fn ) ;
-		img.stroke( "#00f" ) ;
-		trace( img , area , fn.createDfxFn() ) ;
-		img.stroke( "#f00" ) ;
-		trace( img , area , fn.createSfxFn() ) ;
-		img.stroke( '#ad0' ) ;
-		traceCps( img , area , fn.controlPoints ) ;
+		tracer.createImage() ;
+		tracer.drawAxis() ;
+		tracer.traceFn( fn , '#0f0' ) ;
+		tracer.traceFn( fn.createDfxFn() , '#00f' ) ;
+		tracer.traceFn( fn.createSfxFn() , '#f00' ) ;
+		tracer.traceControlPoints( fn ) ;
 
-		img.write( __dirname + "/random-interpolated-fn.png" , done ) ;
+		await tracer.saveImage( __dirname + "/random-interpolated-fn.png" ) ;
 	} ) ;
 } ) ;
 
