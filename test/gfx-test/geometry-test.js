@@ -44,39 +44,10 @@ const Circle3D = geo.Circle3D ;
 //geo.setFastMode( true ) ;
 
 const GmTracer = require( '../../lib/tracer/GmTracer.js' ) ;
-const gm = require( 'gm' ) ;
 
-const random = math.random ;
+//const random = math.random ;
 var rng = new math.random.MersenneTwister() ;
 rng.seed() ;
-
-
-
-
-
-/* Tests */
-
-
-
-function trace( img , gen ) {
-	var r , pos , lastPos = new Vector2D() ;
-
-	if ( ( r = gen.next() ).done ) { return ; }
-
-	lastPos.setVector( r.value ) ;
-
-	while ( ! ( r = gen.next() ).done ) {
-		pos = r.value ;
-		img.drawLine( lastPos.x , lastPos.y , pos.x , pos.y ) ;
-		lastPos.setVector( pos ) ;
-	}
-}
-
-
-
-
-
-/* Tests */
 
 
 
@@ -84,8 +55,13 @@ describe( "Circle" , () => {
 
 	it( "Circle random shortest point" , async () => {
 		var tracer = new GmTracer( {
-			size: 600 , bgColor: '#000' ,
-			xmin: -12 , xmax: 12 , ymin: -12 , ymax: 12 , every: 1 ,
+			size: 600 ,
+			bgColor: '#000' ,
+			xmin: -12 ,
+			xmax: 12 ,
+			ymin: -12 ,
+			ymax: 12 ,
+			every: 1
 		} ) ;
 
 		var i , test , projected , segment ,
@@ -121,11 +97,16 @@ describe( "Circle" , () => {
 
 	it( "Circle intersection" , async () => {
 		var tracer = new GmTracer( {
-			size: 600 , bgColor: '#000' ,
-			xmin: -12 , xmax: 12 , ymin: -12 , ymax: 12 , every: 1 ,
+			size: 600 ,
+			bgColor: '#000' ,
+			xmin: -12 ,
+			xmax: 12 ,
+			ymin: -12 ,
+			ymax: 12 ,
+			every: 1
 		} ) ;
 
-		var i , test , segment , array ,
+		var i , array ,
 			tries = 50 ,
 			line = new BoundVector2D() ,
 			circle = new Circle2D(
@@ -172,33 +153,38 @@ describe( "Circle" , () => {
 
 describe( "Ellipse" , () => {
 
-	it( "Ellipse random shortest point" , ( done ) => {
-		var i , test , tries = 200 , size = 600 , v ;
+	it( "Ellipse random shortest point" , async () => {
+		var tracer = new GmTracer( {
+			size: 600 ,
+			bgColor: '#000' ,
+			xmin: -12 ,
+			xmax: 12 ,
+			ymin: -12 ,
+			ymax: 12 ,
+			every: 1
+		} ) ;
 
-		var img = gm( size , size , "#000" ) ;
-		var position = new Vector2D() ;
-		var projected ;
+		var i , test , projected , segment ,
+			tries = 200 ,
+			position = new Vector2D() ,
+			semiMajor = rng.randomFloatRange( tracer.xMax * 0.3 , tracer.xMax * 0.7 ) ,
+			semiMinor = rng.randomFloatRange( 0 , semiMajor ) ,
+			//majorAxis = new Vector2D( v = rng.random( - 100 , 100 ) , v ) ,
+			majorAxis = new Vector2D( rng.randomFloatRange( -tracer.xMax / 2 , tracer.xMax / 2 ) , rng.randomFloatRange( -tracer.yMax / 2 , tracer.yMax / 2 ) ) ,
+			//majorAxis = Vector2D( 1 , 0 ) ,
+			ellipse = new Ellipse2D(
+				rng.randomFloatRange( tracer.xMin / 2 , tracer.xMax / 2 ) ,
+				rng.randomFloatRange( tracer.yMin / 2 , tracer.yMax / 2 ) ,
+				majorAxis.x , majorAxis.y , semiMajor , semiMinor
+			) ;
 
-		img.fill( "#fff6" ) ;
-
-		var semiMajor = rng.random( size / 5 , size / 3 ) ;
-		var semiMinor = rng.random( semiMajor ) ;
-		//var majorAxis = new Vector2D( v = rng.random( - 100 , 100 ) , v ) ;
-		var majorAxis = new Vector2D( rng.random( -100 , 100 ) , rng.random( -100 , 100 ) ) ;
-		//var majorAxis = Vector2D( 1 , 0 ) ;
-
-		console.log( 'Axis size:' , semiMajor , semiMinor ) ;
-
-		var ellipse = new Ellipse2D( size / 2 , size / 2 , majorAxis.x , majorAxis.y , semiMajor , semiMinor ) ;
-
-		img.stroke( "#0f0" ) ;
-		trace( img , ellipse.tracer( 1 ) ) ;
+		tracer.createImage() ;
+		tracer.trace( ellipse , '#0f0' ) ;
 
 		for ( i = 0 ; i < tries ; i ++ ) {
 			position.set(
-				rng.random( 1 , size - 1 ) ,
-				rng.random( 1 , size - 1 )
-				//v = rng.random( 1 , size - 1 ) , v
+				rng.randomFloatRange( tracer.xMin , tracer.xMax ) ,
+				rng.randomFloatRange( tracer.yMin , tracer.yMax )
 			) ;
 			//console.log( v ) ;
 
@@ -211,39 +197,45 @@ describe( "Ellipse" , () => {
 			}
 
 			test = ellipse.testVector( position ) ;
-			img.stroke( test > 0 ? '#ff8' : '#8ff' ) ;
-			img.drawLine( position.x , position.y , projected.x , projected.y ) ;
-			//img.drawPoint( projected.x , projected.y ) ;
+			segment = BoundVector2D.fromTo( position , projected ) ;
+			tracer.trace( segment , test > 0 ? '#ff8' : '#8ff' ) ;
 		}
 
-		img.write( __dirname + "/ellipse-point-projection.png" , done ) ;
+		await tracer.saveImage( __dirname + "/ellipse-point-projection.png" ) ;
 	} ) ;
 
-	it( "Ellipse projection toward center" , ( done ) => {
-		var i , test , tries = 200 , size = 600 ;
+	it( "Ellipse projection toward center" , async () => {
+		var tracer = new GmTracer( {
+			size: 600 ,
+			bgColor: '#000' ,
+			xmin: -12 ,
+			xmax: 12 ,
+			ymin: -12 ,
+			ymax: 12 ,
+			every: 1
+		} ) ;
 
-		var img = gm( size , size , "#000" ) ;
-		var position = new Vector2D() ;
-		var projected ;
+		var i , test , projected , segment ,
+			tries = 200 ,
+			position = new Vector2D() ,
+			semiMajor = rng.randomFloatRange( tracer.xMax * 0.3 , tracer.xMax * 0.7 ) ,
+			semiMinor = rng.randomFloatRange( 0 , semiMajor ) ,
+			//majorAxis = new Vector2D( v = rng.random( - 100 , 100 ) , v ) ,
+			majorAxis = new Vector2D( rng.randomFloatRange( -tracer.xMax / 2 , tracer.xMax / 2 ) , rng.randomFloatRange( -tracer.yMax / 2 , tracer.yMax / 2 ) ) ,
+			//majorAxis = Vector2D( 1 , 0 ) ,
+			ellipse = new Ellipse2D(
+				rng.randomFloatRange( tracer.xMin / 2 , tracer.xMax / 2 ) ,
+				rng.randomFloatRange( tracer.yMin / 2 , tracer.yMax / 2 ) ,
+				majorAxis.x , majorAxis.y , semiMajor , semiMinor
+			) ;
 
-		img.fill( "#fff6" ) ;
-
-		var semiMajor = rng.random( size / 5 , size / 3 ) ;
-		var semiMinor = rng.random( semiMajor ) ;
-		var majorAxis = new Vector2D( rng.random( -100 , 100 ) , rng.random( -100 , 100 ) ) ;
-		//var majorAxis = new Vector2D( 1 , 0 ) ;
-
-		//console.log( 'Axis size:' , semiMajor , semiMinor ) ;
-
-		var ellipse = new Ellipse2D( size / 2 , size / 2 , majorAxis.x , majorAxis.y , semiMajor , semiMinor ) ;
-
-		img.stroke( "#0f0" ) ;
-		trace( img , ellipse.tracer( 1 ) ) ;
+		tracer.createImage() ;
+		tracer.trace( ellipse , '#0f0' ) ;
 
 		for ( i = 0 ; i < tries ; i ++ ) {
 			position.set(
-				rng.random( 1 , size - 1 ) ,
-				rng.random( 1 , size - 1 )
+				rng.randomFloatRange( tracer.xMin , tracer.xMax ) ,
+				rng.randomFloatRange( tracer.yMin , tracer.yMax )
 			) ;
 
 			projected = ellipse.pointProjectionTowardCenter( position ) ;
@@ -255,65 +247,69 @@ describe( "Ellipse" , () => {
 			}
 
 			test = ellipse.testVector( position ) ;
-			img.stroke( test > 0 ? '#ff8' : '#8ff' ) ;
-			img.drawLine( position.x , position.y , projected.x , projected.y ) ;
-			//img.drawPoint( projected.x , projected.y ) ;
+			segment = BoundVector2D.fromTo( position , projected ) ;
+			tracer.trace( segment , test > 0 ? '#ff8' : '#8ff' ) ;
 		}
 
-		img.write( __dirname + "/ellipse-point-projection-toward-center.png" , done ) ;
+		await tracer.saveImage( __dirname + "/ellipse-point-projection-toward-center.png" ) ;
 	} ) ;
 
-	it( "Ellipse intersection" , ( done ) => {
-		var i , test , tries = 50 , size = 600 ;
+	it( "Ellipse intersection" , async () => {
+		var tracer = new GmTracer( {
+			size: 600 ,
+			bgColor: '#000' ,
+			xmin: -12 ,
+			xmax: 12 ,
+			ymin: -12 ,
+			ymax: 12 ,
+			every: 1
+		} ) ;
 
-		var img = gm( size , size , "#000" ) ;
-		var line = new BoundVector2D() ;
-		var array ;
+		var i , array ,
+			tries = 50 ,
+			line = new BoundVector2D() ,
+			semiMajor = rng.randomFloatRange( tracer.xMax * 0.3 , tracer.xMax * 0.7 ) ,
+			semiMinor = rng.randomFloatRange( 0 , semiMajor ) ,
+			//majorAxis = new Vector2D( v = rng.random( - 100 , 100 ) , v ) ,
+			majorAxis = new Vector2D( rng.randomFloatRange( -tracer.xMax / 2 , tracer.xMax / 2 ) , rng.randomFloatRange( -tracer.yMax / 2 , tracer.yMax / 2 ) ) ,
+			//majorAxis = Vector2D( 1 , 0 ) ,
+			ellipse = new Ellipse2D(
+				rng.randomFloatRange( tracer.xMin / 2 , tracer.xMax / 2 ) ,
+				rng.randomFloatRange( tracer.yMin / 2 , tracer.yMax / 2 ) ,
+				majorAxis.x , majorAxis.y , semiMajor , semiMinor
+			) ;
 
-		img.fill( "#000f" ) ;
-
-		var semiMajor = rng.random( size / 5 , size / 3 ) ;
-		var semiMinor = rng.random( semiMajor ) ;
-		var majorAxis = new Vector2D( rng.random( -100 , 100 ) , rng.random( -100 , 100 ) ) ;
-		//var majorAxis = new Vector2D( 1 , 0 ) ;
-
-		//console.log( 'Axis size:' , semiMajor , semiMinor ) ;
-
-		var ellipse = new Ellipse2D( size / 2 , size / 2 , majorAxis.x , majorAxis.y , semiMajor , semiMinor ) ;
-
-		img.stroke( "#00f" ) ;
-		trace( img , ellipse.tracer( 1 ) ) ;
+		tracer.createImage() ;
+		tracer.trace( ellipse , '#00f' ) ;
 
 		for ( i = 0 ; i < tries ; i ++ ) {
 			line.set(
-				rng.random( 1 , size - 1 ) ,
-				rng.random( 1 , size - 1 ) ,
-				rng.random( -50 , 50 ) ,
-				rng.random( -50 , 50 )
+				rng.randomFloatRange( tracer.xMin , tracer.xMax ) ,
+				rng.randomFloatRange( tracer.yMin , tracer.yMax ) ,
+				rng.randomFloatRange( -5 , 5 ) ,
+				rng.randomFloatRange( -5 , 5 )
 			) ;
 
 			array = ellipse.lineIntersection( line ) ;
 			//console.log( '#' + i , position , projected ) ;
 
 			if ( ! array ) {
-				img.stroke( '#f00' ) ;
-				img.drawLine( line.position.x , line.position.y , line.position.x + line.vector.x , line.position.y + line.vector.y ) ;
+				tracer.trace( line , '#f00' ) ;
 			}
 			else {
-				img.stroke( '#0f0' ) ;
-				img.drawLine( line.position.x , line.position.y , line.position.x + line.vector.x , line.position.y + line.vector.y ) ;
+				tracer.trace( line , '#0f0' ) ;
+				tracer.trace( array[ 0 ] , '#ad0' , undefined , 4 ) ;
 
-				img.stroke( '#ad0' ) ;
-				img.drawCircle( array[ 0 ].x , array[ 0 ].y , array[ 0 ].x + 4 , array[ 0 ].y + 4 ) ;
+				//console.log( 'a:' , circle.pointDistance( array[ 0 ] ) ) ;
 
 				if ( array[ 1 ] ) {
-					img.stroke( '#0da' ) ;
-					img.drawCircle( array[ 1 ].x , array[ 1 ].y , array[ 1 ].x + 4 , array[ 1 ].y + 4 ) ;
+					tracer.trace( array[ 1 ] , '#0ad' , undefined , 4 ) ;
+					//console.log( 'b:' , circle.pointDistance( array[ 1 ] ) ) ;
 				}
 			}
 		}
 
-		img.write( __dirname + "/ellipse-intersection.png" , done ) ;
+		await tracer.saveImage( __dirname + "/ellipse-intersection.png" ) ;
 	} ) ;
 } ) ;
 

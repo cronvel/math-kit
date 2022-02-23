@@ -36,7 +36,7 @@ const Vector2D = geo.Vector2D ;
 //geo.setFastMode( true ) ;
 const GmTracer = require( '../../lib/tracer/GmTracer.js' ) ;
 
-const random = math.random ;
+//const random = math.random ;
 const rng = new math.random.MersenneTwister() ;
 rng.seed() ;
 
@@ -46,8 +46,13 @@ describe( "InterpolatedFn" , () => {
 
 	it( "Simple interpolated fn" , async () => {
 		var tracer = new GmTracer( {
-			size: 600 , bgColor: '#000' ,
-			xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 , every: 1 ,
+			size: 600 ,
+			bgColor: '#000' ,
+			xmin: -1 ,
+			xmax: 6 ,
+			ymin: -1 ,
+			ymax: 8 ,
+			every: 1
 			//xUnit: 'rpm' , yUnit: 'hp'
 		} ) ;
 
@@ -56,7 +61,7 @@ describe( "InterpolatedFn" , () => {
 			{ x: 3 , fx: 5 } ,
 			{ x: 5 , fx: 1 }
 		] ) ;
-		
+
 		tracer.createImage() ;
 		tracer.drawAxis() ;
 		//tracer.traceFn( fn , '#0f0' ) ;
@@ -70,8 +75,13 @@ describe( "InterpolatedFn" , () => {
 
 	it( "Simple interpolated fn2" , async () => {
 		var tracer = new GmTracer( {
-			size: 600 , bgColor: '#000' ,
-			xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 , every: 1 ,
+			size: 600 ,
+			bgColor: '#000' ,
+			xmin: -1 ,
+			xmax: 6 ,
+			ymin: -1 ,
+			ymax: 8 ,
+			every: 1
 			//xUnit: 'rpm' , yUnit: 'hp'
 		} ) ;
 
@@ -94,8 +104,13 @@ describe( "InterpolatedFn" , () => {
 
 	it( "Simple interpolated fn3" , async () => {
 		var tracer = new GmTracer( {
-			size: 600 , bgColor: '#000' ,
-			xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 , every: 1 ,
+			size: 600 ,
+			bgColor: '#000' ,
+			xmin: -1 ,
+			xmax: 6 ,
+			ymin: -1 ,
+			ymax: 8 ,
+			every: 1
 			//xUnit: 'rpm' , yUnit: 'hp'
 		} ) ;
 
@@ -118,8 +133,13 @@ describe( "InterpolatedFn" , () => {
 
 	it( "Simple interpolated fn4" , async () => {
 		var tracer = new GmTracer( {
-			size: 600 , bgColor: '#000' ,
-			xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 , every: 1 ,
+			size: 600 ,
+			bgColor: '#000' ,
+			xmin: -1 ,
+			xmax: 6 ,
+			ymin: -1 ,
+			ymax: 8 ,
+			every: 1
 			//xUnit: 'rpm' , yUnit: 'hp'
 		} ) ;
 
@@ -145,8 +165,13 @@ describe( "InterpolatedFn" , () => {
 
 	it( "Random interpolated fn" , async () => {
 		var tracer = new GmTracer( {
-			size: 600 , bgColor: '#000' ,
-			xmin: -1 , xmax: 6 , ymin: -3 , ymax: 12 , every: 1 ,
+			size: 600 ,
+			bgColor: '#000' ,
+			xmin: -1 ,
+			xmax: 6 ,
+			ymin: -3 ,
+			ymax: 12 ,
+			every: 1
 			//xUnit: 'rpm' , yUnit: 'hp'
 		} ) ;
 

@@ -29,14 +29,11 @@
 "use strict" ;
 
 const math = require( '../../lib/math.js' ) ;
+const geo = math.geometry ;
+const Vector2D = geo.Vector2D ;
+const GmTracer = require( '../../lib/tracer/GmTracer.js' ) ;
+
 const random = math.random ;
-const gm = require( 'gm' ) ;
-
-
-
-
-
-/* Helper functions */
 
 
 
@@ -87,137 +84,49 @@ function integerOccurencies( type ) {
 
 
 
-function dotPatternImage( type , done ) {
-	var i , x , y , tries = 2000 , size = 300 ;
+function dotPatternImage( type ) {
+	var i , tries = 2000 , size = 300 , position = new Vector2D() ;
+
+	var tracer = new GmTracer( {
+		size ,
+		bgColor: '#000' ,
+		xmin: 0 ,
+		xmax: size ,
+		ymin: 0 ,
+		ymax: size
+	} ) ;
+
+	tracer.createImage() ;
 
 	var rng = new random[ type ]() ;
 	rng.seed() ;
 
-	var img = gm( size , size , "#000" ) ;
-
-	img.fill( "#fff" ) ;
-
 	for ( i = 0 ; i < tries ; i ++ ) {
-		x = rng.random( size ) ;
-		y = rng.random( size ) ;
-
-		if ( x === undefined || y === undefined )  { console.log( "Not enough entropy?" ) ; }
-
-		img.drawPoint( x , y ) ;
+		position.set( rng.random( size ) , rng.random( size ) ) ;
+		if ( position.x === undefined || position.y === undefined )  { console.log( "Not enough entropy?" ) ; }
+		tracer.trace( position , '#fff' ) ;
 	}
 
-	img.write( "./dotPatternImage-" + type + ".png" , done ) ;
+	return tracer.saveImage( __dirname + "/dotPatternImage-" + type + ".png" ) ;
 }
-
-
-
-function ellipsePatternImage( type , done ) {
-	var i , x , y , rx , ry , tries = 500 , size = 600 ;
-
-	var rng = new random[ type ]() ;
-	rng.seed() ;
-
-	var img = gm( size , size , "#000" ) ;
-
-	img.stroke( "#fff" , 1 ) ;
-	img.fill() ;
-
-	for ( i = 0 ; i < tries ; i ++ ) {
-		x = rng.random( size ) ;
-		y = rng.random( size ) ;
-		rx = rng.random( size / 5 ) ;
-		//ry = rng.random( size / 5 ) ;
-		ry = rx ;
-
-		if ( x === undefined || y === undefined )  { console.log( "Not enough entropy?" ) ; }
-
-		img.drawEllipse( x , y , rx , ry ) ;
-	}
-
-	img.write( "./ellipsePatternImage-" + type + ".png" , done ) ;
-}
-
-
-
-function linePatternImage( type , done ) {
-	var i , r , g , b , x1 , y1 , x2 , y2 , tries = 600 , size = 600 ;
-
-	var rng = new random[ type ]() ;
-	rng.seed() ;
-
-	var img = gm( size , size , "#000" ) ;
-
-	img.fill( "#fff6" ) ;
-
-	for ( i = 0 ; i < tries ; i ++ ) {
-		/*
-		r = rng.random( 256 ) ;
-		g = rng.random( 256 ) ;
-		b = rng.random( 256 ) ;
-
-		img.fill( "rgba(" + r + "," + g + ","+ b + ",100)" ) ;
-		*/
-
-		x1 = rng.random( size ) ;
-		y1 = rng.random( size ) ;
-		x2 = x1 + rng.random( 2 * size ) - size ;
-		y2 = y1 + rng.random( 2 * size ) - size ;
-
-		if ( x1 === undefined || y1 === undefined || x2 === undefined || y2 === undefined )  { console.log( "Not enough entropy?" ) ; }
-
-		img.drawLine( x1 , y1 , x2 , y2 ) ;
-
-		if ( x2 >= size )  img.drawLine( x1 - size , y1 , x2 - size , y2 ) ;
-		if ( y2 >= size )  img.drawLine( x1 , y1 - size , x2 , y2 - size ) ;
-		if ( x2 >= size && y2 >= size )  img.drawLine( x1 - size , y1 - size , x2 - size , y2 - size ) ;
-
-		if ( x2 < 0 )  img.drawLine( x1 + size , y1 , x2 + size , y2 ) ;
-		if ( y2 < 0 )  img.drawLine( x1 , y1 + size , x2 , y2 + size ) ;
-		if ( x2 < 0 && y2 < 0 )  img.drawLine( x1 + size , y1 + size , x2 + size , y2 + size ) ;
-	}
-
-	img.write( "./linePatternImage-" + type + ".png" , done ) ;
-}
-
-
-
-
-
-/* Tests */
 
 
 
 function testSuiteFor( type ) {
 	it( "should generate values in the [ 0 , 1 ) range, and should generate values close to boundary (closer than 0.00001)" , function() {
-
 		this.timeout( 10000 ) ;
 		floatRange( type , 0 , 1 , 0.00001 , 0.99999 ) ;
 	} ) ;
 
 	it( "should generate [ 0 , 99 ] integer with a flat distribution" , function() {
-
 		this.timeout( 10000 ) ;
 		integerOccurencies( type ) ;
 	} ) ;
 
-	it( "Dot pattern image" , function( done ) {
-
+	it( "Dot pattern image" , async function() {
 		this.timeout( 10000 ) ;
-		dotPatternImage( type , done ) ;
+		await dotPatternImage( type ) ;
 	} ) ;
-	/*
-	it( "Ellipse pattern image" , function( done ) {
-
-		this.timeout( 5000 ) ;
-		ellipsePatternImage( type , done ) ;
-	} ) ;
-
-	it( "Line pattern image" , function( done ) {
-
-		this.timeout( 5000 ) ;
-		linePatternImage( type , done ) ;
-	} ) ;
-	*/
 }
 
 
@@ -249,7 +158,6 @@ describe( "Mersenne-Twister" , () => {
 describe( "Misc" , () => {
 
 	it( "randomElement()" , () => {
-
 		var i , array , rng ;
 
 		rng = new random.MersenneTwister() ;
@@ -263,7 +171,6 @@ describe( "Misc" , () => {
 	} ) ;
 
 	it( "randomRound()" , () => {
-
 		var i , n , min , max , r = [] , rng ;
 
 		rng = new random.MersenneTwister() ;
@@ -285,7 +192,6 @@ describe( "Misc" , () => {
 	} ) ;
 
 	it( "sharedRandomRound()" , () => {
-
 		var rng , array ;
 
 		rng = new random.MersenneTwister() ;
