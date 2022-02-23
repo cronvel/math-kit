@@ -91,8 +91,28 @@ function traceAxis( img , area ) {
 }
 
 
+const GmTracer = require( './GmTracer.js' ) ;
 
 describe( "InterpolatedFn" , () => {
+
+	it( "zzz Simple interpolated fn" , async () => {
+		var tracer = new GmTracer( { size: 600 , bgColor: '#000' , xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 , every: 1 } ) ;
+
+		var fn = new math.fn.InterpolatedFn( [
+			{ x: 1 , fx: 1 } ,
+			{ x: 3 , fx: 5 } ,
+			{ x: 5 , fx: 1 }
+		] ) ;
+		
+		tracer.create() ;
+		tracer.drawAxis() ;
+		tracer.traceFn( fn , '#0f0' ) ;
+		tracer.traceFn( fn.createDfxFn() , '#00f' ) ;
+		tracer.traceFn( fn.createSfxFn() , '#f00' ) ;
+		tracer.traceControlPoints( fn ) ;
+
+		await tracer.save( __dirname + "/simple-interpolated-fn.png" ) ;
+	} ) ;
 
 	it( "Simple interpolated fn" , ( done ) => {
 		var size = 600 ;
@@ -102,7 +122,8 @@ describe( "InterpolatedFn" , () => {
 		img.__width__ = size ;
 		img.__height__ = size ;
 
-		img.fill( "#fff6" ) ;
+		//img.fill( "#fff6" ) ;
+		//img.fill( "#555" ) ;
 
 		var fn = new math.fn.InterpolatedFn( [
 			{ x: 1 , fx: 1 } ,
@@ -112,7 +133,8 @@ describe( "InterpolatedFn" , () => {
 		
 		var area = { xmin: -1 , xmax: 6 , ymin: -1 , ymax: 8 } ;
 
-		img.stroke( "#ff0" ) ;
+		//img.stroke( "#ff0" ) ;
+		img.stroke( "#dd7" ) ;
 		traceAxis( img , area ) ;
 		img.stroke( "#0f0" ) ;
 		trace( img , area , fn ) ;
