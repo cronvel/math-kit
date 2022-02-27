@@ -40,7 +40,7 @@ describe( "Complex numbers" , () => {
 	it( "constructor" , () => {
 		expect( new Complex( 3 , 4 ) ).to.be.like( { re: 3 , im: 4 } ) ;
 		expect( Number.isNaN( new Complex().re ) ).to.be( true ) ;
-		expect( Number.isNaN( new Complex().im ) ).to.be( true ) ;
+		expect( new Complex().im ).to.be( 0 ) ;
 	} ) ;
 
 	it( "angle" , () => {
