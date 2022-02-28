@@ -196,3 +196,33 @@ describe( "InterpolatedFn" , () => {
 	} ) ;
 } ) ;
 
+
+
+describe( "Const2ndOrdDifferentialEquationFn" , () => {
+
+	it( "Simple constant 2nd order differential equation" , async () => {
+		var tracer = new GmTracer( {
+			height: 600 ,
+			width: 800 ,
+			bgColor: '#000' ,
+			xmin: -1 ,
+			xmax: 6 ,
+			ymin: -5 ,
+			ymax: 5 ,
+			every: 1
+			//xUnit: 'rpm' , yUnit: 'hp'
+		} ) ;
+
+		//var fn = new math.fn.Const2ndOrdDifferentialEquationFn( 1 , 1 , 0 , 0 , 1 ) ;
+		var fn = math.fn.Const2ndOrdDifferentialEquationFn.createSpringDamperMass( 1 , 5 , 1 , -1 , -3 , 0.5 ) ;
+
+		tracer.createImage() ;
+		tracer.drawAxis() ;
+		tracer.traceFn( fn ) ;
+		tracer.traceDFn( fn ) ;
+		tracer.traceD2Fn( fn ) ;
+
+		await tracer.saveImage( __dirname + "/differential-equation-fn.png" ) ;
+	} ) ;
+} ) ;
+
