@@ -68,9 +68,9 @@ describe( "Circle" , () => {
 			tries = 200 ,
 			position = new Vector2D() ,
 			circle = new Circle2D(
-				rng.randomFloatRange( tracer.xMin / 2 , tracer.xMax / 2 ) ,
-				rng.randomFloatRange( tracer.yMin / 2 , tracer.yMax / 2 ) ,
-				rng.randomFloatRange( ( tracer.xMax - tracer.xMin ) / 10 , ( tracer.xMax - tracer.xMin ) / 3 )
+				rng.randomFloatRange( tracer.bbox.min.x / 2 , tracer.bbox.max.x / 2 ) ,
+				rng.randomFloatRange( tracer.bbox.min.y / 2 , tracer.bbox.max.y / 2 ) ,
+				rng.randomFloatRange( ( tracer.bbox.max.x - tracer.bbox.min.x ) / 10 , ( tracer.bbox.max.x - tracer.bbox.min.x ) / 3 )
 			) ;
 
 		tracer.createImage() ;
@@ -79,8 +79,8 @@ describe( "Circle" , () => {
 		for ( i = 0 ; i < tries ; i ++ ) {
 			//console.log( ">>> New segment" ) ;
 			position.set(
-				rng.randomFloatRange( tracer.xMin , tracer.xMax ) ,
-				rng.randomFloatRange( tracer.yMin , tracer.yMax )
+				rng.randomFloatRange( tracer.bbox.min.x , tracer.bbox.max.x ) ,
+				rng.randomFloatRange( tracer.bbox.min.y , tracer.bbox.max.y )
 			) ;
 
 			projected = circle.pointProjection( position ) ;
@@ -110,9 +110,9 @@ describe( "Circle" , () => {
 			tries = 50 ,
 			line = new BoundVector2D() ,
 			circle = new Circle2D(
-				rng.randomFloatRange( tracer.xMin / 2 , tracer.xMax / 2 ) ,
-				rng.randomFloatRange( tracer.yMin / 2 , tracer.yMax / 2 ) ,
-				rng.randomFloatRange( ( tracer.xMax - tracer.xMin ) / 10 , ( tracer.xMax - tracer.xMin ) / 3 )
+				rng.randomFloatRange( tracer.bbox.min.x / 2 , tracer.bbox.max.x / 2 ) ,
+				rng.randomFloatRange( tracer.bbox.min.y / 2 , tracer.bbox.max.y / 2 ) ,
+				rng.randomFloatRange( ( tracer.bbox.max.x - tracer.bbox.min.x ) / 10 , ( tracer.bbox.max.x - tracer.bbox.min.x ) / 3 )
 			) ;
 
 		tracer.createImage() ;
@@ -120,8 +120,8 @@ describe( "Circle" , () => {
 
 		for ( i = 0 ; i < tries ; i ++ ) {
 			line.set(
-				rng.randomFloatRange( tracer.xMin , tracer.xMax ) ,
-				rng.randomFloatRange( tracer.yMin , tracer.yMax ) ,
+				rng.randomFloatRange( tracer.bbox.min.x , tracer.bbox.max.x ) ,
+				rng.randomFloatRange( tracer.bbox.min.y , tracer.bbox.max.y ) ,
 				rng.randomFloatRange( -5 , 5 ) ,
 				rng.randomFloatRange( -5 , 5 )
 			) ;
@@ -167,14 +167,14 @@ describe( "Ellipse" , () => {
 		var i , test , projected , segment ,
 			tries = 200 ,
 			position = new Vector2D() ,
-			semiMajor = rng.randomFloatRange( tracer.xMax * 0.3 , tracer.xMax * 0.7 ) ,
+			semiMajor = rng.randomFloatRange( tracer.bbox.max.x * 0.3 , tracer.bbox.max.x * 0.7 ) ,
 			semiMinor = rng.randomFloatRange( 0 , semiMajor ) ,
 			//majorAxis = new Vector2D( v = rng.random( - 100 , 100 ) , v ) ,
-			majorAxis = new Vector2D( rng.randomFloatRange( -tracer.xMax / 2 , tracer.xMax / 2 ) , rng.randomFloatRange( -tracer.yMax / 2 , tracer.yMax / 2 ) ) ,
+			majorAxis = new Vector2D( rng.randomFloatRange( -tracer.bbox.max.x / 2 , tracer.bbox.max.x / 2 ) , rng.randomFloatRange( -tracer.bbox.max.y / 2 , tracer.bbox.max.y / 2 ) ) ,
 			//majorAxis = Vector2D( 1 , 0 ) ,
 			ellipse = new Ellipse2D(
-				rng.randomFloatRange( tracer.xMin / 2 , tracer.xMax / 2 ) ,
-				rng.randomFloatRange( tracer.yMin / 2 , tracer.yMax / 2 ) ,
+				rng.randomFloatRange( tracer.bbox.min.x / 2 , tracer.bbox.max.x / 2 ) ,
+				rng.randomFloatRange( tracer.bbox.min.y / 2 , tracer.bbox.max.y / 2 ) ,
 				majorAxis.x , majorAxis.y , semiMajor , semiMinor
 			) ;
 
@@ -183,8 +183,8 @@ describe( "Ellipse" , () => {
 
 		for ( i = 0 ; i < tries ; i ++ ) {
 			position.set(
-				rng.randomFloatRange( tracer.xMin , tracer.xMax ) ,
-				rng.randomFloatRange( tracer.yMin , tracer.yMax )
+				rng.randomFloatRange( tracer.bbox.min.x , tracer.bbox.max.x ) ,
+				rng.randomFloatRange( tracer.bbox.min.y , tracer.bbox.max.y )
 			) ;
 			//console.log( v ) ;
 
@@ -218,14 +218,14 @@ describe( "Ellipse" , () => {
 		var i , test , projected , segment ,
 			tries = 200 ,
 			position = new Vector2D() ,
-			semiMajor = rng.randomFloatRange( tracer.xMax * 0.3 , tracer.xMax * 0.7 ) ,
+			semiMajor = rng.randomFloatRange( tracer.bbox.max.x * 0.3 , tracer.bbox.max.x * 0.7 ) ,
 			semiMinor = rng.randomFloatRange( 0 , semiMajor ) ,
 			//majorAxis = new Vector2D( v = rng.random( - 100 , 100 ) , v ) ,
-			majorAxis = new Vector2D( rng.randomFloatRange( -tracer.xMax / 2 , tracer.xMax / 2 ) , rng.randomFloatRange( -tracer.yMax / 2 , tracer.yMax / 2 ) ) ,
+			majorAxis = new Vector2D( rng.randomFloatRange( -tracer.bbox.max.x / 2 , tracer.bbox.max.x / 2 ) , rng.randomFloatRange( -tracer.bbox.max.y / 2 , tracer.bbox.max.y / 2 ) ) ,
 			//majorAxis = Vector2D( 1 , 0 ) ,
 			ellipse = new Ellipse2D(
-				rng.randomFloatRange( tracer.xMin / 2 , tracer.xMax / 2 ) ,
-				rng.randomFloatRange( tracer.yMin / 2 , tracer.yMax / 2 ) ,
+				rng.randomFloatRange( tracer.bbox.min.x / 2 , tracer.bbox.max.x / 2 ) ,
+				rng.randomFloatRange( tracer.bbox.min.y / 2 , tracer.bbox.max.y / 2 ) ,
 				majorAxis.x , majorAxis.y , semiMajor , semiMinor
 			) ;
 
@@ -234,8 +234,8 @@ describe( "Ellipse" , () => {
 
 		for ( i = 0 ; i < tries ; i ++ ) {
 			position.set(
-				rng.randomFloatRange( tracer.xMin , tracer.xMax ) ,
-				rng.randomFloatRange( tracer.yMin , tracer.yMax )
+				rng.randomFloatRange( tracer.bbox.min.x , tracer.bbox.max.x ) ,
+				rng.randomFloatRange( tracer.bbox.min.y , tracer.bbox.max.y )
 			) ;
 
 			projected = ellipse.pointProjectionTowardCenter( position ) ;
@@ -268,14 +268,14 @@ describe( "Ellipse" , () => {
 		var i , array ,
 			tries = 50 ,
 			line = new BoundVector2D() ,
-			semiMajor = rng.randomFloatRange( tracer.xMax * 0.3 , tracer.xMax * 0.7 ) ,
+			semiMajor = rng.randomFloatRange( tracer.bbox.max.x * 0.3 , tracer.bbox.max.x * 0.7 ) ,
 			semiMinor = rng.randomFloatRange( 0 , semiMajor ) ,
 			//majorAxis = new Vector2D( v = rng.random( - 100 , 100 ) , v ) ,
-			majorAxis = new Vector2D( rng.randomFloatRange( -tracer.xMax / 2 , tracer.xMax / 2 ) , rng.randomFloatRange( -tracer.yMax / 2 , tracer.yMax / 2 ) ) ,
+			majorAxis = new Vector2D( rng.randomFloatRange( -tracer.bbox.max.x / 2 , tracer.bbox.max.x / 2 ) , rng.randomFloatRange( -tracer.bbox.max.y / 2 , tracer.bbox.max.y / 2 ) ) ,
 			//majorAxis = Vector2D( 1 , 0 ) ,
 			ellipse = new Ellipse2D(
-				rng.randomFloatRange( tracer.xMin / 2 , tracer.xMax / 2 ) ,
-				rng.randomFloatRange( tracer.yMin / 2 , tracer.yMax / 2 ) ,
+				rng.randomFloatRange( tracer.bbox.min.x / 2 , tracer.bbox.max.x / 2 ) ,
+				rng.randomFloatRange( tracer.bbox.min.y / 2 , tracer.bbox.max.y / 2 ) ,
 				majorAxis.x , majorAxis.y , semiMajor , semiMinor
 			) ;
 
@@ -284,8 +284,8 @@ describe( "Ellipse" , () => {
 
 		for ( i = 0 ; i < tries ; i ++ ) {
 			line.set(
-				rng.randomFloatRange( tracer.xMin , tracer.xMax ) ,
-				rng.randomFloatRange( tracer.yMin , tracer.yMax ) ,
+				rng.randomFloatRange( tracer.bbox.min.x , tracer.bbox.max.x ) ,
+				rng.randomFloatRange( tracer.bbox.min.y , tracer.bbox.max.y ) ,
 				rng.randomFloatRange( -5 , 5 ) ,
 				rng.randomFloatRange( -5 , 5 )
 			) ;

@@ -177,7 +177,7 @@ describe( "InterpolatedFn" , () => {
 
 		var x , fx , lastFx = 2 , array = [] ;
 
-		for ( x = tracer.xMin + rng.randomFloatRange( 0 , 0.8 ) ; x <= tracer.xMax ; x += rng.randomFloatRange( 0.2 , 0.8 ) ) {
+		for ( x = tracer.bbox.min.x + rng.randomFloatRange( 0 , 0.8 ) ; x <= tracer.bbox.max.x ; x += rng.randomFloatRange( 0.2 , 0.8 ) ) {
 			fx = lastFx + rng.randomFloatRange( -3 , 3 ) ;
 			array.push( { x , fx } ) ;
 			lastFx = fx ;
@@ -230,43 +230,47 @@ describe( "Const2ndOrdDifferentialEquationFn" , () => {
 			height: 600 ,
 			width: 800 ,
 			bgColor: '#000' ,
-			xmin: -1 ,
+			xmin: 0 ,
 			xmax: 10 ,
-			ymin: -5 ,
-			ymax: 5 ,
+			ymin: -4 ,
+			ymax: 4 ,
 			every: 1
 			//xUnit: 'rpm' , yUnit: 'hp'
 		} ) ;
 
 		var springK , damperD , mass , p0 , v0 , externalForce ;
 		
-		springK = 4 ;
-		damperD = 1 ;
-		mass = 1 ;
-		p0 = 0 ;
+		springK = 200 ;
+		damperD = 10 ;
+		mass = 10 ;
+		p0 = -1 ;
 		v0 = 0 ;
-		externalForce = -2 ;
+		externalForce = -9.8 * mass ;
 
 		var fn = math.fn.Const2ndOrdDifferentialEquationFn.createSpringDamperMass( springK , damperD , mass , p0 , v0 , externalForce ) ;
 
 		tracer.createImage() ;
+		tracer.drawGrid() ;
 		tracer.drawAxis() ;
+		tracer.drawUnits() ;
 		tracer.traceFn( fn ) ;
 		tracer.traceDFn( fn ) ;
 		tracer.traceD2Fn( fn ) ;
 		
 		var DELTA = 0.00001 ;
-		
-		for ( let x = 0 ; x <= tracer.xMax ; x += tracer.xMax / 10 ) {
+
+		log( "Δ:%[.5]f" , fn.discriminant ) ;
+
+		for ( let x = 0 ; x <= tracer.bbox.max.x ; x += tracer.bbox.max.x / 10 ) {
 			log( ">>> #%f -- y:%[.5]f y':%[.5]f y\":%[.5]f" , x , fn.fx( x ) , fn.dfx( x ) , fn.d2fx( x ) ) ;
 			let dfx = ( fn.fx( x + DELTA ) - fn.fx( x - DELTA ) ) / ( DELTA * 2 ) ;
 			let d2fx = ( fn.dfx( x + DELTA ) - fn.dfx( x - DELTA ) ) / ( DELTA * 2 ) ;
-			log( "    y':%[.5]f   expected y':%[.5]f   Δ:%[.5]f" , fn.dfx( x ) , dfx , fn.dfx( x ) - dfx ) ;
-			log( "    y\":%[.5]f   expected y\":%[.5]f   Δ:%[.5]f" , fn.d2fx( x ) , d2fx , fn.d2fx( x ) - d2fx ) ;
+			log( "    y':%[.5]f   expected y':%[.5]f   ΔE:%[.5]f" , fn.dfx( x ) , dfx , fn.dfx( x ) - dfx ) ;
+			log( "    y\":%[.5]f   expected y\":%[.5]f   ΔE:%[.5]f" , fn.d2fx( x ) , d2fx , fn.d2fx( x ) - d2fx ) ;
 			let left = fn.d2fx( x ) + ( damperD / mass ) * fn.dfx( x ) + ( springK / mass ) * fn.fx( x ) ;
-			log( "    %[.5]f = %[.5]f ? Δ:%[.5]f" , left , fn.constant , left - fn.constant ) ;
+			log( "    %[.5]f = %[.5]f ? ΔE:%[.5]f" , left , fn.constant , left - fn.constant ) ;
 			//let left2 = fn.d2fx( x ) + fn.dfx( x ) + fn.fx( x ) ;
-			//log( "    without coeffs: %[.5]f = %[.5]f ? Δ:%[.5]f" , left2 , fn.constant , left2 - fn.constant ) ;
+			//log( "    without coeffs: %[.5]f = %[.5]f ? ΔE:%[.5]f" , left2 , fn.constant , left2 - fn.constant ) ;
 		}
 
 		await tracer.saveImage( __dirname + "/differential-equation-fn.png" ) ;
