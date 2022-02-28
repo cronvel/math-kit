@@ -213,14 +213,54 @@ describe( "Const2ndOrdDifferentialEquationFn" , () => {
 			//xUnit: 'rpm' , yUnit: 'hp'
 		} ) ;
 
-		//var fn = new math.fn.Const2ndOrdDifferentialEquationFn( 1 , 1 , 0 , 0 , 1 ) ;
-		var fn = math.fn.Const2ndOrdDifferentialEquationFn.createSpringDamperMass( 2 , 0.5 , 1 , 0 , 0 , -2 ) ;
+		var fn = new math.fn.Const2ndOrdDifferentialEquationFn( 1 , 1 , 0 , 0 , 1 ) ;
 
 		tracer.createImage() ;
 		tracer.drawAxis() ;
 		tracer.traceFn( fn ) ;
 		tracer.traceDFn( fn ) ;
 		tracer.traceD2Fn( fn ) ;
+		console.log( "At 10:" , fn.fx( 10 ) , fn.dfx( 10 ) , fn.d2fx( 10 ) ) ;
+
+		await tracer.saveImage( __dirname + "/differential-equation-fn.png" ) ;
+	} ) ;
+
+	it( "zzz Spring-Damper-Mass system" , async () => {
+		var tracer = new GmTracer( {
+			height: 600 ,
+			width: 800 ,
+			bgColor: '#000' ,
+			xmin: -1 ,
+			xmax: 6 ,
+			ymin: -5 ,
+			ymax: 5 ,
+			every: 1
+			//xUnit: 'rpm' , yUnit: 'hp'
+		} ) ;
+
+		var springK = 2 ,
+			damperD = 5 ,
+			mass = 1 ,
+			p0 = -1 ,
+			v0 = 0 ,
+			externalForce = 0 ;
+
+		var fn = math.fn.Const2ndOrdDifferentialEquationFn.createSpringDamperMass( springK , damperD , mass , p0 , v0 , externalForce ) ;
+
+		tracer.createImage() ;
+		tracer.drawAxis() ;
+		tracer.traceFn( fn ) ;
+		tracer.traceDFn( fn ) ;
+		tracer.traceD2Fn( fn ) ;
+		
+		for ( let x = 0 ; x < 10 ; x += 0.5 ) {
+			console.log( "\nAt #" + x + ":" , fn.fx( x ) , fn.dfx( x ) , fn.d2fx( x ) ) ;
+			let left = fn.d2fx( x ) + ( damperD / mass ) * fn.dfx( x ) + ( springK / mass ) * fn.fx( x ) ;
+			console.log( "    >> " , left , fn.h , "delta:" , left - fn.h ) ;
+			let left2 = fn.d2fx( x ) + fn.dfx( x ) + fn.fx( x ) ;
+			console.log( "    >> " , left2 , fn.h , "delta:" , left2 - fn.h ) ;
+			//console.log( "    >> " , fn.d2fx( x ) , ( - springK / mass ) * fn.fx( x ) + ( - damperD / mass ) * fn.dfx( x ) + externalForce / mass ) ;
+		}
 
 		await tracer.saveImage( __dirname + "/differential-equation-fn.png" ) ;
 	} ) ;
