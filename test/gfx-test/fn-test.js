@@ -238,12 +238,17 @@ describe( "Const2ndOrdDifferentialEquationFn" , () => {
 			//xUnit: 'rpm' , yUnit: 'hp'
 		} ) ;
 
-		var springK = 2 ,
-			damperD = 5 ,
-			mass = 1 ,
-			p0 = -1 ,
-			v0 = 0 ,
-			externalForce = 0 ;
+		var springK , damperD , mass , p0 , v0 , externalForce ;
+		
+		springK = 2 ;
+		damperD = 5 ;
+		mass = 1 ;
+		p0 = -1 ;
+		v0 = 0 ;
+		externalForce = -2 ;
+
+		//springK = 1 ;
+		//damperD = -2 ;
 
 		var fn = math.fn.Const2ndOrdDifferentialEquationFn.createSpringDamperMass( springK , damperD , mass , p0 , v0 , externalForce ) ;
 
@@ -253,13 +258,18 @@ describe( "Const2ndOrdDifferentialEquationFn" , () => {
 		tracer.traceDFn( fn ) ;
 		tracer.traceD2Fn( fn ) ;
 		
-		for ( let x = 0 ; x < 10 ; x += 0.5 ) {
-			console.log( "\nAt #" + x + ":" , fn.fx( x ) , fn.dfx( x ) , fn.d2fx( x ) ) ;
+		var DELTA = 0.00001 ;
+		
+		for ( let x = 0 ; x < 5 ; x += 0.5 ) {
+			log( ">>> #%f -- y:%[.5]f y':%[.5]f y\":%[.5]f" , x , fn.fx( x ) , fn.dfx( x ) , fn.d2fx( x ) ) ;
+			let dfx = ( fn.fx( x + DELTA ) - fn.fx( x - DELTA ) ) / ( DELTA * 2 ) ;
+			let d2fx = ( fn.dfx( x + DELTA ) - fn.dfx( x - DELTA ) ) / ( DELTA * 2 ) ;
+			log( "    y':%[.5]f   expected y':%[.5]f   Δ:%[.5]f" , fn.dfx( x ) , dfx , fn.dfx( x ) - dfx ) ;
+			log( "    y\":%[.5]f   expected y\":%[.5]f   Δ:%[.5]f" , fn.d2fx( x ) , d2fx , fn.d2fx( x ) - d2fx ) ;
 			let left = fn.d2fx( x ) + ( damperD / mass ) * fn.dfx( x ) + ( springK / mass ) * fn.fx( x ) ;
-			console.log( "    >> " , left , fn.h , "delta:" , left - fn.h ) ;
-			let left2 = fn.d2fx( x ) + fn.dfx( x ) + fn.fx( x ) ;
-			console.log( "    >> " , left2 , fn.h , "delta:" , left2 - fn.h ) ;
-			//console.log( "    >> " , fn.d2fx( x ) , ( - springK / mass ) * fn.fx( x ) + ( - damperD / mass ) * fn.dfx( x ) + externalForce / mass ) ;
+			log( "    %[.5]f = %[.5]f ? Δ:%[.5]f" , left , fn.h , left - fn.h ) ;
+			//let left2 = fn.d2fx( x ) + fn.dfx( x ) + fn.fx( x ) ;
+			//log( "    without coeffs: %[.5]f = %[.5]f ? Δ:%[.5]f" , left2 , fn.h , left2 - fn.h ) ;
 		}
 
 		await tracer.saveImage( __dirname + "/differential-equation-fn.png" ) ;
