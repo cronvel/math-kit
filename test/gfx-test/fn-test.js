@@ -214,7 +214,7 @@ describe( "Const2ndOrdDifferentialEquationFn" , () => {
 		} ) ;
 
 		//var fn = new math.fn.Const2ndOrdDifferentialEquationFn( 1 , 1 , 0 , 0 , 1 ) ;
-		var fn = math.fn.Const2ndOrdDifferentialEquationFn.createSpringDamperMass( 1 , 5 , 1 , -1 , -3 , 0.5 ) ;
+		var fn = math.fn.Const2ndOrdDifferentialEquationFn.createSpringDamperMass( 2 , 0.5 , 1 , 0 , 0 , -2 ) ;
 
 		tracer.createImage() ;
 		tracer.drawAxis() ;
