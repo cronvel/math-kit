@@ -261,6 +261,7 @@ describe( "Const2ndOrdDifferentialEquationFn" , () => {
 
 		log( "Δ:%[.5]f" , fn.discriminant ) ;
 
+		/*
 		for ( let x = 0 ; x <= tracer.bbox.max.x ; x += tracer.bbox.max.x / 10 ) {
 			log( ">>> #%f -- y:%[.5]f y':%[.5]f y\":%[.5]f" , x , fn.fx( x ) , fn.dfx( x ) , fn.d2fx( x ) ) ;
 			let dfx = ( fn.fx( x + DELTA ) - fn.fx( x - DELTA ) ) / ( DELTA * 2 ) ;
@@ -269,9 +270,11 @@ describe( "Const2ndOrdDifferentialEquationFn" , () => {
 			log( "    y\":%[.5]f   expected y\":%[.5]f   ΔE:%[.5]f" , fn.d2fx( x ) , d2fx , fn.d2fx( x ) - d2fx ) ;
 			let left = fn.d2fx( x ) + ( damperD / mass ) * fn.dfx( x ) + ( springK / mass ) * fn.fx( x ) ;
 			log( "    %[.5]f = %[.5]f ? ΔE:%[.5]f" , left , fn.constant , left - fn.constant ) ;
-			//let left2 = fn.d2fx( x ) + fn.dfx( x ) + fn.fx( x ) ;
-			//log( "    without coeffs: %[.5]f = %[.5]f ? ΔE:%[.5]f" , left2 , fn.constant , left2 - fn.constant ) ;
 		}
+		//*/
+		
+		fn.setInitial( 40 , 2 ) ;
+		tracer.traceFn( fn , '#f0f' ) ;
 
 		await tracer.saveImage( __dirname + "/differential-equation-fn.png" ) ;
 	} ) ;
