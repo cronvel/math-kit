@@ -234,14 +234,15 @@ describe( "Const2ndOrdDifferentialEquationFn" , () => {
 			xmax: 10 ,
 			ymin: -4 ,
 			ymax: 4 ,
-			every: 1
-			//xUnit: 'rpm' , yUnit: 'hp'
+			every: 1 ,
+			xUnit: 's' ,
+			yUnit: 'm'
 		} ) ;
 
 		var springK , damperD , mass , p0 , v0 , externalForce ;
 		
 		springK = 200 ;
-		damperD = 10 ;
+		damperD = 15 ;
 		mass = 10 ;
 		p0 = -1 ;
 		v0 = 0 ;
@@ -253,6 +254,9 @@ describe( "Const2ndOrdDifferentialEquationFn" , () => {
 		tracer.drawGrid() ;
 		tracer.drawAxis() ;
 		tracer.drawUnits() ;
+		tracer.setWindow( { yUnit: 'm/s' } ) ;
+		tracer.drawYUnits( undefined , undefined , 1 ) ;
+
 		tracer.traceFn( fn ) ;
 		tracer.traceDFn( fn ) ;
 		tracer.traceD2Fn( fn ) ;
@@ -273,7 +277,8 @@ describe( "Const2ndOrdDifferentialEquationFn" , () => {
 		}
 		//*/
 		
-		fn.setInitial( 40 , 2 ) ;
+		//fn.setInitialPhysics( 2 , 40 , 9.8 * mass ) ;
+		fn.setPhysics( 200 , 500 , 10 , 2 , 40 , 9.8 * mass ) ;
 		tracer.traceFn( fn , '#f0f' ) ;
 
 		await tracer.saveImage( __dirname + "/differential-equation-fn.png" ) ;
