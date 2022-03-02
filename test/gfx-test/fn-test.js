@@ -60,7 +60,7 @@ describe( "InterpolatedFn" , () => {
 			{ x: 1 , fx: 1 } ,
 			{ x: 3 , fx: 5 } ,
 			{ x: 5 , fx: 1 }
-		] ) ;
+		] , { order: 2 } ) ;
 
 		tracer.createImage() ;
 		tracer.drawAxis() ;
@@ -183,7 +183,7 @@ describe( "InterpolatedFn" , () => {
 			lastFx = fx ;
 		}
 
-		var fn = new math.fn.InterpolatedFn( array , { preserveExtrema: false , atanMeanDfx: true } ) ;
+		var fn = new math.fn.InterpolatedFn( array , { preserveExtrema: false , atanMeanDfx: true , order: 2 } ) ;
 
 		tracer.createImage() ;
 		tracer.drawAxis() ;
@@ -225,7 +225,7 @@ describe( "Const2ndOrdDifferentialEquationFn" , () => {
 		await tracer.saveImage( __dirname + "/differential-equation-fn.png" ) ;
 	} ) ;
 
-	it( "zzz Spring-Damper-Mass system" , async () => {
+	it( "Spring-Damper-Mass system" , async () => {
 		var tracer = new GmTracer( {
 			height: 600 ,
 			width: 800 ,
