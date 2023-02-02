@@ -37,22 +37,40 @@ const units = math.units ;
 
 describe( "Unit conversion" , () => {
 
-	it( "test" , () => {
+	it( "basic conversions" , () => {
 		var unitSet = new units.UnitSet() ;
-		unitSet.create( 'm' ) ;
-		unitSet.create( 'km' , 1000 , 'm' ) ;
-		unitSet.create( 'mile' , 1609.344 , 'm' ) ;
+		unitSet.add( 'm' ) ;
+		unitSet.add( 'km' , 1000 , 'm' ) ;
+		unitSet.add( 'mile' , 1609.344 , 'm' ) ;
 		expect( unitSet.convert( 30 , 'km' , 'mile' ) ).to.be.around( 18.64113576712002 ) ;
+
+		unitSet = new units.UnitSet() ;
+		unitSet.add( 'm' , 'meter' ) ;
+		unitSet.add( 'km' , 'kilometer' , 1000 , 'm' ) ;
+		unitSet.add( 'mi' , 'mile' , 1.609344 , 'km' ) ;
+		expect( unitSet.convert( 30 , 'km' , 'mile' ) ).to.be.around( 18.64113576712002 ) ;
+		expect( unitSet.convert( 30 , 'km' , 'mi' ) ).to.be.around( 18.64113576712002 ) ;
+
+		unitSet = new units.UnitSet() ;
+		unitSet.add( 'm' , 'meter' ) ;
+		unitSet.add( 'km' , 'kilometer' , 1000 , 'm' ) ;
+		unitSet.add( 'yd' , 'yard' , 0.9144 , 'm' , { alias: 'yards' } ) ;
+		unitSet.add( 'mi' , 'mile' , 1760 , 'yard' , { aliases: [ 'miles' , 'mi.' ] } ) ;
+		//unitSet.add( 'mile' , 1.609344 , 'km' ) ;
+		expect( unitSet.convert( 30 , 'km' , 'mile' ) ).to.be.around( 18.64113576712002 ) ;
+		expect( unitSet.convert( 30 , 'km' , 'miles' ) ).to.be.around( 18.64113576712002 ) ;
+		expect( unitSet.convert( 30 , 'kilometer' , 'mi' ) ).to.be.around( 18.64113576712002 ) ;
+		expect( unitSet.convert( 30 , 'kilometer' , 'mi.' ) ).to.be.around( 18.64113576712002 ) ;
 	} ) ;
 
-	it( "test2" , () => {
+	it( "automatic multipliers creation" , () => {
 		var unitSet = new units.UnitSet() ;
-		unitSet.create( 'm' ) ;
-		unitSet.create( 'km' , 1000 , 'm' ) ;
-		unitSet.create( 'yard' , 0.9144 , 'm' ) ;
-		unitSet.create( 'mile' , 1760 , 'yard' ) ;
-		//unitSet.create( 'mile' , 1.609344 , 'km' ) ;
+		unitSet.add( 'm' , 'meter' , { multipliers: 'powerOf10' } ) ;
+		//console.log( unitSet ) ;
+		unitSet.add( 'mile' , 1609.344 , 'm' ) ;
 		expect( unitSet.convert( 30 , 'km' , 'mile' ) ).to.be.around( 18.64113576712002 ) ;
+		expect( unitSet.convert( 30 , 'cm' , 'mile' ) ).to.be.around( 0.00018641135767120018 ) ;
+		expect( unitSet.convert( 2 , 'mile' , 'millimeter' ) ).to.be.around( 3218688 ) ;
 	} ) ;
 } ) ;
 
