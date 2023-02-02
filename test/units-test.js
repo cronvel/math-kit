@@ -73,7 +73,7 @@ describe( "Unit conversion" , () => {
 		expect( unitSet.convert( 2 , 'mile' , 'millimeter' ) ).to.be.around( 3218688 ) ;
 	} ) ;
 
-	it.next( "compound unit conversion" , () => {
+	it( "compound unit conversion" , () => {
 		var unitSet = new units.UnitSet() ;
 		unitSet.add( 'm' , 'meter' , { multipliers: 'powerOf10' } ) ;
 		unitSet.add( 'mile' , 1609.344 , 'm' ) ;
@@ -81,10 +81,18 @@ describe( "Unit conversion" , () => {
 		unitSet.add( 'h' , 'hour' , 3600 , 's' ) ;
 		//expect( unitSet.convert( 3 , 'h' , 's' ) ).to.be( 10800 ) ;
 		
-		console.log( unitSet.parseCompound( 'km/s' ) ) ;
-		console.log( unitSet.parseCompound( 'm/s2' ) ) ;
+		/*
+		log( "%[4]I" , unitSet.parseCompound( 'km' ) ) ;
+		log( "%[4]I" , unitSet.parseCompound( 'km/s' ) ) ;
+		log( "%[4]I" , unitSet.parseCompound( 'm/s2' ) ) ;
+		*/
 
-		expect( unitSet.convertCompound( 40 , 'km.s-1' , 'm/s' ) ).to.be.around( 11.11111111111111 ) ;
+		expect( unitSet.convertCompound( 40 , 'km.h-1' , 'm/s' ) ).to.be.around( 11.11111111111111 ) ;
+		expect( unitSet.convertCompound( 40 , 'km.h⁻¹' , 'm/s' ) ).to.be.around( 11.11111111111111 ) ;
+		expect( unitSet.convertCompound( 40 , 'km.h⁻¹' , 'm.s⁻¹' ) ).to.be.around( 11.11111111111111 ) ;
+
+		expect( unitSet.convertCompound( 20 , 'cm²' , 'm²' ) ).to.be.around( 0.002 ) ;
+		expect( unitSet.convertCompound( 20 , 'cm³' , 'm³' ) ).to.be.around( 0.00002 ) ;
 	} ) ;
 } ) ;
 
