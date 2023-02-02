@@ -24,22 +24,35 @@
 	SOFTWARE.
 */
 
+/* global expect, describe, it */
+
 "use strict" ;
 
 
 
-const math = {} ;
-module.exports = math ;
+const math = require( '..' ) ;
+const units = math.units ;
 
-Object.assign( math , require( './common.js' ) ) ;
 
-math.random = require( './random.js' ) ;
-math.stat = require( './stat.js' ) ;
-math.geometry = require( './geometry.js' ) ;
-math.fn = require( './fn.js' ) ;
-math.units = require( './units.js' ) ;
-math.Complex = require( './Complex.js' ) ;
-math.Matrix = require( './Matrix.js' ) ;
-math.Quaternion = require( './Quaternion.js' ) ;
-math.search = require( './search.js' ) ;
+
+describe( "Unit conversion" , () => {
+
+	it( "test" , () => {
+		var unitSet = new units.UnitSet() ;
+		unitSet.create( 'm' ) ;
+		unitSet.create( 'km' , 1000 , 'm' ) ;
+		unitSet.create( 'mile' , 1609.344 , 'm' ) ;
+		expect( unitSet.convert( 30 , 'km' , 'mile' ) ).to.be.around( 18.64113576712002 ) ;
+	} ) ;
+
+	it( "test2" , () => {
+		var unitSet = new units.UnitSet() ;
+		unitSet.create( 'm' ) ;
+		unitSet.create( 'km' , 1000 , 'm' ) ;
+		unitSet.create( 'yard' , 0.9144 , 'm' ) ;
+		unitSet.create( 'mile' , 1760 , 'yard' ) ;
+		//unitSet.create( 'mile' , 1.609344 , 'km' ) ;
+		expect( unitSet.convert( 30 , 'km' , 'mile' ) ).to.be.around( 18.64113576712002 ) ;
+	} ) ;
+} ) ;
 
