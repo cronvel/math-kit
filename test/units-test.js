@@ -72,5 +72,19 @@ describe( "Unit conversion" , () => {
 		expect( unitSet.convert( 30 , 'cm' , 'mile' ) ).to.be.around( 0.00018641135767120018 ) ;
 		expect( unitSet.convert( 2 , 'mile' , 'millimeter' ) ).to.be.around( 3218688 ) ;
 	} ) ;
+
+	it.next( "compound unit conversion" , () => {
+		var unitSet = new units.UnitSet() ;
+		unitSet.add( 'm' , 'meter' , { multipliers: 'powerOf10' } ) ;
+		unitSet.add( 'mile' , 1609.344 , 'm' ) ;
+		unitSet.add( 's' , 'second' ) ;
+		unitSet.add( 'h' , 'hour' , 3600 , 's' ) ;
+		//expect( unitSet.convert( 3 , 'h' , 's' ) ).to.be( 10800 ) ;
+		
+		console.log( unitSet.parseCompound( 'km/s' ) ) ;
+		console.log( unitSet.parseCompound( 'm/s2' ) ) ;
+
+		expect( unitSet.convertCompound( 40 , 'km.s-1' , 'm/s' ) ).to.be.around( 11.11111111111111 ) ;
+	} ) ;
 } ) ;
 
