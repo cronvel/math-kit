@@ -42,14 +42,18 @@ describe( "Unit conversion" , () => {
 		unitSet.add( 'm' ) ;
 		unitSet.add( 'km' , 1000 , 'm' ) ;
 		unitSet.add( 'mile' , 1609.344 , 'm' ) ;
+
 		expect( unitSet.convert( 30 , 'km' , 'mile' ) ).to.be.around( 18.64113576712002 ) ;
+
 
 		unitSet = new units.UnitSet() ;
 		unitSet.add( 'm' , 'meter' ) ;
 		unitSet.add( 'km' , 'kilometer' , 1000 , 'm' ) ;
 		unitSet.add( 'mi' , 'mile' , 1.609344 , 'km' ) ;
+
 		expect( unitSet.convert( 30 , 'km' , 'mile' ) ).to.be.around( 18.64113576712002 ) ;
 		expect( unitSet.convert( 30 , 'km' , 'mi' ) ).to.be.around( 18.64113576712002 ) ;
+
 
 		unitSet = new units.UnitSet() ;
 		unitSet.add( 'm' , 'meter' ) ;
@@ -57,6 +61,7 @@ describe( "Unit conversion" , () => {
 		unitSet.add( 'yd' , 'yard' , 0.9144 , 'm' , { alias: 'yards' } ) ;
 		unitSet.add( 'mi' , 'mile' , 1760 , 'yard' , { aliases: [ 'miles' , 'mi.' ] } ) ;
 		//unitSet.add( 'mile' , 1.609344 , 'km' ) ;
+
 		expect( unitSet.convert( 30 , 'km' , 'mile' ) ).to.be.around( 18.64113576712002 ) ;
 		expect( unitSet.convert( 30 , 'km' , 'miles' ) ).to.be.around( 18.64113576712002 ) ;
 		expect( unitSet.convert( 30 , 'kilometer' , 'mi' ) ).to.be.around( 18.64113576712002 ) ;
@@ -68,9 +73,31 @@ describe( "Unit conversion" , () => {
 		unitSet.add( 'm' , 'meter' , { multipliers: 'powerOf10' } ) ;
 		//console.log( unitSet ) ;
 		unitSet.add( 'mile' , 1609.344 , 'm' ) ;
+
 		expect( unitSet.convert( 30 , 'km' , 'mile' ) ).to.be.around( 18.64113576712002 ) ;
 		expect( unitSet.convert( 30 , 'cm' , 'mile' ) ).to.be.around( 0.00018641135767120018 ) ;
 		expect( unitSet.convert( 2 , 'mile' , 'millimeter' ) ).to.be.around( 3218688 ) ;
+	} ) ;
+
+	it( "zero offset" , () => {
+		var unitSet = new units.UnitSet() ;
+		unitSet.add( 'K' , 'kelvin' ) ;
+		unitSet.add( '°C' , 'celsius' , 1 , 'K' , { zeroOffset: 273.15 } ) ;
+		unitSet.add( '°F' , 'fahrenheit' , 5/9 , 'K' , { zeroOffset: 459.67 } ) ;
+
+		expect( unitSet.convert( 0 , 'K' , '°C' ) ).to.be.around( -273.15 ) ;
+		expect( unitSet.convert( 0 , 'K' , '°F' ) ).to.be.around( -459.67 ) ;
+		expect( unitSet.convert( 25 , '°C' , 'K' ) ).to.be.around( 298.15 ) ;
+		expect( unitSet.convert( 120 , 'K' , '°C' ) ).to.be.around( -153.15 ) ;
+
+		expect( unitSet.convert( 0 , '°C' , 'K' ) ).to.be.around( 273.15 ) ;
+		expect( unitSet.convert( 0 , '°C' , '°F' ) ).to.be.around( 32 , 0.000001 ) ;
+
+		expect( unitSet.convert( 100 , '°C' , 'K' ) ).to.be.around( 373.15 ) ;
+		expect( unitSet.convert( 100 , '°C' , '°F' ) ).to.be.around( 212 , 0.000001 ) ;
+
+		expect( unitSet.convert( -40 , '°C' , '°F' ) ).to.be.around( -40 , 0.000001 ) ;
+		expect( unitSet.convert( -40 , '°F' , '°C' ) ).to.be.around( -40 , 0.000001 ) ;
 	} ) ;
 
 	it( "compound unit conversion" , () => {
