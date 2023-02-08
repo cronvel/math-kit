@@ -122,6 +122,16 @@ describe( "Unit conversion" , () => {
 
 		expect( unitSet.convertCompound( 20 , 'cm²' , 'm²' ) ).to.be.around( 0.002 ) ;
 		expect( unitSet.convertCompound( 20 , 'cm³' , 'm³' ) ).to.be.around( 0.00002 ) ;
+
+		// Implicit compound conversion
+		expect( unitSet.convert( 40 , 'km.h-1' , 'm/s' ) ).to.be.around( 11.11111111111111 ) ;
+		expect( unitSet.convert( 40 , 'km.h⁻¹' , 'm/s' ) ).to.be.around( 11.11111111111111 ) ;
+		expect( unitSet.convert( 40 , 'km.h⁻¹' , 'm.s⁻¹' ) ).to.be.around( 11.11111111111111 ) ;
+		expect( unitSet.convert( 40 , 'km/h' , 'm.s⁻¹' ) ).to.be.around( 11.11111111111111 ) ;
+		expect( unitSet.convert( 40 , 'km/h' , 'm/s' ) ).to.be.around( 11.11111111111111 ) ;
+
+		expect( unitSet.convert( 20 , 'cm²' , 'm²' ) ).to.be.around( 0.002 ) ;
+		expect( unitSet.convert( 20 , 'cm³' , 'm³' ) ).to.be.around( 0.00002 ) ;
 	} ) ;
 
 	it( "unit having compound unit as root, converting units having the same root compound unit" , () => {
@@ -131,20 +141,38 @@ describe( "Unit conversion" , () => {
 		unitSet.add( 'US gal' , 'US Gallon' , 3.785411784 , 'L' , { alias: 'gal' } ) ;
 
 		expect( unitSet.convert( 10 , 'L' , 'm³' ) ).to.be.around( 0.01 ) ;
+		expect( unitSet.convert( 8 , 'hL' , 'm³' ) ).to.be.around( 0.8 ) ;
+		expect( unitSet.convert( 8 , 'mL' , 'cm³' ) ).to.be.around( 8 ) ;
+		expect( unitSet.convert( 8 , 'L' , 'dm³' ) ).to.be.around( 8 ) ;
+
+		expect( unitSet.convert( 8 , 'm³' , 'L' ) ).to.be.around( 8000 ) ;
+		expect( unitSet.convert( 8 , 'cm³' , 'L' ) ).to.be.around( 0.008 ) ;
+
 		expect( unitSet.convert( 10 , 'gal' , 'L' ) ).to.be.around( 37.85411784 ) ;
+		expect( unitSet.convert( 1000 , 'gal' , 'hL' ) ).to.be.around( 37.85411784 ) ;
 		expect( unitSet.convert( 10 , 'gal' , 'm³' ) ).to.be.around( 0.03785411784 ) ;
+		expect( unitSet.convert( 10 , 'gal' , 'cm³' ) ).to.be.around( 37854.11784 ) ;
+
+		expect( unitSet.convert( 10 , 'L' , 'gal' ) ).to.be.around( 2.6417205235814842 ) ;
+		expect( unitSet.convert( 10 , 'cm³' , 'gal' ) ).to.be.around( 0.0026417205235814843 ) ;
 	} ) ;
 
 	it( "unit having compound unit as root, converting units having different root compound unit" , () => {
 		var unitSet = new units.UnitSet() ;
+
 		unitSet.add( 'm' , 'meter' , { multipliers: 'powerOf10' } ) ;
 		unitSet.add( 'L' , 'Litre' , 0.001 , 'm³' , { multipliers: 'powerOf10' } ) ;
+
 		unitSet.add( 'in' , 'inch' , 25.4 , 'mm' ) ;
 		unitSet.add( 'US gal' , 'US Gallon' , 231 , 'in³' , { alias: 'gal' } ) ;
 
-		expect( unitSet.convert( 10 , 'L' , 'm³' ) ).to.be.around( 0.01 ) ;
 		expect( unitSet.convert( 10 , 'gal' , 'L' ) ).to.be.around( 37.85411784 ) ;
+		expect( unitSet.convert( 1000 , 'gal' , 'hL' ) ).to.be.around( 37.85411784 ) ;
 		expect( unitSet.convert( 10 , 'gal' , 'm³' ) ).to.be.around( 0.03785411784 ) ;
+		expect( unitSet.convert( 10 , 'gal' , 'cm³' ) ).to.be.around( 37854.11784 ) ;
+
+		expect( unitSet.convert( 10 , 'L' , 'gal' ) ).to.be.around( 2.6417205235814842 ) ;
+		expect( unitSet.convert( 10 , 'cm³' , 'gal' ) ).to.be.around( 0.0026417205235814843 ) ;
 	} ) ;
 } ) ;
-
+	
