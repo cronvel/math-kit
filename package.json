@@ -1,6 +1,6 @@
 {
   "name": "math-kit",
-  "version": "0.16.22",
+  "version": "0.16.23",
   "description": "Math utilities (random, stats, and more)",
   "main": "lib/math.js",
   "engines": {
@@ -9,9 +9,8 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
   "devDependencies": {
-    "gm": "^1.21.1"
+    "gm": "^1.25.0"
   },
   "scripts": {
     "test": "tea-time -R dot"
